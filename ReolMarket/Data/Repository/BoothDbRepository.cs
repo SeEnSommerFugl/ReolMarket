@@ -4,91 +4,82 @@ using ReolMarket.MVVM.Model;
 
 namespace ReolMarket.Data.Repository
 {
-    internal class BoothDbRepository : BaseDbRepository<Booth>
+    internal class BoothDbRepository : BaseDbRepository<Booth, Guid>
     {
         public BoothDbRepository() : base()
         {
         }
         // Read all columns needed by the model
         protected override string SqlSelectAll => @"
-            SELECT Product_ID, ProductName, [Description], Price, StockStatus, PicturePath, Category_ID
+            SELECT Booth_ID, BoothNumber, NumberOfShelves, HasHangerBar, IsRented, Status, Customer_ID
             FROM Booth";
         protected override string SqlSelectById => @"
-            SELECT Product_ID, ProductName, [Description], Price, StockStatus, PicturePath, Category_ID
+            SELECT Booth_ID, BoothNumber, NumberOfShelves, HasHangerBar, IsRented, Status, Customer_ID
             FROM Booth
-            WHERE Product_ID = @Product_ID";
+            WHERE Booth_ID = @Booth_ID";
 
         // Return the new identity as the first column so BaseDbRepository can capture it
         protected override string SqlInsert => @"
-            INSERT INTO Booth (ProductName, [Description], Price, StockStatus, PicturePath, Category_ID)
-            OUTPUT INSERTED.Product_ID
-            VALUES (@ProductName, @Description, @Price, @StockStatus, @PicturePath, @Category_ID);";
+            INSERT INTO Booth (BoothNumber, NumberOfShelves, HasHangerBar, IsRented, Status, Customer_ID)
+            OUTPUT INSERTED.Booth_ID
+            VALUES (@BoothNumber, @NumberOfShelves, @HasHangerBar, @IsRented, @Status, @Customer_ID);";
 
         protected override string SqlUpdate => @"
             UPDATE Booth
-                SET ProductName = @ProductName,
-                [Description] = @Description,
-                Price = @Price,
-                StockStatus = @StockStatus,
-                PicturePath = @PicturePath,
-                Category_ID = @Category_ID
-            WHERE Product_ID = @Product_ID;";
+                SET BoothNumber = @BoothNumber,
+                NumberOfShelves = @NumberOfShelves,
+                HasHangerBar = @HasHangerBar,
+                IsRented = @IsRented,
+                Status = @Status,
+                Customer_ID = @Customer_ID
+            WHERE Booth_ID = @Booth_ID;";
 
         protected override string SqlDeleteById => @"
             DELETE FROM Booth
-            WHERE Product_ID = @Product_ID";
+            WHERE Booth_ID = @Booth_ID";
         protected override Booth Map(IDataRecord r) => new Booth
         {
-            ProductId = r.GetInt32(r.GetOrdinal("Product_ID")),
-            ProductName = r.GetString(r.GetOrdinal("ProductName")),
-            Description = r.IsDBNull(r.GetOrdinal("Description"))
-                            ? string.Empty
-                            : r.GetString(r.GetOrdinal("Description")),
-            Price = r.GetDecimal(r.GetOrdinal("Price")),      // 👈 GetDecimal for DECIMAL
-            StockStatus = r.GetInt32(r.GetOrdinal("StockStatus")),
-            PicturePath = r.IsDBNull(r.GetOrdinal("PicturePath"))
-                            ? string.Empty
-                            : r.GetString(r.GetOrdinal("PicturePath")),
-            CategoryId = r.GetInt32(r.GetOrdinal("Category_ID"))   // 👈 map FK
+            BoothID = r.GetGuid(r.GetOrdinal("Booth_ID")),
+            BoothNumber = r.GetInt32(r.GetOrdinal("BoothNumber")),
+            NumberOfShelves = r.GetInt32(r.GetOrdinal("NumberOfShelves")),
+            HasHangerBar = r.GetBoolean(r.GetOrdinal("HasHangerBar")),
+            IsRented = r.GetBoolean(r.GetOrdinal("IsRented")),
+            Status = (BoothStatus)r.GetInt32(r.GetOrdinal("Status")),
+            CustomerID = r.GetGuid(r.GetOrdinal("Customer_ID"))   // 👈 map FK
         };
 
 
-        protected override void BindId(SqlCommand cmd, int id)
+        protected override void BindId(SqlCommand cmd, Guid id)
         {
-            cmd.Parameters.Add("@Product_ID", SqlDbType.Int).Value = id;
+            cmd.Parameters.Add("@Booth_ID", SqlDbType.UniqueIdentifier).Value = id;
         }
 
         protected override void BindInsert(SqlCommand cmd, Booth e)
         {
-            cmd.Parameters.Add("@ProductName", SqlDbType.NVarChar, 255).Value = e.ProductName;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 4000).Value = e.Description;
-            cmd.Parameters.Add("@Price", SqlDbType.Decimal).Value = e.Price;
-            cmd.Parameters["@Price"].Precision = 10;   // matches DECIMAL(10,2)
-            cmd.Parameters["@Price"].Scale = 2;
-            cmd.Parameters.Add("@StockStatus", SqlDbType.Int).Value = e.StockStatus;
-            cmd.Parameters.Add("@PicturePath", SqlDbType.NVarChar, 500).Value = (object?)e.PicturePath ?? DBNull.Value;
-            cmd.Parameters.Add("@Category_ID", SqlDbType.Int).Value = e.CategoryId;  // 👈
+            cmd.Parameters.Add("@BoothNumber", SqlDbType.Int).Value = e.BoothNumber;
+            cmd.Parameters.Add("@NumberOfShelves", SqlDbType.Int).Value = e.BoothNumber;
+            cmd.Parameters.Add("@HasHangerBar", SqlDbType.Bit).Value = e.HasHangerBar;
+            cmd.Parameters.Add("@IsRented", SqlDbType.Bit).Value = e.IsRented;
+            cmd.Parameters.Add("@Status", SqlDbType.Int).Value = (int)e.Status;
+            cmd.Parameters.Add("@Customer_ID", SqlDbType.UniqueIdentifier).Value = e.CustomerID;  // 👈
         }
 
         protected override void BindUpdate(SqlCommand cmd, Booth e)
         {
-            cmd.Parameters.Add("@ProductName", SqlDbType.NVarChar, 255).Value = e.ProductName;
-            cmd.Parameters.Add("@Description", SqlDbType.NVarChar, 4000).Value = e.Description;
-            cmd.Parameters.Add("@Price", SqlDbType.Decimal).Value = e.Price;
-            cmd.Parameters["@Price"].Precision = 10;
-            cmd.Parameters["@Price"].Scale = 2;
-            cmd.Parameters.Add("@StockStatus", SqlDbType.Int).Value = e.StockStatus;
-            cmd.Parameters.Add("@PicturePath", SqlDbType.NVarChar, 500).Value = (object?)e.PicturePath ?? DBNull.Value;
-            cmd.Parameters.Add("@Category_ID", SqlDbType.Int).Value = e.CategoryId;
-            cmd.Parameters.Add("@Product_ID", SqlDbType.Int).Value = e.ProductId;
+            cmd.Parameters.Add("@BoothNumber", SqlDbType.Int).Value = e.BoothNumber;
+            cmd.Parameters.Add("@NumberOfShelves", SqlDbType.Int).Value = e.BoothNumber;
+            cmd.Parameters.Add("@HasHangerBar", SqlDbType.Bit).Value = e.HasHangerBar;
+            cmd.Parameters.Add("@IsRented", SqlDbType.Bit).Value = e.IsRented;
+            cmd.Parameters.Add("@Status", SqlDbType.Int).Value = (int)e.Status;
+            cmd.Parameters.Add("@Customer_ID", SqlDbType.UniqueIdentifier).Value = e.CustomerID;
+            cmd.Parameters.Add("@Booth_ID", SqlDbType.UniqueIdentifier).Value = e.CustomerID;
         }
 
-        protected override int GetKey(Booth e) => e.ProductId;
+        protected override Guid GetKey(Booth e) => e.BoothID;
 
         protected override void AssignGeneratedIdIfAny(Booth e, object? id)
         {
-            if (id is int i) e.ProductId = i;
-            else if (id is long l) e.ProductId = (int)l;
+            if (id is Guid i) e.CustomerID = i;
         }
     }
 }

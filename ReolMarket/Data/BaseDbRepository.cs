@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace ReolMarket.Data
 {
-    internal abstract class BaseDbRepository<T> : IBaseRepository<T> where T : class
+    internal abstract class BaseDbRepository<T, TKey> : IBaseRepository<T, TKey> where T : class where TKey : notnull
     {
         protected readonly ObservableCollection<T> _items;
 
@@ -26,12 +26,12 @@ namespace ReolMarket.Data
 
         // Mapping and bindings
         protected abstract T Map(IDataRecord r);
-        protected abstract void BindId(SqlCommand cmd, int id);
+        protected abstract void BindId(SqlCommand cmd, TKey id);
         protected abstract void BindInsert(SqlCommand cmd, T entity);
         protected abstract void BindUpdate(SqlCommand cmd, T entity);
 
         // Key helpers
-        protected abstract int GetKey(T entity);                               // read key from entity
+        protected abstract TKey GetKey(T entity);                               // read key from entity
         protected virtual void AssignGeneratedIdIfAny(T entity, object? id)    // assign key after INSERT if you return one
         {
             // Optional to override in concrete repo
@@ -41,7 +41,7 @@ namespace ReolMarket.Data
 
         public IEnumerable<T> GetAll() => QueryAll();
 
-        public T? GetById(int id)
+        public T? GetById(TKey id)
         {
             using var con = Db.OpenConnection();
             using var cmd = new SqlCommand(SqlSelectById, con);
@@ -83,15 +83,15 @@ namespace ReolMarket.Data
             ReloadItems();
         }
 
-        public void Delete(int id)
+        public void Delete(TKey id)
         {
             using var con = Db.OpenConnection();
             using var cmd = new SqlCommand(SqlDeleteById, con);
             BindId(cmd, id);
             cmd.ExecuteNonQuery();
 
-            // remove from in-memory list
-            var existing = _items.FirstOrDefault(x => GetKey(x) == id);
+            var existing = _items.FirstOrDefault(x =>
+                        EqualityComparer<TKey>.Default.Equals(GetKey(x), id));
             if (existing != null) _items.Remove(existing);
         }
 
