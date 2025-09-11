@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ReolMarket.MVVM.ViewModel
 {
-    internal class MainViewModel
+    internal class EconomyViewModel
     {
 
     }
