@@ -20,7 +20,7 @@ namespace ReolMarket.Data
         // SQL templates
         protected abstract string SqlSelectAll { get; }
         protected abstract string SqlSelectById { get; }
-        protected abstract string SqlInsert { get; }        // return inserted id via OUTPUT or SELECT SCOPE_IDENTITY()
+        protected abstract string SqlInsert { get; }
         protected abstract string SqlUpdate { get; }
         protected abstract string SqlDeleteById { get; }
 
@@ -31,11 +31,11 @@ namespace ReolMarket.Data
         protected abstract void BindUpdate(SqlCommand cmd, T entity);
 
         // Key helpers
-        protected abstract TKey GetKey(T entity);                               // read key from entity
-        protected virtual void AssignGeneratedIdIfAny(T entity, object? id)    // assign key after INSERT if you return one
-        {
-            // Optional to override in concrete repo
-        }
+        protected abstract TKey GetKey(T entity);
+        //protected virtual void AssignGeneratedIdIfAny(T entity, object? id)
+        //{
+
+        //}
 
         // --------------------- Public API ---------------------
 
@@ -52,22 +52,15 @@ namespace ReolMarket.Data
 
         public void Add(T entity)
         {
+            if (GetKey(entity) is Guid g && g == Guid.Empty)
+                throw new InvalidOperationException("Entity key must be set before insert.");
+
             using var con = Db.OpenConnection();
             using var cmd = new SqlCommand(SqlInsert, con);
             BindInsert(cmd, entity);
 
-
-            // If your INSERT returns the new id (recommended), capture it:
-            object? newId = null;
-            using (var rd = cmd.ExecuteReader())
-            {
-                if (rd.Read())
-                {
-                    // Take the first column of the first row as the new key
-                    newId = rd.GetValue(0);
-                }
-            }
-            AssignGeneratedIdIfAny(entity, newId);
+            if (cmd.ExecuteNonQuery() != 1)
+                throw new InvalidOperationException("Insert failed.");
 
             _items.Add(entity);
         }
