@@ -84,7 +84,7 @@ namespace ReolMarket.Data
             cmd.ExecuteNonQuery();
 
             var existing = _items.FirstOrDefault(x =>
-                        EqualityComparer<TKey>.Default.Equals(GetKey(x), id));
+                        Equals(GetKey(x), id));
             if (existing != null) _items.Remove(existing);
         }
 

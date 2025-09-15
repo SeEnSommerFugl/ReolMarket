@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace ReolMarket.Core
 {
-    public class ObservableObject : INotifyPropertyChanged
+    public class BaseViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
