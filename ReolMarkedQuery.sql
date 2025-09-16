@@ -3,7 +3,7 @@ CREATE TABLE Customer(
     Customer_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     CustomerName NvarChar(50) NOT NULL,
     Email NvarChar(50) NOT NULL,
-    Phone NvarChar(20) NOT NULL,
+    PhoneNumber NvarChar(20) NOT NULL,
     [Address] NvarChar(155) NOT NULL,
     PostalCode int NOT NULL
 );
@@ -11,11 +11,11 @@ GO
 
 CREATE TABLE Booth(
     Booth_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
-    NumberOfShelves int NOT NULL,
-    HasHangarbar bit NOT NULL,
-    IsRented bit NOT NULL,
-    BoothStatus int NOT NULL,
     BoothNumber int NOT NULL,
+    NumberOfShelves int NOT NULL,
+    HasHangerbar bit NOT NULL,
+    IsRented bit NOT NULL,
+    [Status] int NOT NULL,
     Customer_ID UNIQUEIDENTIFIER,
     CONSTRAINT FK_Booth_Customer
         FOREIGN KEY(Customer_ID)
@@ -70,7 +70,7 @@ CREATE TABLE Payment(
 );
 
 -- Opret dummy kunder
-INSERT INTO Customer(Customer_ID, CustomerName, Email, Phone, [Address], PostalCode)
+INSERT INTO Customer(Customer_ID, CustomerName, Email, PhoneNumber, [Address], PostalCode)
 VALUES
     (NEWID(), 'John Doe', 'johndoe@example.dk', '12345678', '123 Main Street, City A', '1000'),
     (NEWID(), 'Jane Smith', 'janesmith@example.dk', '23456789', '321 Second Street, City A', '1000');
@@ -80,7 +80,7 @@ DECLARE @Customer1 UNIQUEIDENTIFIER = (SELECT Customer_ID FROM Customer WHERE Cu
 DECLARE @Customer2 UNIQUEIDENTIFIER = (SELECT Customer_ID FROM Customer WHERE CustomerName = 'Jane Smith');
 
 -- Insert booths (med og uden hangarbar)
-INSERT INTO Booth(Booth_ID, NumberOfShelves, HasHangarbar, IsRented, BoothStatus, BoothNumber, Customer_ID)
+INSERT INTO Booth(Booth_ID, NumberOfShelves, HasHangerbar, IsRented, [Status], BoothNumber, Customer_ID)
 VALUES
     (NEWID(), 3, 1, 1, 1, 1, @Customer1),
     (NEWID(), 6, 0, 1, 1, 2, @Customer1),

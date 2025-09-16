@@ -10,7 +10,7 @@ namespace ReolMarket.MVVM.ViewModel
     /// ViewModel that lists and manages booths.
     /// Uses in-memory filtering and synchronous repositories.
     /// </summary>
-    internal class BoothsViewModel : BaseViewModel
+    internal class BoothViewModel : BaseViewModel
     {
         // Repository (sync)
         private readonly BoothDbRepository _boothRepo;
@@ -28,8 +28,8 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
-        public ObservableCollection<Booth> Booths = new();
-        public ObservableCollection<Customer> Customers => _customerRepo.Items;
+        public ObservableCollection<Booth> Booths => ;
+        public ObservableCollection<Customer> Customers = new();
 
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates a new instance and loads data.
         /// </summary>
-        public BoothsViewModel()
+        public BoothViewModel()
         {
             Title = "Booths";
             _boothRepo = new BoothDbRepository();

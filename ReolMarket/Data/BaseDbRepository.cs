@@ -59,8 +59,8 @@ namespace ReolMarket.Data
             using var cmd = new SqlCommand(SqlInsert, con);
             BindInsert(cmd, entity);
 
-            //if (cmd.ExecuteNonQuery() != 1)
-            //    throw new InvalidOperationException("Insert failed.");
+            if (cmd.ExecuteNonQuery() != 1)
+                throw new InvalidOperationException("Insert failed.");
 
             _items.Add(entity);
         }
