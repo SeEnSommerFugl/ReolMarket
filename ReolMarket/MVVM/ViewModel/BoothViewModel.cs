@@ -28,8 +28,9 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
-        public ObservableCollection<Booth> Booths { get; } = new();
-        public ObservableCollection<Customer> Customers { get; } = new();
+        public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
+
 
         /// <summary>
         /// The booth currently selected in the UI.
@@ -82,6 +83,20 @@ namespace ReolMarket.MVVM.ViewModel
                     ApplyFilters();
             }
         }
+        private int _boothNumber;
+        public int BoothNumber
+        {
+            get => _boothNumber;
+            set
+            {
+                if (_boothNumber != value)
+                {
+                    _boothNumber = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         /// <summary>
         /// Command that reloads booths from the repository.
