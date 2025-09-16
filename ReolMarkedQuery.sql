@@ -16,7 +16,7 @@ CREATE TABLE Booth(
     IsRented bit NOT NULL,
     BoothStatus int NOT NULL,
     BoothNumber int NOT NULL,
-    Customer_ID UNIQUEIDENTIFIER
+    Customer_ID UNIQUEIDENTIFIER,
     CONSTRAINT FK_Booth_Customer
         FOREIGN KEY(Customer_ID)
         REFERENCEs Customer(Customer_ID)
@@ -24,15 +24,50 @@ CREATE TABLE Booth(
 GO
 
 CREATE TABLE Item(
-    Item_ID UNIQUEIDENTIFIER NOT NULL,
+    Item_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
     ItemName NvarChar(255) NOT NULL,
     ItemPrice Decimal(10,2) NOT NULL,
-    Booth_ID UNIQUEIDENTIFIER NOT NULL
+    Booth_ID UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT FK_Item_Booth
         FOREIGN KEY(Booth_ID)
         REFERENCES Booth(Booth_ID)
 );
 GO
+
+CREATE TABLE ShoppingCart(
+    ShoppingCart_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    Quantity int NOT NULL,
+    TotalPrice decimal(10,2) NOT NULL
+);
+GO
+
+CREATE TABLE ItemShoppingCart(
+    Item_ID UNIQUEIDENTIFIER NOT NULL,
+    ShoppingCart_ID UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT FK_Item_ItemShoppingCart
+        FOREIGN KEY(Item_ID)
+        REFERENCES Item(Item_ID),
+    CONSTRAINT FK_ShoppingCart_ItemShoppingCart
+        FOREIGN KEY(ShoppingCart_ID)
+        REFERENCES ShoppingCart(ShoppingCart_ID)
+);
+GO
+
+CREATE TABLE Sale(
+    Sale_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    ShoppingCart_ID UNIQUEIDENTIFIER NOT NULL,
+    Payment_ID UNIQUEIDENTIFIER NOT NULL,
+    CONSTRAINT FK_ShoppingCart_Sale
+        FOREIGN KEY(ShoppingCart_ID)
+        REFERENCES ShoppingCart(ShoppingCart_ID)
+);
+GO
+
+CREATE TABLE Payment(
+    Payment_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    PaymentMethod NvarChar(100) NOT NULL,
+    PaymentDate Date NOT NULL
+);
 
 -- Opret dummy kunder
 INSERT INTO Customer(Customer_ID, CustomerName, Email, Phone, [Address], PostalCode)
