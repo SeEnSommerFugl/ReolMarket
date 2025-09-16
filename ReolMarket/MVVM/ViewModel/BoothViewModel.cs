@@ -28,7 +28,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
-        public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Booth> Booths = new();
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
 
 
@@ -83,20 +83,6 @@ namespace ReolMarket.MVVM.ViewModel
                     ApplyFilters();
             }
         }
-        private int _boothNumber;
-        public int BoothNumber
-        {
-            get => _boothNumber;
-            set
-            {
-                if (_boothNumber != value)
-                {
-                    _boothNumber = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
 
         /// <summary>
         /// Command that reloads booths from the repository.
@@ -127,30 +113,7 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = new BoothDbRepository();
             _customerRepo = new CustomerDbRepository();
 
-            var newCustomer = new Customer
-            {
-                CustomerID = Guid.NewGuid(),
-                CustomerName = "Alex",
-                Email = "testmail@testmail.dk",
-                PhoneNumber = "1234567890",
-                Address = "Testroad 123",
-                PostalCode = 1234
-            };
-            Customers.Add(newCustomer);
-            _customerRepo.Add(newCustomer);
 
-            var newBooth = new Booth
-            {
-                BoothID = Guid.NewGuid(),
-                BoothNumber = 1,
-                NumberOfShelves = 6,
-                HasHangerBar = false,
-                IsRented = true,
-                Status = (BoothStatus)1,
-                CustomerID = newCustomer.CustomerID,
-            };
-            Booths.Add(newBooth);
-            _boothRepo.Add(newBooth);
 
             RefreshCommand = new RelayCommand(_ => Load());
             AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => !IsBusy);
@@ -166,10 +129,10 @@ namespace ReolMarket.MVVM.ViewModel
         private void Load()
         {
             RunBusy(() =>
-            {
-                _allBooths = _boothRepo.GetAll().ToArray();
-                ApplyFilters();
-            }, "Loading booths…");
+          {
+              _allBooths = _boothRepo.GetAll().ToArray();
+              ApplyFilters();
+          }, "Loading booths…");
         }
 
         /// <summary>

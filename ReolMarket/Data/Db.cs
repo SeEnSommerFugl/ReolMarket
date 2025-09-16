@@ -35,7 +35,7 @@ namespace ReolMarket.Data
         internal static SqlConnection OpenConnection()
         {
             var con = new SqlConnection(ConnectionString);
-            //con.Open();
+            con.Open();
             return con;
         }
     }
