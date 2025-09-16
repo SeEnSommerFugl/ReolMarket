@@ -46,6 +46,8 @@ namespace ReolMarket.MVVM.ViewModel
         {
             Title = "ReolMarket";
 
+
+
             _boothsViewModel = new BoothsViewModel();
             _itemsViewModel = new ItemsViewModel();
             _rentersViewModel = new RentersViewModel();
@@ -55,6 +57,8 @@ namespace ReolMarket.MVVM.ViewModel
             NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
 
             CurrentView = _boothsViewModel; // Show Booths by default
+
+
         }
     }
 }

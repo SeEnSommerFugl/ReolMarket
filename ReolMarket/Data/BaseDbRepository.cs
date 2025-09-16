@@ -59,8 +59,8 @@ namespace ReolMarket.Data
             using var cmd = new SqlCommand(SqlInsert, con);
             BindInsert(cmd, entity);
 
-            if (cmd.ExecuteNonQuery() != 1)
-                throw new InvalidOperationException("Insert failed.");
+            //if (cmd.ExecuteNonQuery() != 1)
+            //    throw new InvalidOperationException("Insert failed.");
 
             _items.Add(entity);
         }
@@ -102,8 +102,8 @@ namespace ReolMarket.Data
             var list = new List<T>();
             using var con = Db.OpenConnection();
             using var cmd = new SqlCommand(SqlSelectAll, con);
-            using var rd = cmd.ExecuteReader();
-            while (rd.Read()) list.Add(Map(rd));
+            //using var rd = cmd.ExecuteReader();
+            //while (rd.Read()) list.Add(Map(rd));
             return list;
         }
     }

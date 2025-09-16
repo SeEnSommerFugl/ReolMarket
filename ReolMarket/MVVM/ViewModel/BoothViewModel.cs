@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.MVVM.Model;          // Booth, BoothStatus
 using ReolMarket.Data.Repository;     // BoothDbRepository
+using ReolMarket.MVVM.Model;          // Booth, BoothStatus
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -16,6 +14,7 @@ namespace ReolMarket.MVVM.ViewModel
     {
         // Repository (sync)
         private readonly BoothDbRepository _boothRepo;
+        private readonly CustomerDbRepository _customerRepo;
 
         // Backing fields
         private Booth? _selectedBooth;
@@ -30,6 +29,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
         public ObservableCollection<Booth> Booths { get; } = new();
+        public ObservableCollection<Customer> Customers { get; } = new();
 
         /// <summary>
         /// The booth currently selected in the UI.
@@ -110,6 +110,32 @@ namespace ReolMarket.MVVM.ViewModel
         {
             Title = "Booths";
             _boothRepo = new BoothDbRepository();
+            _customerRepo = new CustomerDbRepository();
+
+            var newCustomer = new Customer
+            {
+                CustomerID = Guid.NewGuid(),
+                CustomerName = "Alex",
+                Email = "testmail@testmail.dk",
+                PhoneNumber = "1234567890",
+                Address = "Testroad 123",
+                PostalCode = 1234
+            };
+            Customers.Add(newCustomer);
+            _customerRepo.Add(newCustomer);
+
+            var newBooth = new Booth
+            {
+                BoothID = Guid.NewGuid(),
+                BoothNumber = 1,
+                NumberOfShelves = 6,
+                HasHangerBar = false,
+                IsRented = true,
+                Status = (BoothStatus)1,
+                CustomerID = newCustomer.CustomerID,
+            };
+            Booths.Add(newBooth);
+            _boothRepo.Add(newBooth);
 
             RefreshCommand = new RelayCommand(_ => Load());
             AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => !IsBusy);
