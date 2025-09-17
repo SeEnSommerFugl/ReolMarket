@@ -14,6 +14,7 @@ namespace ReolMarket.MVVM.ViewModel
     {
         // Repository (sync)
         private readonly BoothDbRepository _boothRepo;
+        private readonly CustomerDbRepository _customerRepo;
 
         // Backing fields
         private Booth? _selectedBooth;
@@ -27,7 +28,8 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
-        public ObservableCollection<Booth> Booths { get; } = new();
+        public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
 
         /// <summary>
         /// The booth currently selected in the UI.
@@ -108,6 +110,7 @@ namespace ReolMarket.MVVM.ViewModel
         {
             Title = "Booths";
             _boothRepo = new BoothDbRepository();
+            _customerRepo = new CustomerDbRepository();
 
             RefreshCommand = new RelayCommand(_ => Load());
             AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => !IsBusy);
