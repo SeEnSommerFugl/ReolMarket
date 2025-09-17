@@ -82,10 +82,14 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding Items}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Reol" Width="60" />
-                    <DataGridTextColumn Header="Lejer" Width="*" />
+                    <DataGridTextColumn Header="Reol" 
+                                        Binding="{Binding BoothNumber}"
+                                        Width="60" />
+                    <DataGridTextColumn Header="Lejer" 
+                                        Binding="{Binding CustomerName}"
+                                        Width="*" />
                     <DataGridTextColumn Header="Start dato" Width="140" />
                     <DataGridTemplateColumn Header="Difference" Width="140">
                         <DataGridTemplateColumn.CellTemplate>
