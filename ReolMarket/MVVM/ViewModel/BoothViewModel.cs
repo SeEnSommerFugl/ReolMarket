@@ -22,8 +22,9 @@ namespace ReolMarket.MVVM.ViewModel
         private bool _onlyFree;
         private BoothStatus? _statusFilter;
 
-        // Cache of all booths (for client-side filtering)
+        // Cache of all booths and customers (for client-side filtering)
         private Booth[] _allBooths = Array.Empty<Booth>();
+        private Customer[] _allCustomers = Array.Empty<Customer>();
 
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
@@ -127,8 +128,8 @@ namespace ReolMarket.MVVM.ViewModel
         {
             RunBusy(() =>
             {
-                var customers = _customerRepo.GetAll().ToArray();
-                var customersById = customers.ToDictionary(c => c.CustomerID);
+                _allCustomers = _customerRepo.GetAll().ToArray();
+                var customersById = _allCustomers.ToDictionary(c => c.CustomerID);
                 _allBooths = _boothRepo.GetAll().ToArray();
                 // Attach matching Customer objects so XAML can bind Customer.CustomerName
                 foreach (var booth in _allBooths)
