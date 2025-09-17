@@ -4,7 +4,7 @@ using ReolMarket.MVVM.Model;
 
 namespace ReolMarket.Data.Repository
 {
-    internal class CustomerDbRepository : BaseDbRepository<Customer, Guid>
+    internal sealed class CustomerDbRepository : BaseDbRepository<Customer, Guid>
     {
         // Read all columns needed by the model
         protected override string SqlSelectAll => @"
