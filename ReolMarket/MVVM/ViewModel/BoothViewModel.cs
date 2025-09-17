@@ -28,8 +28,8 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
-        public ObservableCollection<Booth> Booths => ;
-        public ObservableCollection<Customer> Customers = new();
+        public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
 
 
         /// <summary>
@@ -41,7 +41,10 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedBooth, value))
+                {
+                    OnPropertyChanged(nameof(CustomerName));
                     RefreshCommands();
+                }
             }
         }
 
@@ -82,6 +85,33 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _statusFilter, value))
                     ApplyFilters();
             }
+        }
+        private string? _customerName;
+        public string? CustomerName
+        {
+            get
+            {
+                if (SelectedBooth != null)
+                    return GetCustomerName(SelectedBooth.CustomerID);
+                return null;
+            }
+            set
+            {
+                if (_customerName != value)
+                {
+                    _customerName = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
+        public string? GetCustomerName(Guid? customerId)
+        {
+            if (customerId is Guid id)
+                return Customers.FirstOrDefault(c => c.CustomerID == id)?.CustomerName;
+
+            return null;
         }
 
         /// <summary>
@@ -129,10 +159,21 @@ namespace ReolMarket.MVVM.ViewModel
         private void Load()
         {
             RunBusy(() =>
-          {
-              _allBooths = _boothRepo.GetAll().ToArray();
-              ApplyFilters();
-          }, "Loading booths…");
+            {
+                var customers = _customerRepo.GetAll().ToArray();
+                var customersById = customers.ToDictionary(c => c.CustomerID);
+                _allBooths = _boothRepo.GetAll().ToArray();
+                // Attach matching Customer objects so XAML can bind Customer.CustomerName
+                foreach (var booth in _allBooths)
+                {
+                    if (booth.CustomerID.HasValue &&
+                        customersById.TryGetValue(booth.CustomerID.Value, out var cust))
+                        booth.Customer = cust;
+                    else
+                        booth.Customer = null;
+                }
+                ApplyFilters();
+            }, "Loading booths…");
         }
 
         /// <summary>
