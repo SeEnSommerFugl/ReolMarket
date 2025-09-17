@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.MVVM.Model;          // Booth, BoothStatus
 using ReolMarket.Data.Repository;     // BoothDbRepository
+using ReolMarket.MVVM.Model;          // Booth, BoothStatus
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -126,7 +124,18 @@ namespace ReolMarket.MVVM.ViewModel
         {
             RunBusy(() =>
             {
+                var customers = _customerRepo.GetAll().ToArray();
+                var customersById = customers.ToDictionary(c => c.CustomerID);
                 _allBooths = _boothRepo.GetAll().ToArray();
+                // Attach matching Customer objects so XAML can bind Customer.CustomerName
+                foreach (var booth in _allBooths)
+                {
+                    if (booth.CustomerID.HasValue &&
+                        customersById.TryGetValue(booth.CustomerID.Value, out var cust))
+                        booth.Customer = cust;
+                    else
+                        booth.Customer = null;
+                }
                 ApplyFilters();
             }, "Loading booths…");
         }
