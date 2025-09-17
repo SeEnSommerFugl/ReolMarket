@@ -9,6 +9,7 @@
         public bool IsRented { get; set; } = false;
         public BoothStatus Status { get; set; } = BoothStatus.Ledig;
         public Guid? CustomerID { get; set; } // Foreign Key to Customer, can be unassigned(null)
+        public Customer? Customer { get; set; }
 
     }
 }
