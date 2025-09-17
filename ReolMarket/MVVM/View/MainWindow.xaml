@@ -88,7 +88,7 @@
                                         Binding="{Binding BoothNumber}"
                                         Width="60" />
                     <DataGridTextColumn Header="Lejer" 
-                                        Binding="{Binding CustomerName}"
+                                        Binding="{Binding Customer.CustomerName}"
                                         Width="*" />
                     <DataGridTextColumn Header="Start dato" Width="140" />
                     <DataGridTemplateColumn Header="Difference" Width="140">
