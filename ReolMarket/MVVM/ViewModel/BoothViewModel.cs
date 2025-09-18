@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Numerics;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using ReolMarket.Core;
@@ -240,11 +238,11 @@ namespace ReolMarket.MVVM.ViewModel
             return true;
         }
 
-            //        BINDINGS(plads) :
-            //              - ComboBox.ItemsSource  -> {Binding SearchModes}
-            //              - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
-            //-TextBox.Text-> { Binding SearchQuery, UpdateSourceTrigger = PropertyChanged}
-            //-->
+        //        BINDINGS(plads) :
+        //              - ComboBox.ItemsSource  -> {Binding SearchModes}
+        //              - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
+        //-TextBox.Text-> { Binding SearchQuery, UpdateSourceTrigger = PropertyChanged}
+        //-->
 
         /// <summary>
         /// Clears all active filters efficiently.
@@ -306,7 +304,7 @@ namespace ReolMarket.MVVM.ViewModel
                 SelectedBooth.HasHangerBar = !SelectedBooth.HasHangerBar;
                 if (SelectedBooth.HasHangerBar == true)
                 {
-                    SelectedBooth.NumberOfShelves = 4;
+                    SelectedBooth.NumberOfShelves = 3;
                 }
 
                 SelectedBooth.IsRented = !SelectedBooth.IsRented;
@@ -316,7 +314,7 @@ namespace ReolMarket.MVVM.ViewModel
                     SelectedBooth.CustomerID = null;
                     SelectedBooth.Customer = null;
                 }
-                
+
                 _boothRepo.Update(SelectedBooth); // ✅ Sync save
                 // If Booth implements INotifyPropertyChanged, UI updates automatically.
             }
