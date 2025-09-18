@@ -46,8 +46,6 @@ namespace ReolMarket.MVVM.ViewModel
         {
             Title = "ReolMarket";
 
-
-
             _boothsViewModel = new BoothViewModel();
             _itemsViewModel = new ItemsViewModel();
             _rentersViewModel = new RentersViewModel();

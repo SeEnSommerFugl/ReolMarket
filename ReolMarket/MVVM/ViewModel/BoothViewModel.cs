@@ -22,15 +22,15 @@ namespace ReolMarket.MVVM.ViewModel
         private bool _onlyFree;
         private BoothStatus? _statusFilter;
 
-        // Cache of all booths (for client-side filtering)
-        private Booth[] _allBooths = Array.Empty<Booth>();
+        // Cache of all booths and customers (for client-side filtering)
+        private List<Booth> _allBooths = new List<Booth>();
+        private List<Customer> _allCustomers = new List<Customer>();
 
         /// <summary>
         /// Collection bound to the UI. Holds the filtered booths.
         /// </summary>
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
-
 
         /// <summary>
         /// The booth currently selected in the UI.
@@ -143,8 +143,6 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = new BoothDbRepository();
             _customerRepo = new CustomerDbRepository();
 
-
-
             RefreshCommand = new RelayCommand(_ => Load());
             AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => !IsBusy);
             EditBoothCommand = new RelayCommand(_ => EditBooth(), _ => !IsBusy && SelectedBooth != null);
@@ -160,9 +158,9 @@ namespace ReolMarket.MVVM.ViewModel
         {
             RunBusy(() =>
             {
-                var customers = _customerRepo.GetAll().ToArray();
-                var customersById = customers.ToDictionary(c => c.CustomerID);
-                _allBooths = _boothRepo.GetAll().ToArray();
+                _allCustomers = _customerRepo.GetAll().ToList();
+                var customersById = _allCustomers.ToDictionary(c => c.CustomerID);
+                _allBooths = _boothRepo.GetAll().ToList();
                 // Attach matching Customer objects so XAML can bind Customer.CustomerName
                 foreach (var booth in _allBooths)
                 {
@@ -210,7 +208,7 @@ namespace ReolMarket.MVVM.ViewModel
         {
             RunBusy(() =>
             {
-                var nextNo = _allBooths.Length == 0 ? 1 : _allBooths.Max(x => x.BoothNumber) + 1;
+                var nextNo = _allBooths.Count == 0 ? 1 : _allBooths.Max(x => x.BoothNumber) + 1;
                 var b = new Booth
                 {
                     BoothID = Guid.NewGuid(),

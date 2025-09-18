@@ -4,7 +4,7 @@ using ReolMarket.MVVM.Model;
 
 namespace ReolMarket.Data.Repository
 {
-    internal class ItemDbRepository : BaseDbRepository<Item, Guid>
+    internal sealed class ItemDbRepository : BaseDbRepository<Item, Guid>
     {
 
         // Read all columns needed by the model
