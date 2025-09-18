@@ -96,6 +96,21 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        private int myVar;
+        public int MyProperty
+        {
+            get => myVar;
+            set
+            {
+                if (myVar != value)
+                {
+                    myVar = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+
         // Commands
         public ICommand RefreshCommand { get; }
         public ICommand AddBoothCommand { get; }

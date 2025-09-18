@@ -82,7 +82,7 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding Booths}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                         Binding="{Binding BoothNumber}"
