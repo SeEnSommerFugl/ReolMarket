@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Numerics;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using ReolMarket.Core;
@@ -238,6 +240,12 @@ namespace ReolMarket.MVVM.ViewModel
             return true;
         }
 
+            //        BINDINGS(plads) :
+            //              - ComboBox.ItemsSource  -> {Binding SearchModes}
+            //              - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
+            //-TextBox.Text-> { Binding SearchQuery, UpdateSourceTrigger = PropertyChanged}
+            //-->
+
         /// <summary>
         /// Clears all active filters efficiently.
         /// </summary>
@@ -296,7 +304,19 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 // 💡 Example edit: toggle hanger bar (replace with real edit flow / dialog)
                 SelectedBooth.HasHangerBar = !SelectedBooth.HasHangerBar;
+                if (SelectedBooth.HasHangerBar == true)
+                {
+                    SelectedBooth.NumberOfShelves = 4;
+                }
 
+                SelectedBooth.IsRented = !SelectedBooth.IsRented;
+                if (SelectedBooth.IsRented == false)
+                {
+                    SelectedBooth.Status = BoothStatus.Ledig;
+                    SelectedBooth.CustomerID = null;
+                    SelectedBooth.Customer = null;
+                }
+                
                 _boothRepo.Update(SelectedBooth); // ✅ Sync save
                 // If Booth implements INotifyPropertyChanged, UI updates automatically.
             }

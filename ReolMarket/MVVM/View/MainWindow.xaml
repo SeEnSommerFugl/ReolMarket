@@ -69,7 +69,7 @@
                     x:Name="SearchModeCombo" Grid.ColumnSpan="2"
                     />
                     <!-- Søgetekst -->
-                    <TextBox Grid.Column="4" Height="34" VerticalAlignment="Center"
+                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
                    x:Name="SearchTextBox"
                    Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
                     <!--
