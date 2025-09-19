@@ -61,17 +61,30 @@
                         <ColumnDefinition Width="100"/>
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Søg" Style="{StaticResource H1}" VerticalAlignment="Center"/>
                     <!-- ComboBox til søgetype -->
-                    <ComboBox Grid.Column="1" Margin="6,12,10,16" Height="34"
-                    x:Name="SearchModeCombo" Grid.ColumnSpan="2"
-                    />
+                    <ComboBox Grid.Column="2" Margin="6,12,10,16" Height="34"
+                              x:Name="SearchModeCombo"
+                              ItemsSource="{Binding SearchModes}"
+                              SelectedItem="{Binding SelectedSearchMode}"
+                              DisplayMemberPath="DisplayName"/>
                     <!-- Søgetekst -->
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
                    x:Name="SearchTextBox"
                    Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
+
+                    <!-- Only Free CheckBox -->
+                    <CheckBox Grid.Column="6" 
+                              Content="Vis kun ledige" 
+                              IsChecked="{Binding OnlyFree}"
+                              Margin="0,0,0,10"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"/>
                     <!--
               BINDINGS (plads):
               - ComboBox.ItemsSource  -> {Binding SearchModes}

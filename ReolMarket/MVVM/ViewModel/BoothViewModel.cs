@@ -6,6 +6,7 @@ using System.Windows.Input;
 using ReolMarket.Core;
 using ReolMarket.Data.Repository;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -22,6 +23,7 @@ namespace ReolMarket.MVVM.ViewModel
         private string? _searchText;
         private bool _onlyFree;
         private BoothStatus? _statusFilter;
+        private SearchModeItem _selectedSearchMode;
 
         // ICollectionView for filtering without data duplication
         private readonly ICollectionView _boothsView;
@@ -43,6 +45,8 @@ namespace ReolMarket.MVVM.ViewModel
         /// Filtered view of booths for UI binding.
         /// </summary>
         public ICollectionView BoothsView => _boothsView;
+
+        public List<SearchModeItem> SearchModes { get; set; }
 
         /// <summary>
         /// The booth currently selected in the UI.
@@ -96,19 +100,19 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private int myVar;
-        public int MyProperty
+
+
+        public SearchModeItem SelectedSearchMode
         {
-            get => myVar;
+            get => _selectedSearchMode;
             set
             {
-                if (myVar != value)
-                {
-                    myVar = value;
-                    OnPropertyChanged();
-                }
+                if (SetProperty(ref _selectedSearchMode, value))
+                    _boothsView?.Refresh();
+
             }
         }
+
 
 
         // Commands
@@ -128,6 +132,8 @@ namespace ReolMarket.MVVM.ViewModel
             // ⚠️ Consider DI: inject repositories instead of `new` for testability.
             _boothRepo = new BoothDbRepository();
             _customerRepo = new CustomerDbRepository();
+            InitializeSearchTypes();
+            SelectedSearchMode = SearchModes.First(); // Default to "Alle"
 
             // ✅ Keep the view in ascending booth number order
             _boothsView = CollectionViewSource.GetDefaultView(Booths);
@@ -165,15 +171,23 @@ namespace ReolMarket.MVVM.ViewModel
             IsBusy = true;                   // ✅ Manual busy handling since we're sync now
             try
             {
-                // ✅ Let repositories handle their own loading (sync variants)
-                _customerRepo.GetAll();     // ⚠️ Make sure your repo exposes sync API
-                _boothRepo.GetAll();
+                using (_boothsView.DeferRefresh())
+                {
+                    // Preserve current selection
+                    var currentKey = SelectedBooth?.BoothID;
 
-                // ✅ Rebuild lookup + relink references (fast, O(n))
-                LinkCustomersToBooths();
+                    // Load (ideally these update the same ObservableCollection instances)
+                    _customerRepo.GetAll();
+                    _boothRepo.GetAll();
 
-                // ✅ Apply current filters/sorts
-                _boothsView.Refresh();
+                    // Rebuild lookups/refs without creating new Booth instances if you can
+                    LinkCustomersToBooths();
+
+                    // Restore selection if item still exists
+                    if (currentKey != null)
+                        SelectedBooth = Booths.FirstOrDefault(b => b.BoothID == currentKey);
+                }
+
             }
             finally
             {
@@ -226,21 +240,6 @@ namespace ReolMarket.MVVM.ViewModel
             if (obj is not Booth booth)
                 return false;
 
-            // ✅ Search by booth number OR customer name
-            if (!string.IsNullOrWhiteSpace(SearchText))
-            {
-                var s = SearchText.Trim();
-
-                // ✅ Avoid culture pitfalls when stringifying numbers
-                var matchesBoothNumber = booth.BoothNumber.ToString(System.Globalization.CultureInfo.InvariantCulture)
-                    .IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
-
-                var customerName = booth.Customer?.CustomerName ?? string.Empty;
-                var matchesCustomerName = customerName.IndexOf(s, StringComparison.OrdinalIgnoreCase) >= 0;
-
-                if (!matchesBoothNumber && !matchesCustomerName)
-                    return false;
-            }
 
             // Status filter
             if (StatusFilter.HasValue && booth.Status != StatusFilter.Value)
@@ -250,8 +249,53 @@ namespace ReolMarket.MVVM.ViewModel
             if (OnlyFree && booth.Status != BoothStatus.Ledig)
                 return false;
 
+            if (string.IsNullOrWhiteSpace(SearchText) || SelectedSearchMode == null)
+                return true;
+            var s = SearchText.Trim();
+
+            return SelectedSearchMode.SearchMode switch
+            {
+                SearchMode.All =>
+                    booth.BoothNumber.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    (booth.Customer != null && (
+                    booth.Customer.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
+                    booth.Customer.PhoneNumber.Contains(SearchText) ||
+                    booth.Customer.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
+                    )),
+
+                SearchMode.BoothNumber =>
+                    booth.BoothNumber.ToString().Contains(SearchText),
+
+                SearchMode.CustomerName =>
+                    booth.Customer != null && booth.Customer.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase),
+
+                SearchMode.CustomerPhone =>
+                    booth.Customer != null && booth.Customer.PhoneNumber.Contains(SearchText),
+
+                SearchMode.CustomerEmail =>
+                    booth.Customer != null && booth.Customer.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase),
+
+                _ => true
+            };
+
+
+
+
             return true;
         }
+        // Initialize the ComboBox items with Danish text
+        private void InitializeSearchTypes()
+        {
+            SearchModes = new List<SearchModeItem>
+            {
+                new SearchModeItem { DisplayName = "Alle", SearchMode = SearchMode.All },
+                new SearchModeItem { DisplayName = "Reol nummer", SearchMode = SearchMode.BoothNumber },
+                new SearchModeItem { DisplayName = "Kunde navn", SearchMode = SearchMode.CustomerName },
+                new SearchModeItem { DisplayName = "Kunde telefon", SearchMode = SearchMode.CustomerPhone },
+                new SearchModeItem { DisplayName = "Kunde email", SearchMode = SearchMode.CustomerEmail }
+            };
+        }
+
 
         //        BINDINGS(plads) :
         //              - ComboBox.ItemsSource  -> {Binding SearchModes}
@@ -267,9 +311,10 @@ namespace ReolMarket.MVVM.ViewModel
             // ✅ Batch refreshes so the view only refreshes once
             using (_boothsView.DeferRefresh())
             {
-                SearchText = null;   // setters still run, but DeferRefresh prevents multiple refreshes
-                OnlyFree = false;
-                StatusFilter = null;
+                // set backing fields to avoid calling the setters' Refresh() logic
+                SetProperty(ref _searchText, string.Empty);
+                SetProperty(ref _onlyFree, false);
+                SetProperty(ref _statusFilter, null);
             }
         }
 
@@ -295,9 +340,12 @@ namespace ReolMarket.MVVM.ViewModel
                     CustomerID = null,
                     Customer = null
                 };
-
-                _boothRepo.Add(newBooth);   // ✅ Use sync repo method
-                SelectedBooth = newBooth;   // ✅ Focus newly created row
+                using (BoothsView.DeferRefresh())
+                {
+                    _boothRepo.Add(newBooth);   // ✅ Use sync repo method
+                    SelectedBooth = newBooth;   // ✅ Focus newly created row
+                    BoothsView.Refresh();
+                }
             }
             finally
             {
