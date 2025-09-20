@@ -72,7 +72,7 @@
                               x:Name="SearchModeCombo"
                               ItemsSource="{Binding SearchModes}"
                               SelectedItem="{Binding SelectedSearchMode}"
-                              DisplayMemberPath="DisplayName"/>
+                              DisplayMemberPath="DisplayName" VerticalContentAlignment="Center"/>
                     <!-- Søgetekst -->
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
                    x:Name="SearchTextBox"

@@ -296,13 +296,6 @@ namespace ReolMarket.MVVM.ViewModel
             };
         }
 
-
-        //        BINDINGS(plads) :
-        //              - ComboBox.ItemsSource  -> {Binding SearchModes}
-        //              - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
-        //-TextBox.Text-> { Binding SearchQuery, UpdateSourceTrigger = PropertyChanged}
-        //-->
-
         /// <summary>
         /// Clears all active filters efficiently.
         /// </summary>
