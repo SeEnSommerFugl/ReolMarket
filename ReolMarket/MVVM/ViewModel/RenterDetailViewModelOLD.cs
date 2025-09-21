@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.MVVM.Model;
 using ReolMarket.Data.Repository;
+using ReolMarket.MVVM.Model;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -11,9 +12,9 @@ namespace ReolMarket.MVVM.ViewModel
     /// ViewModel for creating or editing a renter (customer).
     /// Uses synchronous repository calls.
     /// </summary>
-    internal class RenterDetailViewModel : BaseViewModel
+    internal class RenterDetailViewModelOLD : BaseViewModel
     {
-        private readonly CustomerDbRepository _repo;
+        private readonly CustomerDbRepository _customerRepo;
         private Guid? _id;
 
         private string? _name;
@@ -27,6 +28,11 @@ namespace ReolMarket.MVVM.ViewModel
         /// True = saved, False = cancelled.
         /// </summary>
         public event Action<bool>? RequestClose;
+
+        /// <summary>
+        /// Direct access to repository's ObservableCollection.
+        /// </summary>
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
 
         /// <summary>
         /// Customer's full name. Required.
@@ -86,10 +92,10 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the ViewModel and wires up commands.
         /// </summary>
-        public RenterDetailViewModel()
+        public RenterDetailViewModelOLD()
         {
             Title = "Customer Details";
-            _repo = new CustomerDbRepository();
+            _customerRepo = new CustomerDbRepository();
 
             SaveCommand = new RelayCommand(_ => ExecuteSave(), _ => CanSave());
             CancelCommand = new RelayCommand(_ => RequestClose?.Invoke(false));
@@ -105,7 +111,7 @@ namespace ReolMarket.MVVM.ViewModel
 
             if (customerId.HasValue)
             {
-                var c = _repo.GetById(customerId.Value);
+                var c = _customerRepo.GetById(customerId.Value);
                 if (c != null)
                 {
                     CustomerName = c.CustomerName;
@@ -163,7 +169,7 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (_id.HasValue)
                 {
-                    var customer = _repo.GetById(_id.Value);
+                    var customer = _customerRepo.GetById(_id.Value);
                     if (customer != null)
                     {
                         customer.CustomerName = CustomerName!.Trim();
@@ -172,7 +178,7 @@ namespace ReolMarket.MVVM.ViewModel
                         customer.Address = Address?.Trim() ?? "";
                         customer.PostalCode = PostalCode;
 
-                        _repo.Update(customer);
+                        _customerRepo.Update(customer);
                     }
                 }
                 else
@@ -187,7 +193,7 @@ namespace ReolMarket.MVVM.ViewModel
                         PostalCode = PostalCode
                     };
 
-                    _repo.Add(newCustomer);
+                    _customerRepo.Add(newCustomer);
                 }
 
                 RequestClose?.Invoke(true);

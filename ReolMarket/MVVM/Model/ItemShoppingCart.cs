@@ -1,6 +1,6 @@
 ﻿namespace ReolMarket.MVVM.Model
 {
-    class ItemShoppingCart
+    public class ItemShoppingCart
     {
         public Guid ItemID { get; set; }
         public Guid ShoppingCartID { get; set; }

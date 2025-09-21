@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReolMarket.MVVM.Model.HelperModels
+﻿namespace ReolMarket.MVVM.Model.HelperModels
 {
-    internal enum SearchMode
+    public enum SearchMode
     {
         All,
         BoothNumber,

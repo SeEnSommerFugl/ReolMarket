@@ -1,6 +1,6 @@
 ﻿namespace ReolMarket.MVVM.Model
 {
-    internal enum BoothStatus : byte
+    public enum BoothStatus : byte
     {
         Ledig = 0,
         Optaget = 1,

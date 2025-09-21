@@ -4,7 +4,7 @@ using Microsoft.Data.SqlClient;
 
 namespace ReolMarket.Data
 {
-    internal abstract class BaseDbRepository<T, TKey> : IBaseRepository<T, TKey> where T : class where TKey : notnull
+    public abstract class BaseDbRepository<T, TKey> : IBaseRepository<T, TKey> where T : class where TKey : notnull
     {
         protected readonly ObservableCollection<T> _items;
 

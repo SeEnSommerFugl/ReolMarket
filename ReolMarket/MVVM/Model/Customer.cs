@@ -1,8 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace ReolMarket.MVVM.Model
+﻿namespace ReolMarket.MVVM.Model
 {
-    internal class Customer
+    public class Customer
     {
         public Guid CustomerID { get; set; } = Guid.NewGuid();
         public required string CustomerName { get; set; }

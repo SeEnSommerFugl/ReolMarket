@@ -1,6 +1,6 @@
 ﻿namespace ReolMarket.MVVM.Model
 {
-    internal class Booth
+    public class Booth
     {
         public Guid BoothID { get; set; } = Guid.NewGuid();
         public int BoothNumber { get; set; }

@@ -8,12 +8,10 @@ namespace ReolMarket
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BoothViewModel viewModel;
-        public MainWindow()
+        public MainWindow(MainViewModel vm)
         {
             InitializeComponent();
-            viewModel = new BoothViewModel();
-            DataContext = viewModel;
+            DataContext = vm;
         }
     }
 }

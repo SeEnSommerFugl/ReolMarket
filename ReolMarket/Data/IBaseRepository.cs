@@ -2,7 +2,7 @@
 
 namespace ReolMarket.Data
 {
-    internal interface IBaseRepository<T, TKey> where T : class where TKey : notnull
+    public interface IBaseRepository<T, TKey> where T : class where TKey : notnull
     {
         ObservableCollection<T> Items { get; }
         IEnumerable<T> GetAll();
