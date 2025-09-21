@@ -346,16 +346,18 @@ public class BoothViewModel : BaseViewModel
     {
         if (SelectedBooth is null) return;
 
+        var id = SelectedBooth.BoothID;
 
-
-        SelectedBooth.CustomerID = null;
         SelectedBooth.Customer = null;
+        SelectedBooth.CustomerID = null;
         SelectedBooth.IsRented = false;
         SelectedBooth.Status = BoothStatus.Ledig;
 
-        _boothRepo.Update(SelectedBooth);
-        BoothsView.Refresh();
+        CustomerName = CustomerEmail = CustomerPhone = CustomerAddress = CustomerPostalCode = string.Empty;
 
+        _boothRepo.Update(SelectedBooth);
+        LinkCustomersToBooths();
+        BoothsView.Refresh();
         RefreshCommands();
     }
 
@@ -547,7 +549,7 @@ public class BoothViewModel : BaseViewModel
     private bool CanSaveCustomer()
         => !IsBusy && SelectedBooth != null && SelectedBooth.IsRented is false;
     private bool CanClearCustomer()
-        => !IsBusy && SelectedBooth != null && SelectedBooth.IsRented is true;
+        => !IsBusy && SelectedBooth?.Customer != null && SelectedBooth.IsRented is true;
 
     #endregion
 
