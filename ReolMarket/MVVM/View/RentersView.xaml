@@ -78,7 +78,7 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding BoothsVM.RentedSearchView}" SelectedItem="{Binding BoothsVM.SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding BoothsView}" SelectedItem="{Binding SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                  Binding="{Binding BoothNumber}"
@@ -145,14 +145,14 @@
                             </StackPanel>
                             
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="{Binding CustomersVM.SelectedCustomer.CustomerName}"/>
+                                <TextBlock Text="{Binding SelectedBooth.Customer.CustomerName}"/>
                                 <!-- Text="{Binding SelectedLejer.Name}" -->
-                                <TextBlock Text="{Binding CustomersVM.SelectedCustomer.Email}"/>
+                                <TextBlock Text="{Binding SelectedBooth.Customer.Email}"/>
                                 <!-- Text="{Binding SelectedLejer.Email}" -->
-                                <TextBlock Text="{Binding CustomersVM.SelectedCustomer.PhoneNumber}"/>
+                                <TextBlock Text="{Binding SelectedBooth.Customer.PhoneNumber}"/>
                                 <!-- Text="{Binding SelectedLejer.Phone}" -->
-                                <TextBlock Text="{Binding CustomersVM.SelectedCustomer.Address}"/>
-                                <TextBlock Text="{Binding CustomersVM.SelectedCustomer.PostalCode}"/>
+                                <TextBlock Text="{Binding SelectedBooth.Customer.Address}"/>
+                                <TextBlock Text="{Binding SelectedBooth.Customer.PostalCode}"/>
                                 <!-- Text="{Binding SelectedLejer.PostalCode}" -->
                                 <Border Style="{StaticResource Chip.Negative}">
                                     <TextBlock Text="-100,60"/>
