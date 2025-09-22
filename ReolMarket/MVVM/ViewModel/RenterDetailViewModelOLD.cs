@@ -20,7 +20,7 @@ namespace ReolMarket.MVVM.ViewModel
         private string? _email;
         private string? _phone;
         private string? _address;
-        private string? _postalCode;
+        private string _postalCode;
 
         /// <summary>
         /// Raised when the dialog should close.
@@ -72,7 +72,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Postal code (1000–9999). Validated.
         /// </summary>
-        public string? PostalCode
+        public string PostalCode
         {
             get => _postalCode;
             set { if (SetProperty(ref _postalCode, value)) Validate(); }
@@ -145,10 +145,6 @@ namespace ReolMarket.MVVM.ViewModel
             if (!string.IsNullOrWhiteSpace(Email) && !IsValidEmail(Email))
                 AddError(nameof(Email), "Invalid email format.");
 
-            ClearErrors(nameof(PostalCode));
-            int code = ParsePostalCode(PostalCode);
-            if (code < 1000 || code > 9999)
-                AddError(nameof(PostalCode), "Postal code must be between 1000 and 9999.");
 
             (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged();
         }
@@ -176,7 +172,7 @@ namespace ReolMarket.MVVM.ViewModel
                         customer.Email = Email?.Trim() ?? "";
                         customer.PhoneNumber = PhoneNumber?.Trim() ?? "";
                         customer.Address = Address?.Trim() ?? "";
-                        customer.PostalCode = PostalCode;
+                        customer.PostalCode = PostalCode?.Trim() ?? "";
 
                         _customerRepo.Update(customer);
                     }
@@ -210,14 +206,6 @@ namespace ReolMarket.MVVM.ViewModel
                 email,
                 @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
                 RegexOptions.IgnoreCase);
-        }
-
-        // Add this private helper method to the class to fix CS0103 and CS0019
-        private int ParsePostalCode(string? postalCode)
-        {
-            if (int.TryParse(postalCode, out int code))
-                return code;
-            return -1; // Return an invalid code if parsing fails
         }
     }
 }
