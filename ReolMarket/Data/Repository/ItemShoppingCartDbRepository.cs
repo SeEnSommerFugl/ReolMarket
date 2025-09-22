@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 using Microsoft.Data.SqlClient;
 using ReolMarket.MVVM.Model;
 using static ReolMarket.MVVM.Model.ItemShoppingCart;
@@ -50,7 +45,7 @@ namespace ReolMarket.Data.Repository
             cmd.Parameters.Add("@ShoppingCart_ID", SqlDbType.UniqueIdentifier).Value = e.ShoppingCartID;
         }
 
-        protected override void BindUpdate(SqlCommand cmd, ItemShoppingCart e) 
+        protected override void BindUpdate(SqlCommand cmd, ItemShoppingCart e)
             => throw new NotSupportedException("Update is not supported for this junction table.");
 
         protected override ItemShoppingCartKey GetKey(ItemShoppingCart e) => new ItemShoppingCartKey(e.ItemID, e.ShoppingCartID);
