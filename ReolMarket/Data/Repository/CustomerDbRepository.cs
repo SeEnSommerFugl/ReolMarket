@@ -39,7 +39,7 @@ namespace ReolMarket.Data.Repository
             Email = r.GetString(r.GetOrdinal("Email")),
             PhoneNumber = r.GetString(r.GetOrdinal("PhoneNumber")),
             Address = r.GetString(r.GetOrdinal("Address")),
-            PostalCode = r.GetInt32(r.GetOrdinal("PostalCode"))
+            PostalCode = r.GetString(r.GetOrdinal("PostalCode"))
         };
 
 

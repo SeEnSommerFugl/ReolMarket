@@ -299,8 +299,7 @@ public class BoothViewModel : BaseViewModel
     {
         if (SelectedBooth is null) return;
 
-        // Parse postal code safely
-        int.TryParse(CustomerPostalCode, out var postal);
+
 
         // If booth has no customer, then create one
         if (SelectedBooth.Customer is null)
@@ -312,7 +311,7 @@ public class BoothViewModel : BaseViewModel
                 Email = CustomerEmail ?? "",
                 PhoneNumber = CustomerPhone ?? "",
                 Address = CustomerAddress ?? "",
-                PostalCode = postal
+                PostalCode = CustomerPostalCode ?? ""
             };
 
             _customerRepo.Add(newCustomer);        // ✅ persist in repo
@@ -331,7 +330,7 @@ public class BoothViewModel : BaseViewModel
             c.Email = CustomerEmail ?? "";
             c.PhoneNumber = CustomerPhone ?? "";
             c.Address = CustomerAddress ?? "";
-            c.PostalCode = postal;
+            c.PostalCode = CustomerPostalCode ?? "";
 
             _customerRepo.Update(c);
         }

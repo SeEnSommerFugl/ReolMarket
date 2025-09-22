@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.MVVM.Model;          // Customer
 using ReolMarket.Data.Repository;     // CustomerDbRepository
+using ReolMarket.MVVM.Model;          // Customer
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -143,7 +141,7 @@ namespace ReolMarket.MVVM.ViewModel
                     Email = "example@email.com",
                     PhoneNumber = "00000000",
                     Address = "",
-                    PostalCode = 1000
+                    PostalCode = ""
                 };
                 _customerRepo.Add(c);
                 Load();
