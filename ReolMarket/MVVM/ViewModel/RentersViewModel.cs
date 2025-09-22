@@ -187,14 +187,16 @@ public class RentersViewModel : BaseViewModel
         Title = "Booths";
         _boothRepo = boothRepo;
         _customerRepo = customerRepo;
-        InitializeSearchTypes();
-        SelectedSearchMode = SearchModes.First(); // Default to "Alle"
+
 
         // ✅ Keep the view in ascending booth number order
         _boothsView = CollectionViewSource.GetDefaultView(Booths);
         _boothsView.Filter = FilterBooth;
         _boothsView.SortDescriptions.Add(
             new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+
+        InitializeSearchTypes();
+        SelectedSearchMode = SearchModes.First(); // Default to "Alle"
 
         //// Group by customer to avoid duplicate rows per customer in UI
         //_boothsView.GroupDescriptions.Clear();
