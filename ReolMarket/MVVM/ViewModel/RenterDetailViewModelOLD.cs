@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Text.RegularExpressions;
 using System.Windows.Input;
 using ReolMarket.Core;
@@ -21,7 +20,7 @@ namespace ReolMarket.MVVM.ViewModel
         private string? _email;
         private string? _phone;
         private string? _address;
-        private int _postalCode;
+        private string _postalCode;
 
         /// <summary>
         /// Raised when the dialog should close.
@@ -73,7 +72,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Postal code (1000–9999). Validated.
         /// </summary>
-        public int PostalCode
+        public string PostalCode
         {
             get => _postalCode;
             set { if (SetProperty(ref _postalCode, value)) Validate(); }
@@ -127,7 +126,7 @@ namespace ReolMarket.MVVM.ViewModel
                 Email = "";
                 PhoneNumber = "";
                 Address = "";
-                PostalCode = 1000;
+                PostalCode = "";
             }
 
             Validate();
@@ -146,9 +145,6 @@ namespace ReolMarket.MVVM.ViewModel
             if (!string.IsNullOrWhiteSpace(Email) && !IsValidEmail(Email))
                 AddError(nameof(Email), "Invalid email format.");
 
-            ClearErrors(nameof(PostalCode));
-            if (PostalCode < 1000 || PostalCode > 9999)
-                AddError(nameof(PostalCode), "Postal code must be between 1000 and 9999.");
 
             (SaveCommand as RelayCommand)?.RaiseCanExecuteChanged();
         }
@@ -176,7 +172,7 @@ namespace ReolMarket.MVVM.ViewModel
                         customer.Email = Email?.Trim() ?? "";
                         customer.PhoneNumber = PhoneNumber?.Trim() ?? "";
                         customer.Address = Address?.Trim() ?? "";
-                        customer.PostalCode = PostalCode;
+                        customer.PostalCode = PostalCode?.Trim() ?? "";
 
                         _customerRepo.Update(customer);
                     }
