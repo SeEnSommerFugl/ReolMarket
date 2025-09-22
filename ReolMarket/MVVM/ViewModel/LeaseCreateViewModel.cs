@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.MVVM.Model;         // Booth, Customer
 using ReolMarket.Data.Repository;    // BoothDbRepository, CustomerDbRepository
+using ReolMarket.MVVM.Model;         // Booth, Customer
 
 namespace ReolMarket.MVVM.ViewModel
 {
