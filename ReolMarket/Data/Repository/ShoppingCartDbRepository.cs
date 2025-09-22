@@ -16,8 +16,8 @@ namespace ReolMarket.Data.Repository
         WHERE ShoppingCartId = @ShoppingCartId";
 
         protected override string SqlInsert => @"
-        INSERT INTO ShoppingCart (ShoppingCartId, Quantity, TotalPrice)
-        VALUES (@ShoppingCartId, @Quantity, @TotalPrice);";
+        INSERT INTO ShoppingCart (ShoppingCartId)
+        VALUES (@ShoppingCartId);";
 
         protected override string SqlUpdate => @"
         UPDATE ShoppingCart
@@ -32,8 +32,6 @@ namespace ReolMarket.Data.Repository
         protected override ShoppingCart Map(IDataRecord r) => new ShoppingCart
         {
             ShoppingCartId = r.GetGuid(r.GetOrdinal("ShoppingCartId")),
-            Quantity = r.GetInt32(r.GetOrdinal("Quantity")),
-            TotalPrice = r.GetDecimal(r.GetOrdinal("TotalPrice"))
         };
 
         protected override void BindId(SqlCommand cmd, Guid id)
@@ -44,23 +42,10 @@ namespace ReolMarket.Data.Repository
         protected override void BindInsert(SqlCommand cmd, ShoppingCart e)
         {
             cmd.Parameters.Add("@ShoppingCartId", SqlDbType.UniqueIdentifier).Value = e.ShoppingCartId;
-            cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = e.Quantity;
-
-            var p = cmd.Parameters.Add("@TotalPrice", SqlDbType.Decimal);
-            p.Precision = 10;
-            p.Scale = 2;
-            p.Value = e.TotalPrice;
         }
 
         protected override void BindUpdate(SqlCommand cmd, ShoppingCart e)
         {
-            cmd.Parameters.Add("@Quantity", SqlDbType.Int).Value = e.Quantity;
-
-            var p = cmd.Parameters.Add("@TotalPrice", SqlDbType.Decimal);
-            p.Precision = 10;
-            p.Scale = 2;
-            p.Value = e.TotalPrice;
-
             cmd.Parameters.Add("@ShoppingCartId", SqlDbType.UniqueIdentifier).Value = e.ShoppingCartId;
         }
 
