@@ -11,5 +11,10 @@ namespace ReolMarket.MVVM.View
         {
             InitializeComponent();
         }
+
+        private void LejerGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
     }
 }
