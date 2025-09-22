@@ -24,7 +24,7 @@ namespace ReolMarket
             // ---- ViewModels (pass interfaces in) ----
             var boothsVM = new RentersViewModel(boothRepo, customerRepo);
             var itemsVM = new ItemsViewModel(/* e.g., itemRepo */);
-            var rentersVM = new RentersViewModelOLD(/*customerRepo /* etc. */);
+            var rentersVM = new RentersViewModel(boothRepo, customerRepo);
 
             var mainVM = new MainViewModel(boothsVM, itemsVM, rentersVM);
 
