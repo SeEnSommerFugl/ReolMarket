@@ -55,13 +55,13 @@ GO
 
 CREATE TABLE Payment(
     Payment_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
-    PaymentMethod NvarChar(100) NOT NULL
+    PaymentMethod NvarChar(100) NOT NULL,
+    PaymentDate Date NOT NULL
 );
 GO
 
 CREATE TABLE Sale(
     Sale_ID UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
-    SaleDate Date NOT NULL,
     ShoppingCart_ID UNIQUEIDENTIFIER NOT NULL,
     Payment_ID UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT FK_ShoppingCart_Sale
@@ -128,7 +128,7 @@ VALUES
   (NEWID(), 'Ur', 450.00, @Booth3),
   (NEWID(), 'Skjorte', 350.00, @Booth3);
 
--- Opret indkÃ¸bskurv
+-- Opret indkøbskurv
 DECLARE @Cart1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Cart2 UNIQUEIDENTIFIER = NEWID();
 
@@ -146,7 +146,7 @@ SELECT @Item4 = Item_ID FROM Item WHERE ItemName = 'Sko';
 SELECT @Item5 = Item_ID FROM Item WHERE ItemName = 'Ur';
 SELECT @Item6 = Item_ID FROM Item WHERE ItemName = 'Skjorte';
 
--- Varer lÃ¦gges i kurv
+-- Varer lægges i kurv
 INSERT INTO ItemShoppingCart(Item_ID, ShoppingCart_ID)
 VALUES
     (@Item1, @Cart1),
@@ -163,13 +163,13 @@ VALUES
 DECLARE @Payment1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Payment2 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Payment(Payment_ID, PaymentMethod)
+INSERT INTO Payment(Payment_ID, PaymentMethod, PaymentDate)
 VALUES
-    (@Payment1, 'Kort'),
-    (@Payment2, 'Kontant');
+    (@Payment1, 'Kort', GETDATE()),
+    (@Payment2, 'Kontant', GETDATE());
 
 -- Opret Salg
-INSERT INTO Sale(Sale_ID, SaleDate, ShoppingCart_ID, Payment_ID)
+INSERT INTO Sale(Sale_ID, ShoppingCart_ID, Payment_ID)
 VALUES
-    (NEWID(), GETDATE(), @Cart1, @Payment1),
-    (NEWID(), GETDATE(), @Cart2, @Payment2);
+    (NEWID(), @Cart1, @Payment1),
+    (NEWID(), @Cart2, @Payment2);
