@@ -34,7 +34,7 @@
             <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
             <Button Style="{StaticResource Btn.Nav}" Content="Salg"/>
-            <Button Command="{Binding NavigateBoothsCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
+            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
             <Button Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
         </StackPanel>
 
