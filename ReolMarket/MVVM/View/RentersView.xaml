@@ -15,7 +15,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!--<conv:HiddenToShown x:Key="HideOrShow"/>-->
+            <conv:HiddenToShown x:Key="HideOrShow"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -36,7 +36,7 @@
             </Grid.RowDefinitions>
 
             <!-- Søg / filter -->
-            <Border Grid.Row="0" Style="{StaticResource Card}">
+            <Border Style="{StaticResource Card}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -45,7 +45,7 @@
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -58,18 +58,27 @@
                        DisplayMemberPath="DisplayName" VerticalContentAlignment="Center"/>
                     <!-- Søgetekst -->
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
-                        x:Name="SearchTextBox"
-                        Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
-                    <Button Command="{Binding NavigateAdminPopUpCommand}" Grid.Column="6" Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48"/>
-                    <!--BINDINGS (plads):
+            x:Name="SearchTextBox"
+            Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
+
+                    <!-- Only Free CheckBox -->
+                    <CheckBox Grid.Column="6" 
+                       Content="Vis kun ledige" 
+                       IsChecked="{Binding OnlyFree}"
+                       Margin="0,0,0,10"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"/>
+                    <!--
+       BINDINGS (plads):
        - ComboBox.ItemsSource  -> {Binding SearchModes}
        - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
-       - TextBox.Text          -> {Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}-->
+       - TextBox.Text          -> {Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}
+                -->
                 </Grid>
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomersView}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Style="{StaticResource Grid.Base}">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomersView}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                  Binding="{Binding BoothNumber}"
@@ -107,52 +116,54 @@
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        
 
-                        <!--<Grid Grid.Row="0">
-
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
                             <TextBlock Grid.Column="0" Text="Den valgte lejer" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Left" Width="128"/>
                             <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
                              Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60" />
                             <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
                              Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>
-                        </Grid>-->
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel Grid.Column="0">
-                                <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock  Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Total difference:" Style="{StaticResource LabelMuted}"/>
-
-                            </StackPanel>
-                            
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
-                                <!-- Text="{Binding SelectedLejer.Name}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.Email}"/>
-                                <!-- Text="{Binding SelectedLejer.Email}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
-                                <!-- Text="{Binding SelectedLejer.Phone}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.Address}"/>
-                                <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
-                                <!-- Text="{Binding SelectedLejer.PostalCode}" -->
-                                <Border Style="{StaticResource Chip.Negative}">
-                                    <TextBlock Text="-100,60"/>
-                                </Border>
-                                <!-- Binding + farveskift via triggers senere -->
-
-
-                        </StackPanel>
                         </Grid>
+
+                        <TextBlock Grid.Row="1" Text="Navn:" Style="{StaticResource LabelMuted}"/>
+                        <TextBlock Grid.Row="1" Margin="60,0,0,0" Text="{Binding SelectedCustomer.CustomerName}"/>
+                        <!-- Text="{Binding SelectedLejer.Name}" -->
+
+                        <TextBlock Grid.Row="2" Text="Email:" Style="{StaticResource LabelMuted}"/>
+                        <TextBlock Grid.Row="2" Margin="60,0,0,0" Text="{Binding SelectedCustomer.Email}"/>
+                        <!-- Text="{Binding SelectedLejer.Email}" -->
+
+                        <TextBlock Grid.Row="3" Text="Telefon:" Style="{StaticResource LabelMuted}"/>
+                        <TextBlock Grid.Row="3" Margin="60,0,0,0" Text="{Binding SelectedCustomer.PhoneNumber}"/>
+                        <!-- Text="{Binding SelectedLejer.Phone}" -->
+
+                        <TextBlock Grid.Row="4" Text="Adresse:" Style="{StaticResource LabelMuted}"/>
+                        <TextBlock Grid.Row="4" Margin="60,0,0,0" Text="{Binding SelectedCustomer.Address}"
+                TextWrapping="Wrap"/>
+                        <!-- Text="{Binding SelectedLejer.Address}" -->
+
+                        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
+                            <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{Binding SelectedCustomer.PostalCode}"/>
+                            <!-- Text="{Binding SelectedLejer.PostalCode}" -->
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,38,0,0">
+                            <TextBlock Text="Total difference:" Style="{StaticResource LabelMuted}"/>
+                            <Border Style="{StaticResource Chip.Negative}" Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock Text="-100,60"/>
+                            </Border>
+                            <!-- Binding + farveskift via triggers senere -->
+                        </StackPanel>
                     </Grid>
                 </Border>
 
@@ -160,10 +171,10 @@
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                        <DataGrid Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
+                                <DataGridTextColumn Header="Reol Nr" Width="100"/>
+                                <DataGridTextColumn Header="Start Dato" Width="160"/>
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

@@ -24,6 +24,7 @@ public class BoothViewModel : BaseViewModel
 
     // Backing fields
     private Booth? _selectedBooth;
+    private Customer? _selectedCustomer;
     private string? _searchText;
     private bool _onlyFree;
     private BoothStatus? _statusFilter;
@@ -31,6 +32,7 @@ public class BoothViewModel : BaseViewModel
 
     // ICollectionView for filtering without data duplication
     private readonly ICollectionView _boothsView;
+    private readonly ICollectionView _customersView;
 
     // ✅ Micro-cache to speed up name lookups / linking (rebuilt on refresh)
     private Dictionary<Guid, Customer>? _customerById;
@@ -49,6 +51,7 @@ public class BoothViewModel : BaseViewModel
     /// Filtered view of booths for UI binding.
     /// </summary>
     public ICollectionView BoothsView => _boothsView;
+    public ICollectionView CustomersView => _customersView;
 
     public List<SearchModeItem> SearchModes { get; set; }
 
@@ -63,6 +66,18 @@ public class BoothViewModel : BaseViewModel
             if (SetProperty(ref _selectedBooth, value))
             {
                 CustomerFromSelectedBooth();
+                RefreshCommands(); // ✅ Keep buttons in sync
+
+            }
+        }
+    }
+    public Customer? SelectedCustomer
+    {
+        get => _selectedCustomer;
+        set
+        {
+            if (SetProperty(ref _selectedCustomer, value))
+            {
                 RefreshCommands(); // ✅ Keep buttons in sync
 
             }
@@ -191,13 +206,19 @@ public class BoothViewModel : BaseViewModel
         InitializeSearchTypes();
         SelectedSearchMode = SearchModes.First(); // Default to "Alle"
 
-        // ✅ Keep the view in ascending booth number order
+        // ✅ Init Booths view (sorted by booth number)
         _boothsView = CollectionViewSource.GetDefaultView(Booths);
         _boothsView.Filter = FilterBooth;
         _boothsView.SortDescriptions.Add(
             new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
 
-        _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); _boothsView.Refresh(); };
+        // ✅ Init Customers view (unique customers) and search on customers
+        _customersView = CollectionViewSource.GetDefaultView(Customers);
+        _customersView.Filter = FilterCustomer;
+        _customersView.SortDescriptions.Add(
+            new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
+
+        _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); _customersView.Refresh(); };
         // ✅ If the underlying collection changes, refresh the view
         Booths.CollectionChanged += OnBoothsChanged;
 
@@ -230,7 +251,7 @@ public class BoothViewModel : BaseViewModel
         IsBusy = true;                   // ✅ Manual busy handling since we're sync now
         try
         {
-            using (_boothsView.DeferRefresh())
+            using (_customersView.DeferRefresh())
             {
                 // Preserve current selection
                 var currentKey = SelectedBooth?.BoothID;
@@ -405,12 +426,50 @@ public class BoothViewModel : BaseViewModel
 
             _ => true
         };
-
-
-
-
-        return true;
     }
+
+    /// <summary>
+    /// Filter predicate for the Customers ICollectionView (unique customers).
+    /// Supports searching by customer fields and booth number.
+    /// </summary>
+    private bool FilterCustomer(object obj)
+    {
+        if (obj is not Customer customer)
+            return false;
+
+        if (string.IsNullOrWhiteSpace(SearchText) || SelectedSearchMode == null)
+            return true;
+
+        var s = SearchText.Trim();
+
+        return SelectedSearchMode.SearchMode switch
+        {
+            SearchMode.All =>
+                customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                customer.PhoneNumber.Contains(s) ||
+                customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                customer.Address.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                customer.PostalCode.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+            SearchMode.BoothNumber =>
+                Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+            SearchMode.CustomerName =>
+                customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+            SearchMode.CustomerPhone =>
+                customer.PhoneNumber.Contains(s),
+
+            SearchMode.CustomerEmail =>
+                customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+            _ => true
+        };
+    }
+
     // Initialize the ComboBox items with Danish text
     private void InitializeSearchTypes()
     {
@@ -430,7 +489,7 @@ public class BoothViewModel : BaseViewModel
     private void ClearFilters()
     {
         // ✅ Batch refreshes so the view only refreshes once
-        using (_boothsView.DeferRefresh())
+        using (_customersView.DeferRefresh())
         {
             // set backing fields to avoid calling the setters' Refresh() logic
             SetProperty(ref _searchText, string.Empty);
