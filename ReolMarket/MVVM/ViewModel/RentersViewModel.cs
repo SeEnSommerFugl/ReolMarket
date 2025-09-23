@@ -194,13 +194,16 @@ public class RentersViewModel : BaseViewModel
         _boothsView.Filter = FilterBooth;
         _boothsView.SortDescriptions.Add(
             new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+        _boothsView.GroupDescriptions.Clear();
+        _boothsView.GroupDescriptions.Add(new PropertyGroupDescription(CustomerName));
 
         InitializeSearchTypes();
         SelectedSearchMode = SearchModes.First(); // Default to "Alle"
+        _boothsView.GroupDescriptions.Clear();
+        _boothsView.GroupDescriptions.Add(new PropertyGroupDescription(CustomerName));
 
         //// Group by customer to avoid duplicate rows per customer in UI
-        //_boothsView.GroupDescriptions.Clear();
-        //_boothsView.GroupDescriptions.Add(new PropertyGroupDescription("Customer.CustomerName"));
+
 
         _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); _boothsView.Refresh(); };
         // ✅ If the underlying collection changes, refresh the view
@@ -282,21 +285,15 @@ public class RentersViewModel : BaseViewModel
     /// </summary>
     private void LinkCustomersToBooths()
     {
-        _customerById = Customers.Count > 0
-            ? Customers.ToDictionary(c => c.CustomerID)
-            : new Dictionary<Guid, Customer>();
+        //_customerById = Customers.Count > 0
+        //    ? Customers.ToDictionary(c => c.CustomerID)
+        //    : new Dictionary<Guid, Customer>();
 
+        var byId = Customers.GroupBy(c => c.CustomerID).ToDictionary(g => g.Key, g => g.First()); // guards dupes
         foreach (var booth in Booths)
         {
-            if (booth.CustomerID.HasValue &&
-                _customerById.TryGetValue(booth.CustomerID.Value, out var customer))
-            {
-                booth.Customer = customer; // ✅ Strong ref for direct binding
-            }
-            else
-            {
-                booth.Customer = null;
-            }
+            var id = booth.CustomerID;
+            booth.Customer = (id.HasValue && byId.TryGetValue(id.Value, out var c)) ? c : null;
         }
     }
 
