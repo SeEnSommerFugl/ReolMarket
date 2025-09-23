@@ -169,7 +169,7 @@
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothsVM.BoothsForSelectedCustomerView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                        <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
                                 <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
