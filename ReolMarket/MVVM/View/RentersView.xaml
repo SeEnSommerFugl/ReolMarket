@@ -78,13 +78,13 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding BoothsView}" SelectedItem="{Binding SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}">
+            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomersView}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Style="{StaticResource Grid.Base}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                  Binding="{Binding BoothNumber}"
                                  Width="60" />
                     <DataGridTextColumn Header="Lejer" 
-                                 Binding="{Binding Customer.CustomerName}"
+                                 Binding="{Binding CustomerName}"
                                  Width="*" />
                     <DataGridTextColumn Header="Start dato" Width="140" />
                     <DataGridTemplateColumn Header="Difference" Width="140">
@@ -145,14 +145,14 @@
                             </StackPanel>
                             
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="{Binding SelectedBooth.Customer.CustomerName}"/>
+                                <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
                                 <!-- Text="{Binding SelectedLejer.Name}" -->
-                                <TextBlock Text="{Binding SelectedBooth.Customer.Email}"/>
+                                <TextBlock Text="{Binding SelectedCustomer.Email}"/>
                                 <!-- Text="{Binding SelectedLejer.Email}" -->
-                                <TextBlock Text="{Binding SelectedBooth.Customer.PhoneNumber}"/>
+                                <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
                                 <!-- Text="{Binding SelectedLejer.Phone}" -->
-                                <TextBlock Text="{Binding SelectedBooth.Customer.Address}"/>
-                                <TextBlock Text="{Binding SelectedBooth.Customer.PostalCode}"/>
+                                <TextBlock Text="{Binding SelectedCustomer.Address}"/>
+                                <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
                                 <!-- Text="{Binding SelectedLejer.PostalCode}" -->
                                 <Border Style="{StaticResource Chip.Negative}">
                                     <TextBlock Text="-100,60"/>
