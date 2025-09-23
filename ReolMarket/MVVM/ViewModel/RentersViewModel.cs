@@ -78,7 +78,7 @@ public class RentersViewModel : BaseViewModel
         {
             if (SetProperty(ref _selectedCustomer, value))
             {
-
+                _boothsView.Refresh();
                 RefreshCommands();
             }
         }
@@ -208,10 +208,10 @@ public class RentersViewModel : BaseViewModel
         SelectedSearchMode = SearchModes.First(); // Default to "Alle"
 
         // ✅ Init Booths view (sorted by booth number)
-        //_boothsView = CollectionViewSource.GetDefaultView(Booths);
-        //_boothsView.Filter = FilterBooth;
-        //_boothsView.SortDescriptions.Add(
-        //    new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+        _boothsView = CollectionViewSource.GetDefaultView(Booths);
+        _boothsView.Filter = FilterBooth;
+        _boothsView.SortDescriptions.Add(
+            new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
 
         // ✅ Init Customers view (unique customers) and search on customers
         _customersView = CollectionViewSource.GetDefaultView(Customers);
@@ -376,50 +376,15 @@ public class RentersViewModel : BaseViewModel
     /// <summary>
     /// Filter predicate for the ICollectionView.
     /// </summary>
-    //private bool FilterBooth(object obj)
-    //{
-    //    if (obj is not Booth booth)
-    //        return false;
+    private bool FilterBooth(object obj)
+    {
+        if (obj is not Booth booth)
+            return false;
 
+        var customerId = SelectedCustomer?.CustomerID;
 
-    //    // Status filter
-    //    if (StatusFilter.HasValue && booth.Status != StatusFilter.Value)
-    //        return false;
-
-    //    // Only show free
-    //    if (OnlyFree && booth.Status != BoothStatus.Ledig)
-    //        return false;
-
-    //    if (string.IsNullOrWhiteSpace(SearchText) || SelectedSearchMode == null)
-    //        return true;
-    //    var s = SearchText.Trim();
-
-    //    return SelectedSearchMode.SearchMode switch
-    //    {
-    //        SearchMode.All =>
-    //            booth.BoothNumber.ToString().Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-    //            (booth.Customer != null && (
-    //            booth.Customer.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase) ||
-    //            booth.Customer.PhoneNumber.Contains(SearchText) ||
-    //            booth.Customer.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase)
-    //            )),
-
-    //        SearchMode.BoothNumber =>
-    //            booth.BoothNumber.ToString().Contains(SearchText),
-
-    //        SearchMode.CustomerName =>
-    //            booth.Customer != null && booth.Customer.CustomerName.Contains(SearchText, StringComparison.OrdinalIgnoreCase),
-
-    //        SearchMode.CustomerPhone =>
-    //            booth.Customer != null && booth.Customer.PhoneNumber.Contains(SearchText),
-
-    //        SearchMode.CustomerEmail =>
-    //            booth.Customer != null && booth.Customer.Email.Contains(SearchText, StringComparison.OrdinalIgnoreCase),
-
-    //        _ => true
-    //    };
-
-    //}
+        return customerId.HasValue && booth.CustomerID == customerId.Value;
+    }
 
     /// <summary>
     /// Filter predicate for the Customers ICollectionView (unique customers).
