@@ -78,13 +78,13 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" x:Name="LejerGrid" ItemsSource="{Binding BoothsView}" SelectedItem="{Binding SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}" >
+            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomersView}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                  Binding="{Binding BoothNumber}"
                                  Width="60" />
                     <DataGridTextColumn Header="Lejer" 
-                                 Binding="{Binding Customer.CustomerName}"
+                                 Binding="{Binding CustomerName}"
                                  Width="*" />
                     <DataGridTextColumn Header="Start dato" Width="140" />
                     <DataGridTemplateColumn Header="Difference" Width="140">
@@ -154,25 +154,25 @@
                         </Grid>
 
                         <TextBlock Grid.Row="1" Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                        <TextBlock Grid.Row="1" Margin="60,0,0,0" Text="{Binding CustomerName}"/>
+                        <TextBlock Grid.Row="1" Margin="60,0,0,0" Text="{Binding SelectedCustomer.CustomerName}"/>
                         <!-- Text="{Binding SelectedLejer.Name}" -->
 
                         <TextBlock Grid.Row="2" Text="Email:" Style="{StaticResource LabelMuted}"/>
-                        <TextBlock Grid.Row="2" Margin="60,0,0,0" Text="{Binding CustomerEmail}"/>
+                        <TextBlock Grid.Row="2" Margin="60,0,0,0" Text="{Binding SelectedCustomer.Email}"/>
                         <!-- Text="{Binding SelectedLejer.Email}" -->
 
                         <TextBlock Grid.Row="3" Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                        <TextBlock Grid.Row="3" Margin="60,0,0,0" Text="{Binding CustomerPhone}"/>
+                        <TextBlock Grid.Row="3" Margin="60,0,0,0" Text="{Binding SelectedCustomer.PhoneNumber}"/>
                         <!-- Text="{Binding SelectedLejer.Phone}" -->
 
                         <TextBlock Grid.Row="4" Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                        <TextBlock Grid.Row="4" Margin="60,0,0,0" Text="{Binding CustomerAddress}"
+                        <TextBlock Grid.Row="4" Margin="60,0,0,0" Text="{Binding SelectedCustomer.Address}"
                 TextWrapping="Wrap"/>
                         <!-- Text="{Binding SelectedLejer.Address}" -->
 
                         <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,8,0,0">
                             <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-                            <TextBlock Margin="8,0,0,0" Text="{Binding CustomerPostalCode}"/>
+                            <TextBlock Margin="8,0,0,0" Text="{Binding SelectedCustomer.PostalCode}"/>
                             <!-- Text="{Binding SelectedLejer.PostalCode}" -->
                         </StackPanel>
 
