@@ -163,13 +163,13 @@ VALUES
 DECLARE @Payment1 UNIQUEIDENTIFIER = NEWID();
 DECLARE @Payment2 UNIQUEIDENTIFIER = NEWID();
 
-INSERT INTO Payment(Payment_ID, PaymentMethod, PaymentDate)
+INSERT INTO Payment(Payment_ID, PaymentMethod)
 VALUES
     (@Payment1, 'Kort'),
     (@Payment2, 'Kontant');
 
 -- Opret Salg
-INSERT INTO Sale(Sale_ID, ShoppingCart_ID, Payment_ID)
+INSERT INTO Sale(Sale_ID, SaleDate, ShoppingCart_ID, Payment_ID)
 VALUES
-    (NEWID(), @Cart1, @Payment1, GETDATE()),
-    (NEWID(), @Cart2, @Payment2, GETDATE());
+    (NEWID(), GETDATE(), @Cart1, @Payment1),
+    (NEWID(), GETDATE(), @Cart2, @Payment2);
