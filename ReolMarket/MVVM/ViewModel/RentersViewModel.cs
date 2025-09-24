@@ -33,7 +33,7 @@ public class RentersViewModel : BaseViewModel
     private readonly ICollectionView _customersView;
 
     // ✅ Micro-cache to speed up name lookups / linking (rebuilt on refresh)
-    private Dictionary<Guid, Customer>? _customerById;
+    //private Dictionary<Guid, Customer>? _customerById;
 
     /// <summary>
     /// Direct access to repository's ObservableCollection - single source of truth.
@@ -79,7 +79,7 @@ public class RentersViewModel : BaseViewModel
             if (SetProperty(ref _selectedCustomer, value))
             {
                 _boothsView.Refresh();
-                RefreshCommands();
+                //RefreshCommands();
             }
         }
     }
@@ -224,7 +224,7 @@ public class RentersViewModel : BaseViewModel
         //Booths.CollectionChanged += OnBoothsChanged;
 
         // Initialize commands (synchronous implementations)
-        RefreshCommand = new RelayCommand(_ => RefreshData(), _ => CanModifyData());
+        //RefreshCommand = new RelayCommand(_ => RefreshData(), _ => CanModifyData());
         //AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => CanModifyData());
         //EditBoothCommand = new RelayCommand(_ => EditBooth(), _ => CanEditBooth());
         //DeleteBoothCommand = new RelayCommand(_ => DeleteBooth(), _ => CanDeleteBooth());
@@ -233,7 +233,7 @@ public class RentersViewModel : BaseViewModel
         //DeleteCustomerCommand = new RelayCommand(_ => ClearCustomer(), _ => CanClearCustomer());
 
         // Initial load
-        RefreshData();
+        //RefreshData();
     }
 
     //private void OnBoothsChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -246,36 +246,36 @@ public class RentersViewModel : BaseViewModel
     /// Refreshes data from repositories and ensures customer relationships are set.
     /// Synchronous version (no async/await).
     /// </summary>
-    private void RefreshData()
-    {
-        //if (IsBusy) return;             // ✅ Guard to avoid re-entry
-        //IsBusy = true;                   // ✅ Manual busy handling since we're sync now
-        //try
-        //{
-        //    using (_boothsView.DeferRefresh())
-        //    {
-        //        // Preserve current selection
-        //        var currentKey = SelectedBooth?.BoothID;
+    //private void RefreshData()
+    //{
+    //if (IsBusy) return;             // ✅ Guard to avoid re-entry
+    //IsBusy = true;                   // ✅ Manual busy handling since we're sync now
+    //try
+    //{
+    //    using (_boothsView.DeferRefresh())
+    //    {
+    //        // Preserve current selection
+    //        var currentKey = SelectedBooth?.BoothID;
 
-        //        // Load (ideally these update the same ObservableCollection instances)
-        //        _customerRepo.GetAll();
-        //        _boothRepo.GetAll();
+    //        // Load (ideally these update the same ObservableCollection instances)
+    //        _customerRepo.GetAll();
+    //        _boothRepo.GetAll();
 
-        //        // Rebuild lookups/refs without creating new Booth instances if you can
-        //        LinkCustomersToBooths();
+    //        // Rebuild lookups/refs without creating new Booth instances if you can
+    //        LinkCustomersToBooths();
 
-        //        // Restore selection if item still exists
-        //        if (currentKey != null)
-        //            SelectedBooth = Booths.FirstOrDefault(b => b.BoothID == currentKey);
-        //    }
+    //        // Restore selection if item still exists
+    //        if (currentKey != null)
+    //            SelectedBooth = Booths.FirstOrDefault(b => b.BoothID == currentKey);
+    //    }
 
-        //}
-        //finally
-        //{
-        //    IsBusy = false;
-        //    RefreshCommands();           // ✅ Update buttons after busy change
-        //}
-    }
+    //}
+    //finally
+    //{
+    //    IsBusy = false;
+    //    RefreshCommands();           // ✅ Update buttons after busy change
+    //}
+    //}
 
     private void RequestRefresh()
     {
@@ -554,7 +554,7 @@ public class RentersViewModel : BaseViewModel
 
     #region Command Can Execute Methods
 
-    private bool CanModifyData() => !IsBusy;
+    //private bool CanModifyData() => !IsBusy;
 
     //private bool CanEditBooth() => !IsBusy && SelectedBooth != null;
 
@@ -572,15 +572,15 @@ public class RentersViewModel : BaseViewModel
     /// <summary>
     /// Updates command states after selection or state changes.
     /// </summary>
-    private void RefreshCommands()
-    {
-        (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (AddBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (EditBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (DeleteBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (SaveCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
-        (DeleteCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    }
+    //private void RefreshCommands()
+    //{
+    //    (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //    (AddBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //    (EditBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //    (DeleteBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //    (SaveCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //    (DeleteCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
+    //}
 
     /// <summary>
     /// Override to refresh commands when IsBusy changes.
