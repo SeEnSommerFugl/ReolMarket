@@ -40,6 +40,7 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly ItemsViewModel _itemsViewModel;
         private readonly RentersViewModel _rentersViewModel;
 
+
         /// <summary>
         /// Creates the MainViewModel and sets up navigation.
         /// </summary>
@@ -50,6 +51,7 @@ namespace ReolMarket.MVVM.ViewModel
             _boothsViewModel = booths;
             _itemsViewModel = items;
             _rentersViewModel = renters;
+
 
             NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
             NavigateBoothsCommand = new RelayCommand(_ => CurrentView = _boothsViewModel);

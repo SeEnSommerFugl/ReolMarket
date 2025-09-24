@@ -3,22 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReolMarket" 
-        xmlns:conv="clr-namespace:ReolMarket.Core"
+        xmlns:local="clr-namespace:ReolMarket.MVVM.View"
         mc:Ignorable="d"
         Title="AdminPopUpView" Height="450" Width="800">
-
-    <Window.Resources>
-        <!-- Reference til separat style-fil -->
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <conv:BoolVisibilityConverter x:Key="ShowIfTrue"/>
-            <conv:BoolVisibilityInverter x:Key="ShowIfFalse"/>
-        </ResourceDictionary>
-    </Window.Resources>
-
     <Grid>
 
         <!--<Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
@@ -46,37 +33,7 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="0" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfFalse}}">
-                    <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfFalse}}">
-                    <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
-                    <!-- Text="{Binding SelectedLejer.Name}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.Email}"/>
-                    <!-- Text="{Binding SelectedLejer.Email}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
-                    <!-- Text="{Binding SelectedLejer.Phone}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.Address}"/>
-                    <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
-                    <!-- Text="{Binding SelectedLejer.PostalCode}" -->
-
-                    <!-- Binding + farveskift via triggers senere -->
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-
-                <StackPanel Grid.Column="0" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
+                <StackPanel Grid.Column="0">
                     <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
@@ -86,30 +43,30 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
-                    <TextBox Text="{Binding CustomerName}"/>
-                    <!-- Text="{Binding CustomerName}" -->
-                    <TextBox Text="{Binding Email}"/>
-                    <!-- Text="{Binding Email}" -->
-                    <TextBox Text="{Binding PhoneNumber}"/>
-                    <!-- Text="{Binding Phone}" -->
-                    <TextBox Text="{Binding Address}"/>
-                    <TextBox Text="{Binding PostalCode}"/>
-                    <!-- Text="{Binding PostalCode}" -->
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
+                    <!-- Text="{Binding SelectedLejer.Name}" -->
+                    <TextBlock Text="{Binding SelectedCustomer.Email}"/>
+                    <!-- Text="{Binding SelectedLejer.Email}" -->
+                    <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
+                    <!-- Text="{Binding SelectedLejer.Phone}" -->
+                    <TextBlock Text="{Binding SelectedCustomer.Address}"/>
+                    <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
+                    <!-- Text="{Binding SelectedLejer.PostalCode}" -->
                     <Border Style="{StaticResource Chip.Negative}">
                         <TextBlock Text="-100,60"/>
                     </Border>
                     <!-- Binding + farveskift via triggers senere -->
 
-                </StackPanel>
 
+                </StackPanel>
             </Grid>
 
             <Grid Grid.Column="1">
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding RenterComboBox}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                        <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
                                 <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
