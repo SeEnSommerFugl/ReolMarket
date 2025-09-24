@@ -4,6 +4,5 @@
     {
         public Guid PaymentID { get; set; } = Guid.NewGuid();
         public string PaymentMethod { get; set; }
-        public DateTime PaymentDate { get; set; }
     }
 }

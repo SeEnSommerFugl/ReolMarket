@@ -36,7 +36,7 @@
             </Grid.RowDefinitions>
 
             <!-- Søg / filter -->
-            <Border Style="{StaticResource Card}">
+            <Border Grid.Row="0" Style="{StaticResource Card}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -45,7 +45,7 @@
                         <ColumnDefinition Width="12"/>
                         <ColumnDefinition Width="200"/>
                         <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="2*"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
 
@@ -58,16 +58,9 @@
                        DisplayMemberPath="DisplayName" VerticalContentAlignment="Center"/>
                     <!-- Søgetekst -->
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
-            x:Name="SearchTextBox"
-            Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
-
-                    <!-- Only Free CheckBox -->
-                    <CheckBox Grid.Column="6" 
-                       Content="Vis kun ledige" 
-                       IsChecked="{Binding OnlyFree}"
-                       Margin="0,0,0,10"
-                       VerticalAlignment="Center"
-                       HorizontalAlignment="Center"/>
+                        x:Name="SearchTextBox"
+                        Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
+                    <Button Grid.Column="6"  Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
                     <!--
        BINDINGS (plads):
        - ComboBox.ItemsSource  -> {Binding SearchModes}
@@ -169,7 +162,7 @@
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothsVM.BoothsForSelectedCustomerView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                        <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
                                 <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
