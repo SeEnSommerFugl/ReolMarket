@@ -72,6 +72,17 @@
             <DataGrid Grid.Row="2" ItemsSource="{Binding TransactionView}"
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                       Style="{StaticResource Grid.Base}" CanUserAddRows="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Dato" Width="160"
+                                        Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
+                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductNumber}"/>
+                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Provision" Width="120" Binding="{Binding Commission, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Netto" Width="120" Binding="{Binding Net, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
+
+                </DataGrid.Columns>
                 
             </DataGrid>
                     
