@@ -36,14 +36,14 @@ namespace ReolMarket.MVVM.ViewModel
         /// </summary>
         public ICommand NavigateRentersCommand { get; }
 
-        private readonly BoothViewModel _boothsViewModel;
+        private readonly RentersViewModelOLD _boothsViewModel;
         private readonly ItemsViewModel _itemsViewModel;
         private readonly RentersViewModel _rentersViewModel;
 
         /// <summary>
         /// Creates the MainViewModel and sets up navigation.
         /// </summary>
-        internal MainViewModel(BoothViewModel booths, ItemsViewModel items, RentersViewModel renters)
+        internal MainViewModel(RentersViewModelOLD booths, ItemsViewModel items, RentersViewModel renters)
         {
             Title = "ReolMarket";
 
@@ -51,9 +51,9 @@ namespace ReolMarket.MVVM.ViewModel
             _itemsViewModel = items;
             _rentersViewModel = renters;
 
+            NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
             NavigateBoothsCommand = new RelayCommand(_ => CurrentView = _boothsViewModel);
             NavigateItemsCommand = new RelayCommand(_ => CurrentView = _itemsViewModel);
-            NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
 
             CurrentView = _currentView; // Show Booths by default
 

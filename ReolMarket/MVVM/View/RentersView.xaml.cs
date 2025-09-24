@@ -11,5 +11,6 @@ namespace ReolMarket.MVVM.View
         {
             InitializeComponent();
         }
+
     }
 }
