@@ -26,15 +26,17 @@ namespace ReolMarket.MVVM.ViewModel
             _customerRepo = customerRepo;
 
             _newRenterView = CollectionViewSource.GetDefaultView(Booths);
-            _newRenterView.Filter = FilterBooth;
+            _newRenterView.Filter = FilterBoothNotRented;
             _newRenterView.SortDescriptions.Add
                 (new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
 
             _editRenterView = CollectionViewSource.GetDefaultView(Booths);
-            _editRenterView.Filter = FilterBooth;
+            _editRenterView.Filter = FilterBoothRented;
             _editRenterView.SortDescriptions.Add
-                (new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+                (new SortDescription(nameof(Booth.CustomerID), ListSortDirection.Ascending));
         }
+
+
 
         private Customer? _selectedCustomer;
         public Customer? SelectedCustomer
@@ -58,23 +60,36 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (SetProperty(ref _isEditing, value))
                 {
-                    OnPropertyChanged();
+                    _editRenterView.Refresh();
                 }
             }
         }
 
 
-        private bool FilterBooth(object obj)
+        private bool FilterBoothNotRented(object obj)
         {
+            if (IsEdditing == true)
+                return false;
             if (obj is not Booth booth)
                 return false;
 
-            var customerId = SelectedCustomer?.CustomerID;
+            return booth.CustomerID == null && booth.Status == BoothStatus.Ledig && booth.IsRented == false;
 
-            return customerId.HasValue && booth.CustomerID == customerId.Value;
         }
 
+        private bool FilterBoothRented(object obj)
+        {
 
+            if (obj is not Booth booth)
+                return false;
+
+            _isEditing = true;
+
+            var customerId = SelectedCustomer?.CustomerID;
+
+            return customerId.HasValue && booth.CustomerID == customerId.Value && booth.Status == BoothStatus.Ledig;
+
+        }
 
         /// <summary>
         /// The booth currently selected in the UI.
