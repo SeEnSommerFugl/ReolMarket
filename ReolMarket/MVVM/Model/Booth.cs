@@ -8,6 +8,8 @@
         public bool HasHangerBar { get; set; }
         public bool IsRented { get; set; } = false;
         public BoothStatus Status { get; set; } = BoothStatus.Ledig;
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate {  get; set; }
         public Guid? CustomerID { get; set; } // Foreign Key to Customer, can be unassigned(null)
         public Customer? Customer { get; set; }
 
