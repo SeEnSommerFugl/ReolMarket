@@ -21,8 +21,7 @@ namespace ReolMarket.Data.Repository
 
         protected override string SqlUpdate => @"
         UPDATE Payment
-           SET PaymentMethod = @PaymentMethod,
-               PaymentDate   = @PaymentDate
+           SET PaymentMethod = @PaymentMethod
          WHERE PaymentID     = @PaymentID;";
 
         protected override string SqlDeleteById => @"
