@@ -100,34 +100,6 @@ public class RentersViewModel : BaseViewModel
         }
     }
 
-    /// <summary>
-    /// If true, show only booths with status "Ledig".
-    /// </summary>
-    public bool OnlyFree
-    {
-        get => _onlyFree;
-        set
-        {
-            if (SetProperty(ref _onlyFree, value))
-                _boothsView.Refresh();
-        }
-    }
-
-    /// <summary>
-    /// Optional filter for a specific booth status.
-    /// </summary>
-    public BoothStatus? StatusFilter
-    {
-        get => _statusFilter;
-        set
-        {
-            if (SetProperty(ref _statusFilter, value))
-                _boothsView.Refresh();
-        }
-    }
-
-
-
     public SearchModeItem? SelectedSearchMode
     {
         get => _selectedSearchMode;
@@ -136,55 +108,6 @@ public class RentersViewModel : BaseViewModel
             if (SetProperty(ref _selectedSearchMode, value))
                 _boothsView?.Refresh();
 
-        }
-    }
-
-    private string? _customerName = "";
-    public string? CustomerName
-    {
-        get => _customerName;
-        set
-        {
-            if (SetProperty(ref _customerName, value)) ;
-        }
-    }
-    private string? _customerEmail = "";
-    public string? CustomerEmail
-    {
-        get => _customerEmail;
-        set
-        {
-            if (SetProperty(ref _customerEmail, value)) ;
-        }
-    }
-
-    private string? _customerPhone = "";
-    public string? CustomerPhone
-    {
-        get => _customerPhone;
-        set
-        {
-            if (SetProperty(ref _customerPhone, value)) ;
-        }
-    }
-
-    private string? _customerAddress = "";
-    public string? CustomerAddress
-    {
-        get => _customerAddress;
-        set
-        {
-            if (SetProperty(ref _customerAddress, value)) ;
-        }
-    }
-
-    private string? _customerPostalCode = "";
-    public string? CustomerPostalCode
-    {
-        get => _customerPostalCode;
-        set
-        {
-            if (SetProperty(ref _customerPostalCode, value)) ;
         }
     }
 
