@@ -85,7 +85,129 @@
                 </DataGrid.Columns>
                 
             </DataGrid>
-                    
+            
+            <!-- Detajler + Afregning-->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+            <!--nøgletal-->
+                <Border Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Nøgletal (grid)" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+                        <UniformGrid Grid.Row="1" Rows="2" Columns="3">
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Omsætning"/>
+                                    <TextBlock Text="{Binding Totals.Revenue}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Provision"/>
+                                    <TextBlock Text="{Binding Totals.Commission}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Netto"/>
+                                    <TextBlock Text="{Binding Totals.Net}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Udbetalt"/>
+                                    <TextBlock Text="{Binding Totals.Net}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Skyldigt"/>
+                                    <TextBlock Text="{Binding Totals.Outstanding}"/>
+                                </StackPanel>
+                            </Border>
+                            <Border Padding="4">
+                                <StackPanel Margin="8,4">
+                                    <TextBlock Text="Antal salg"/>
+                                    <TextBlock Text="{Binding Totals.Count}"/>
+                                </StackPanel>
+                            </Border>
+                        </UniformGrid>
+                    </Grid>
+                </Border>
+
+                <!--Afregning-->
+                
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Afregning" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="ReolNr:" Grid.Row="0" Grid.Column="0" Margin="0,0,8,8" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Settlement.BoothNumber}" Grid.Row="0" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Lejer:" Grid.Row="0" Grid.Column="2" Margin="0,0,8,8" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Settlement.RenterName}" Grid.Row="0" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <TextBlock Text="Brutto i periode:" Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.Gross}" Grid.Row="1" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Provision %" Grid.Row="1" Grid.Column="2" Width="120" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.CommissionPct}" Grid.Row="1" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <TextBlock Text="Netto til Udbetaling" Grid.Row="2" Grid.Column="0" Width="120" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding Settlement.Net}" Grid.Row="2" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Difference" Grid.Row="2" Grid.Column="2" Width="120" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.Difference}" Grid.Row="2" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+                                    Content="UDBETAL / BOGFØR"
+                                    Style="{StaticResource Btn.Primary}"
+                                    Command="{Binding SettleCommand}"
+                                    Height="40" Margin="0,8,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+            
+            <!--HandlingsKnapper-->
+            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5,12,0,0" HorizontalAlignment="Left">
+                <Button Style="{StaticResource Btn.Primary}" Content="EKSPORTER CSV" Width="255" Height="48"
+                        Command="{Binding ExportCsvCommand}"/>
+                <Button Style="{StaticResource Btn.Primary}" Content="PRINT" Width="255" Height="48" Margin="12,0,0,0"
+                        Command="{Binding PrintCommand}"/>
+                <Button Style="{StaticResource Btn.Primary}" Content="ÅBN KVITTERING" Width="255" Height="48" Margin="12,0,0,0"
+                        Command="{Binding OpenReciptCommand}"/>
+
+
+            </StackPanel>
                       
             
         </Grid>
