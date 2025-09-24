@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -7,6 +8,7 @@ using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
 using ReolMarket.MVVM.Model.HelperModels;
+using ReolMarket.MVVM.View;
 
 namespace ReolMarket.MVVM.ViewModel;
 
@@ -187,13 +189,14 @@ public class RentersViewModel : BaseViewModel
     }
 
     // Commands
-    public ICommand RefreshCommand { get; }
-    public ICommand AddBoothCommand { get; }
-    public ICommand EditBoothCommand { get; }
-    public ICommand DeleteBoothCommand { get; }
-    public ICommand ClearFiltersCommand { get; }
-    public ICommand SaveCustomerCommand { get; }
-    public ICommand DeleteCustomerCommand { get; }
+    public ICommand NavigateAdminPopUpCommand { get; }
+    //public ICommand RefreshCommand { get; }
+    //public ICommand AddBoothCommand { get; }
+    //public ICommand EditBoothCommand { get; }
+    //public ICommand DeleteBoothCommand { get; }
+    //public ICommand ClearFiltersCommand { get; }
+    //public ICommand SaveCustomerCommand { get; }
+    //public ICommand DeleteCustomerCommand { get; }
 
     /// <summary>
     /// Creates a new instance and initializes the view model.
@@ -220,10 +223,23 @@ public class RentersViewModel : BaseViewModel
             new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
 
         _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); _customersView.Refresh(); };
+
+
+
         //// ✅ If the underlying collection changes, refresh the view
         //Booths.CollectionChanged += OnBoothsChanged;
 
         // Initialize commands (synchronous implementations)
+        NavigateAdminPopUpCommand = new RelayCommand(_ =>
+        {
+            var adminVM = new AdminPopUpViewModel(boothRepo, customerRepo);
+            var win = new AdminPopUpView
+            {
+                DataContext = adminVM,
+                Owner = Application.Current.MainWindow
+            };
+            win.ShowDialog();
+        });
         //RefreshCommand = new RelayCommand(_ => RefreshData(), _ => CanModifyData());
         //AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => CanModifyData());
         //EditBoothCommand = new RelayCommand(_ => EditBooth(), _ => CanEditBooth());

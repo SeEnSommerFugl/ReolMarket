@@ -60,13 +60,11 @@
                     <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
                         x:Name="SearchTextBox"
                         Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
-                    <Button Grid.Column="6"  Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48" HorizontalAlignment="Right" VerticalAlignment="Center"/>
-                    <!--
-       BINDINGS (plads):
+                    <Button Command="{Binding NavigateAdminPopUpCommand}" Grid.Column="6" Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48"/>
+                    <!--BINDINGS (plads):
        - ComboBox.ItemsSource  -> {Binding SearchModes}
        - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
-       - TextBox.Text          -> {Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}
-                -->
+       - TextBox.Text          -> {Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}-->
                 </Grid>
             </Border>
 
