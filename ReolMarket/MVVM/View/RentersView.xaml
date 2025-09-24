@@ -78,7 +78,7 @@
             </Border>
 
             <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding BoothsView}" SelectedItem="{Binding SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}" x:Name="LejerGrid">
+            <DataGrid Grid.Row="2" x:Name="LejerGrid" ItemsSource="{Binding BoothsView}" SelectedItem="{Binding SelectedBooth, Mode=TwoWay}" Style="{StaticResource Grid.Base}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Reol" 
                                  Binding="{Binding BoothNumber}"
@@ -127,11 +127,30 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Den valgte lejer" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Left" Width="128"/>
-                            <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
-                             Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60" />
-                            <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
-                             Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>
+                            <TextBlock Grid.Column="0" Text="Den valgte lejer"
+                                       Style="{StaticResource H2}"
+                                       Margin="0,0,0,8"
+                                       HorizontalAlignment="Left"
+                                       Width="128"/>
+
+                            <Button Grid.Column="1" Content="Udlej reol"
+                                    Style="{StaticResource Btn.Base}"
+                                    Command="{Binding SaveCustomerCommand}"
+                                    Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}"
+                                    Height="20"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    FontSize="10"
+                                    Width="60" />
+                            <Button Grid.Column="1" Content="Frigiv reol"
+                                    Style="{StaticResource Btn.Base}"
+                                    Command="{Binding DeleteCustomerCommand}"
+                                    Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}"
+                                    Height="20"
+                                    VerticalAlignment="Top"
+                                    HorizontalAlignment="Right"
+                                    FontSize="10"
+                                    Width="60"/>
                         </Grid>
 
                         <TextBlock Grid.Row="1" Text="Navn:" Style="{StaticResource LabelMuted}"/>
