@@ -35,8 +35,8 @@
 
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Style="{StaticResource Btn.Base}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-                <Button Style="{StaticResource Btn.Base}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Command="{Binding NewRenterCommand}" Style="{StaticResource Btn.Base}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Command="{Binding EditRenterCommand}" Style="{StaticResource Btn.Base}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
 
@@ -63,14 +63,14 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfFalse}}">
-                    <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
+                    <TextBox Text="{Binding CustomerName}"/>
                     <!-- Text="{Binding SelectedLejer.Name}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.Email}"/>
+                    <TextBox Text="{Binding Email}"/>
                     <!-- Text="{Binding SelectedLejer.Email}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
+                    <TextBox Text="{Binding PhoneNumber}"/>
                     <!-- Text="{Binding SelectedLejer.Phone}" -->
-                    <TextBlock Text="{Binding SelectedCustomer.Address}"/>
-                    <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
+                    <TextBox Text="{Binding Address}"/>
+                    <TextBox Text="{Binding PostalCode}"/>
                     <!-- Text="{Binding SelectedLejer.PostalCode}" -->
 
                     <!-- Binding + farveskift via triggers senere -->
@@ -94,14 +94,14 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
-                    <ComboBox Text="{Binding CustomerName}"/>
+                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="CustomerName" />
                     <!-- Text="{Binding CustomerName}" -->
-                    <TextBox Text="{Binding Email}"/>
+                    <TextBox Text="{Binding SelectedCustomer.Email}"/>
                     <!-- Text="{Binding Email}" -->
-                    <TextBox Text="{Binding PhoneNumber}"/>
+                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber}"/>
                     <!-- Text="{Binding Phone}" -->
-                    <TextBox Text="{Binding Address}"/>
-                    <TextBox Text="{Binding PostalCode}"/>
+                    <TextBox Text="{Binding SelectedCustomer.Address}"/>
+                    <TextBox Text="{Binding SelectedCustomer.PostalCode}"/>
                     <!-- Text="{Binding PostalCode}" -->
                     <Border Style="{StaticResource Chip.Negative}">
                         <TextBlock Text="-100,60"/>
@@ -116,7 +116,7 @@
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding RenterComboBox}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                        <DataGrid ItemsSource="{Binding BoothView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
                                 <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>

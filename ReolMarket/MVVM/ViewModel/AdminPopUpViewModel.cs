@@ -31,12 +31,20 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
 
+            _renterComboBox = CollectionViewSource.GetDefaultView(Customers);
+            _renterComboBox.SortDescriptions.Add(
+                new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
+
             _boothView = CollectionViewSource.GetDefaultView(Booths);
-            _boothView.Filter = Filter;
+            _boothView.Filter = BoothFilter;
+            _boothView.GroupDescriptions.Add(
+                new PropertyGroupDescription(nameof(Booth.IsRented)));
             _boothView.SortDescriptions.Add
                 (new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
 
             SaveCommand = new RelayCommand(_ => AddOrEditRenter(), _ => CanSave());
+            NewRenterCommand = new RelayCommand(_ => IsEditing = false, _ => CanRun());
+            EditRenterCommand = new RelayCommand(_ => IsEditing = true, _ => CanSave());
 
 
         }
@@ -49,22 +57,19 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (SetProperty(ref _selectedCustomer, value))
                 {
-                    _renterComboBox.Refresh();
+                    _boothView.Refresh();
                     //RefreshCommands();
                 }
             }
         }
 
-        private bool _isEditing = false;
+        private bool _isEditing;
         public bool IsEditing
         {
             get => _isEditing;
             set
             {
-                if (SetProperty(ref _isEditing, value))
-                {
-                    _renterComboBox.Refresh();
-                }
+                if (SetProperty(ref _isEditing, value)) ;
             }
         }
 
@@ -77,7 +82,6 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _customerName, value))
                 {
                     Validate();
-                    _renterComboBox.Refresh();
                 }
             }
         }
@@ -91,7 +95,6 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _email, value))
                 {
                     Validate();
-                    _renterComboBox.Refresh();
                 }
             }
         }
@@ -105,7 +108,6 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _phoneNumber, value))
                 {
                     Validate();
-                    _renterComboBox.Refresh();
                 }
             }
         }
@@ -119,7 +121,6 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _address, value))
                 {
                     Validate();
-                    _renterComboBox.Refresh();
                 }
             }
         }
@@ -133,22 +134,10 @@ namespace ReolMarket.MVVM.ViewModel
                 if (SetProperty(ref _postalCode, value))
                 {
                     Validate();
-                    _renterComboBox.Refresh();
                 }
             }
         }
 
-
-        private bool Filter(object obj)
-        {
-            if (IsEditing == true)
-                return false;
-            if (obj is not Booth booth)
-                return false;
-
-            return booth.CustomerID == null && booth.Status == BoothStatus.Ledig && booth.IsRented == false;
-
-        }
 
         private void AddOrEditRenter()
         {
@@ -185,6 +174,26 @@ namespace ReolMarket.MVVM.ViewModel
                 }
                 _boothView.Refresh();
             });
+        }
+
+        private bool BoothFilter(object obj)
+        {
+            if (obj is not Booth b) return false;
+
+            bool isFree = b.CustomerID == null && !b.IsRented && b.Status == BoothStatus.Ledig;
+
+            if (!IsEditing)
+                return isFree;                // <-- Add mode: only free booths
+
+            var cid = SelectedCustomer?.CustomerID;
+            if (!cid.HasValue)
+                return isFree;                // <-- Edit mode but no customer: still only free
+
+            bool isCustomers =
+                b.CustomerID == cid.Value
+                && (b.IsRented || b.Status == BoothStatus.Optaget);
+
+            return isCustomers || isFree;     // <-- Edit mode with customer: customer’s booths OR free
         }
 
         protected override void Validate()
@@ -229,6 +238,7 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         private bool CanSave() => !IsBusy && !HasErrors;
+        private bool CanRun() => !IsBusy;
 
 
         /// <summary>
