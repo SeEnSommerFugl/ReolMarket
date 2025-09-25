@@ -138,21 +138,6 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private string _customerName;
-        public string CustomerName
-        {
-            get => _customerName;
-            set
-            {
-                if (SetProperty(ref _customerName, value))
-                {
-                    Validate();
-                    _renterComboBox.Refresh();
-                }
-            }
-        }
-
-
 
         private bool Filter(object obj)
         {
