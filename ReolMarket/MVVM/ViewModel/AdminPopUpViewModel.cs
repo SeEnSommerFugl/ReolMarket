@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Text.RegularExpressions;
 using System.Windows.Data;
 using System.Windows.Input;
 using ReolMarket.Core;
@@ -84,6 +83,7 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         private bool FilterBooth(object obj)
+        {
             {
                 if (SetProperty(ref _postalCode, value))
                 {
