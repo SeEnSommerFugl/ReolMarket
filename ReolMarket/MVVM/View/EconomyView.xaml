@@ -96,52 +96,22 @@
                 
             <!--nøgletal-->
                 <Border Style="{StaticResource Card}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Text="Nøgletal (grid)" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <UniformGrid Grid.Row="1" Rows="2" Columns="3">
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Omsætning"/>
-                                    <TextBlock Text="{Binding Totals.Revenue}"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Provision"/>
-                                    <TextBlock Text="{Binding Totals.Commission}"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Netto"/>
-                                    <TextBlock Text="{Binding Totals.Net}"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Udbetalt"/>
-                                    <TextBlock Text="{Binding Totals.Net}"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Skyldigt"/>
-                                    <TextBlock Text="{Binding Totals.Outstanding}"/>
-                                </StackPanel>
-                            </Border>
-                            <Border Padding="4">
-                                <StackPanel Margin="8,4">
-                                    <TextBlock Text="Antal salg"/>
-                                    <TextBlock Text="{Binding Totals.Count}"/>
-                                </StackPanel>
-                            </Border>
-                        </UniformGrid>
-                    </Grid>
+                    <StackPanel>
+                        <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+        
+                        <ItemsControl ItemsSource="{Binding KeyFigures}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding ="4" Margin="0,4,0,0">
+                                        <StackPanel Orientation="Horizontal" Margin="8,4">
+                                            <TextBlock Text="{Binding Label}" Width="120" />
+                                            <TextBlock Text="{Binding Value}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
                 </Border>
 
                 <!--Afregning-->
