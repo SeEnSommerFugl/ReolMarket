@@ -1,0 +1,188 @@
+﻿<Page x:Class="ReolMarket.MVVM.View.EconomyView"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ReolMarket.MVVM.View"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="EconomyView">
+
+    <Page.Resources>
+        <!-- Reference til separat style-fil -->
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/> <!--søg/filter-->
+                <RowDefinition Height="12"/>
+                <RowDefinition Height="*"/>     <!--Økonomi-Liste-->
+                <RowDefinition Height="12"/>
+                <RowDefinition Height="auto"/>  <!--Detajler/Afregning-->
+                <RowDefinition Height="auto"/>  <!--knapper-->
+            </Grid.RowDefinitions>
+    
+            <!--SØG/FILTERRR-->
+
+            <Border Style="{StaticResource Card}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="140"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Text="Søg i økonomi" Style="{StaticResource H1}" VerticalAlignment="Center"/>
+                    
+                    <!--Ranges-->
+                    
+                    <ComboBox Grid.Column="2" Height="34" Margin="0,12,0,16"
+                              ItemsSource="{Binding QuickRanges}"
+                              SelectedItem="{Binding SelectedQuickRange}"
+                              VerticalContentAlignment="Center"/>
+                    <!--fra/til-dato-->
+                    <DatePicker Grid.Column="4" SelectedDate="{Binding FromDate}" Height="34"/>
+                    <DatePicker Grid.Column="6" SelectedDate="{Binding ToDate}" Height="34"/>
+                    
+                    <!--Søg text-->
+                    <TextBox Grid.Column="8" Width="220" Height="34"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             Padding="12,6" BorderBrush="{StaticResource Brush.Border }" BorderThickness="1"/>
+
+                    <Button Grid.Column="9" Content="Opdater" Style="{StaticResource Btn.Base}"
+                            Command="{Binding RefreshCommand}" HorizontalAlignment="Left" Width="120" Height="34" Margin="12,0,0,0"/>
+                </Grid>
+            </Border>
+            
+            <!--øKoNomIII-->
+
+            <DataGrid Grid.Row="2" ItemsSource="{Binding TransactionView}"
+                      SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
+                      Style="{StaticResource Grid.Base}" CanUserAddRows="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Dato" Width="160"
+                                        Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
+                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductNumber}"/>
+                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Provision" Width="120" Binding="{Binding Commission, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Netto" Width="120" Binding="{Binding Net, StringFormat={}{0:NO} kr.}"/>
+                    <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
+
+                </DataGrid.Columns>
+                
+            </DataGrid>
+            
+            <!-- Detajler + Afregning-->
+            <Grid Grid.Row="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="16"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+                
+            <!--nøgletal-->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+        
+                        <ItemsControl ItemsSource="{Binding KeyFigures}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Padding ="4" Margin="0,4,0,0">
+                                        <StackPanel Orientation="Horizontal" Margin="8,4">
+                                            <TextBlock Text="{Binding Label}" Width="120" />
+                                            <TextBlock Text="{Binding Value}" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </StackPanel>
+                </Border>
+
+                <!--Afregning-->
+                
+                <Border Grid.Column="2" Style="{StaticResource Card}">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Afregning" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="ReolNr:" Grid.Row="0" Grid.Column="0" Margin="0,0,8,8" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Settlement.BoothNumber}" Grid.Row="0" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Lejer:" Grid.Row="0" Grid.Column="2" Margin="0,0,8,8" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Settlement.RenterName}" Grid.Row="0" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <TextBlock Text="Brutto i periode:" Grid.Row="1" Grid.Column="0" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.Gross}" Grid.Row="1" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Provision %" Grid.Row="1" Grid.Column="2" Width="120" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.CommissionPct}" Grid.Row="1" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <TextBlock Text="Netto til Udbetaling" Grid.Row="2" Grid.Column="0" Width="120" Margin="0,0,0,8"/>
+                            <TextBlock Text="{Binding Settlement.Net}" Grid.Row="2" Grid.Column="1" Width="120" Margin="0,0,12,8"/>
+
+                            <TextBlock Text="Difference" Grid.Row="2" Grid.Column="2" Width="120" Margin="0,0,8,8"/>
+                            <TextBlock Text="{Binding Settlement.Difference}" Grid.Row="2" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
+
+                            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
+                                    Content="UDBETAL / BOGFØR"
+                                    Style="{StaticResource Btn.Primary}"
+                                    Command="{Binding SettleCommand}"
+                                    Height="40" Margin="0,8,0,0"/>
+                        </Grid>
+                    </Grid>
+                </Border>
+            </Grid>
+            
+            <!--HandlingsKnapper-->
+            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5,12,0,0" HorizontalAlignment="Left">
+                <Button Style="{StaticResource Btn.Primary}" Content="EKSPORTER CSV" Width="255" Height="48"
+                        Command="{Binding ExportCsvCommand}"/>
+                <Button Style="{StaticResource Btn.Primary}" Content="PRINT" Width="255" Height="48" Margin="12,0,0,0"
+                        Command="{Binding PrintCommand}"/>
+                <Button Style="{StaticResource Btn.Primary}" Content="ÅBN KVITTERING" Width="255" Height="48" Margin="12,0,0,0"
+                        Command="{Binding OpenReciptCommand}"/>
+
+
+            </StackPanel>
+                      
+            
+        </Grid>
+        
+        
+       
+    </Grid>
+</Page>

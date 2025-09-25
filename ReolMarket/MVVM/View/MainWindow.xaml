@@ -36,7 +36,7 @@
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
             <Button Style="{StaticResource Btn.Nav}" Content="Salg"/>
             <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
-            <Button Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
+            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
         </StackPanel>
 
         <Frame Grid.Column="2"
