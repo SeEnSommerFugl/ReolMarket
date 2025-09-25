@@ -43,8 +43,8 @@ namespace ReolMarket.MVVM.ViewModel
                 (new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
 
             SaveCommand = new RelayCommand(_ => AddOrEditRenter(), _ => CanSave());
-            NewRenterCommand = new RelayCommand(_ => IsEditing = false, _ => CanRun());
-            EditRenterCommand = new RelayCommand(_ => IsEditing = true, _ => CanSave());
+            NewRenterCommand = new RelayCommand(_ => NewRenter(), _ => CanRun());
+            EditRenterCommand = new RelayCommand(_ => EditRenter(), _ => CanRun());
 
 
         }
@@ -70,6 +70,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _isEditing, value)) ;
+                _boothView.Refresh();
             }
         }
 
@@ -136,6 +137,18 @@ namespace ReolMarket.MVVM.ViewModel
                     Validate();
                 }
             }
+        }
+
+        public void NewRenter()
+        {
+            IsEditing = false;
+            SelectedCustomer = null;
+        }
+
+        public void EditRenter()
+        {
+            IsEditing = true;
+
         }
 
 
@@ -207,11 +220,13 @@ namespace ReolMarket.MVVM.ViewModel
                 AddError(nameof(Email), "Forkert email format.");
 
             ClearErrors(nameof(PhoneNumber));
-            if (!string.IsNullOrWhiteSpace(PhoneNumber))
-                AddError(nameof(PhoneNumber), "Indtast venligst telefon nummer.");
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
+                AddError(nameof(PhoneNumber), "Indtast venligst telefonnummer.");
+            else if (PhoneNumber.Any(ch => !char.IsDigit(ch)) || PhoneNumber.Length != 8)
+                AddError(nameof(PhoneNumber), "Telefonnummer skal være 8 cifre.");
 
             ClearErrors(nameof(Address));
-            if (!string.IsNullOrWhiteSpace(Address))
+            if (string.IsNullOrWhiteSpace(Address))
                 AddError(nameof(Address), "Indtast venligst en adresse.");
 
             ClearErrors(nameof(PostalCode));
