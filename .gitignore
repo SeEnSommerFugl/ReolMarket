@@ -421,3 +421,4 @@ FodyWeavers.xsd
 *.sln.iml
 
 appsettings.Local.json
+/ReolMarket/Properties/launchSettings.json

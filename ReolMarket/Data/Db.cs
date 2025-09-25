@@ -12,15 +12,15 @@ namespace ReolMarket.Data
         private static readonly IConfigurationRoot _config =
             new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                .AddJsonFile("appsettings.Local.json", optional: true, reloadOnChange: true) // per-dev override
+                //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .AddEnvironmentVariables()
                 .Build();
-
         /// <summary>
         /// Encapsulaped connection string, for privacy concerns
         /// Gets the connection string for the default database connection.
         /// </summary>
         protected static string ConnectionString =>
+
             _config.GetConnectionString("DefaultConnection")
             ?? throw new InvalidOperationException("Missing 'DefaultConnection'.");
 

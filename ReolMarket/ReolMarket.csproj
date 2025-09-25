@@ -7,6 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <UserSecretsId>e6316a85-8feb-4248-8e0d-8c4698e45a68</UserSecretsId>
+    <StartupObject>ReolMarket.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="6.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
   </ItemGroup>
 
@@ -28,9 +30,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-	  <None Update="appsettings.Local.json">
-		  <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-	  </None>
+    <None Update="Properties\launchSettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
