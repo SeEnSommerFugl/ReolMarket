@@ -6,6 +6,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using ReolMarket.Core;
 using ReolMarket.Data;
+using ReolMarket.Data.Repository;
 using ReolMarket.MVVM.Model;
 using ReolMarket.MVVM.Model.HelperModels;
 using ReolMarket.MVVM.View;
@@ -118,7 +119,7 @@ public class RentersViewModel : BaseViewModel
     //public ICommand EditBoothCommand { get; }
     //public ICommand DeleteBoothCommand { get; }
     //public ICommand ClearFiltersCommand { get; }
-    //public ICommand SaveCustomerCommand { get; }
+    public ICommand SaveCustomerCommand { get; }
     //public ICommand DeleteCustomerCommand { get; }
 
     /// <summary>
@@ -155,7 +156,8 @@ public class RentersViewModel : BaseViewModel
         // Initialize commands (synchronous implementations)
         NavigateAdminPopUpCommand = new RelayCommand(_ =>
         {
-            var adminVM = new AdminPopUpViewModel(boothRepo, customerRepo);
+            Keyboard.ClearFocus();
+            var adminVM = new AdminPopUpViewModel(new BoothDbRepository(), new CustomerDbRepository());
             var win = new AdminPopUpView
             {
                 DataContext = adminVM,
@@ -250,49 +252,49 @@ public class RentersViewModel : BaseViewModel
     //}
     //}
 
-    //private void SaveCustomer()
-    //{
-    //    if (SelectedBooth is null) return;
+    private void SaveCustomer()
+    {
+        //if (SelectedBooth is null) return;
 
-    //    // If booth has no customer, then create one
-    //    if (SelectedBooth.Customer is null)
-    //    {
-    //        var newCustomer = new Customer
-    //        {
-    //            CustomerID = Guid.NewGuid(),
-    //            CustomerName = CustomerName ?? "",
-    //            Email = CustomerEmail ?? "",
-    //            PhoneNumber = CustomerPhone ?? "",
-    //            Address = CustomerAddress ?? "",
-    //            PostalCode = CustomerPostalCode ?? "",
-    //        };
+        //// If booth has no customer, then create one
+        //if (SelectedBooth.Customer is null)
+        //{
+        //    var newCustomer = new Customer
+        //    {
+        //        CustomerID = Guid.NewGuid(),
+        //        CustomerName = CustomerName ?? "",
+        //        Email = CustomerEmail ?? "",
+        //        PhoneNumber = CustomerPhone ?? "",
+        //        Address = CustomerAddress ?? "",
+        //        PostalCode = CustomerPostalCode ?? "",
+        //    };
 
-    //        _customerRepo.Add(newCustomer);        // ✅ persist in repo
-    //        Customers.Add(newCustomer);            // ✅ add to observable
+        //    _customerRepo.Add(newCustomer);        // ✅ persist in repo
+        //    Customers.Add(newCustomer);            // ✅ add to observable
 
-    //        SelectedBooth.Customer = newCustomer;
-    //        SelectedBooth.CustomerID = newCustomer.CustomerID;
-    //        SelectedBooth.IsRented = true;
-    //        SelectedBooth.Status = BoothStatus.Optaget;
-    //    }
-    //    // If booth has customer, update the info
-    //    else
-    //    {
-    //        var c = SelectedBooth.Customer;
-    //        c.CustomerName = CustomerName ?? "";
-    //        c.Email = CustomerEmail ?? "";
-    //        c.PhoneNumber = CustomerPhone ?? "";
-    //        c.Address = CustomerAddress ?? "";
-    //        c.PostalCode = CustomerPostalCode ?? "";
+        //    SelectedBooth.Customer = newCustomer;
+        //    SelectedBooth.CustomerID = newCustomer.CustomerID;
+        //    SelectedBooth.IsRented = true;
+        //    SelectedBooth.Status = BoothStatus.Optaget;
+        //}
+        //// If booth has customer, update the info
+        //else
+        //{
+        //    var c = SelectedBooth.Customer;
+        //    c.CustomerName = CustomerName ?? "";
+        //    c.Email = CustomerEmail ?? "";
+        //    c.PhoneNumber = CustomerPhone ?? "";
+        //    c.Address = CustomerAddress ?? "";
+        //    c.PostalCode = CustomerPostalCode ?? "";
 
-    //        _customerRepo.Update(c);
-    //    }
+        //    _customerRepo.Update(c);
+        //}
 
-    //    _boothRepo.Update(SelectedBooth);
-    //    LinkCustomersToBooths();
+        //_boothRepo.Update(SelectedBooth);
+        //LinkCustomersToBooths();
 
-    //    BoothsView.Refresh();
-    //}
+        //BoothsView.Refresh();
+    }
 
 
     //if (SelectedBooth is null) return;
