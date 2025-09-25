@@ -1,6 +1,8 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Text.RegularExpressions;
 using System.Windows.Data;
+using System.Windows.Input;
 using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
@@ -19,6 +21,10 @@ namespace ReolMarket.MVVM.ViewModel
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ICollectionView NewRenterView => _newRenterView;
         public ICollectionView EditRenterView => _editRenterView;
+
+        public ICommand SaveCommand { get; }
+        public ICommand NewRenterCommand { get; }
+        public ICommand EditRenterCommand { get; }
 
         public AdminPopUpViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo)
         {
@@ -63,9 +69,37 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        private string _customerName;
+        public string CustomerName
+        {
+            get => _customerName;
+            set
+            {
+                if (SetProperty(ref _customerName, value))
+                {
+                    Validate();
+                    _renterComboBox.Refresh();
+                }
+            }
+        }
 
         private bool FilterBooth(object obj)
+            {
+                if (SetProperty(ref _postalCode, value))
+                {
+                    Validate();
+                    _renterComboBox.Refresh();
+                }
+            }
+        }
+
+
+
+
+        private bool Filter(object obj)
         {
+            if (IsEditing == true)
+                return false;
             if (obj is not Booth booth)
                 return false;
 
@@ -74,6 +108,7 @@ namespace ReolMarket.MVVM.ViewModel
             return customerId.HasValue && booth.CustomerID == customerId.Value;
         }
 
+        private bool CanSave() => !IsBusy && !HasErrors;
 
 
         /// <summary>
