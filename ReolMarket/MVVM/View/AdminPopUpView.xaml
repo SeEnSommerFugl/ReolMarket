@@ -27,11 +27,18 @@
  Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>-->
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="60"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                <Button Style="{StaticResource Btn.Base}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Style="{StaticResource Btn.Base}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -87,7 +94,7 @@
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
-                    <TextBox Text="{Binding CustomerName}"/>
+                    <ComboBox Text="{Binding CustomerName}"/>
                     <!-- Text="{Binding CustomerName}" -->
                     <TextBox Text="{Binding Email}"/>
                     <!-- Text="{Binding Email}" -->
