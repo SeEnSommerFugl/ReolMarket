@@ -272,6 +272,10 @@ namespace ReolMarket.MVVM.ViewModel
             // Create ViewModels only for UI selection purposes
             foreach (var booth in availableBooths)
             {
+if (_selectedCustomer != null && booth.CustomerID == _selectedCustomer.CustomerID)
+        {
+            boothVm.IsSelected = true;  // Pre-check this customer's booths
+        }
                 AvailableBooths.Add(new BoothViewModel(booth));
             }
             _boothView.Refresh();
