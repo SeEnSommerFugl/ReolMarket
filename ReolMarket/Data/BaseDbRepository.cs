@@ -22,6 +22,7 @@ namespace ReolMarket.Data
         protected abstract string SqlSelectById { get; }
         protected abstract string SqlInsert { get; }
         protected abstract string SqlUpdate { get; }
+        protected abstract string SqlUpdateRange { get; }
         protected abstract string SqlDeleteById { get; }
 
         // Mapping and bindings
@@ -29,6 +30,7 @@ namespace ReolMarket.Data
         protected abstract void BindId(SqlCommand cmd, TKey id);
         protected abstract void BindInsert(SqlCommand cmd, T entity);
         protected abstract void BindUpdate(SqlCommand cmd, T entity);
+        protected abstract void BindUpdateRange(SqlCommand cmd, IEnumerable<T> entities);
 
         // Key helpers
         protected abstract TKey GetKey(T entity);
@@ -74,6 +76,60 @@ namespace ReolMarket.Data
 
             // simplest: resync Items so WPF stays consistent
             ReloadItems();
+        }
+        //public void UpdateRange(IEnumerable<T> entities)
+        //{
+        //    var entitiesList = entities.ToList();
+        //    if (!entitiesList.Any()) return;
+
+        //    using var con = Db.OpenConnection();
+        //    using var transaction = con.BeginTransaction();
+
+        //    try
+        //    {
+        //        foreach (var entity in entitiesList)
+        //        {
+        //            using var cmd = new SqlCommand(SqlUpdateRange, con, transaction);
+        //            BindUpdateRange(cmd, entitiesList);
+        //            cmd.ExecuteNonQuery();
+        //        }
+
+        //        transaction.Commit();
+
+        //        // Only reload once after all updates are complete
+        //        ReloadItems();
+        //    }
+        //    catch
+        //    {
+        //        transaction.Rollback();
+        //        throw;
+        //    }
+        //}
+
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            var entitiesList = entities.ToList();
+            if (!entitiesList.Any()) return;
+
+            using var con = Db.OpenConnection();
+            using var transaction = con.BeginTransaction();
+
+            try
+            {
+                using var cmd = new SqlCommand(SqlUpdateRange, con, transaction);
+                BindUpdateRange(cmd, entitiesList);
+                cmd.ExecuteNonQuery();
+
+                transaction.Commit();
+
+                // Only reload once after all updates are complete
+                ReloadItems();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
         }
 
         public void Delete(TKey id)

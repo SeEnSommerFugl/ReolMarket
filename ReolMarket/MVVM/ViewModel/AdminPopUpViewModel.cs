@@ -18,6 +18,7 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly ICollectionView _renterComboBox;
 
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<BoothViewModel> AvailableBooths { get; set; }
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ICollectionView BoothView => _boothView;
         public ICollectionView RenterComboBox => _renterComboBox;
@@ -30,12 +31,15 @@ namespace ReolMarket.MVVM.ViewModel
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
+            AvailableBooths = new ObservableCollection<BoothViewModel>();
+
+
 
             _renterComboBox = CollectionViewSource.GetDefaultView(Customers);
             _renterComboBox.SortDescriptions.Add(
                 new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
 
-            _boothView = CollectionViewSource.GetDefaultView(Booths);
+            _boothView = CollectionViewSource.GetDefaultView(AvailableBooths);
             _boothView.Filter = BoothFilter;
             _boothView.GroupDescriptions.Add(
                 new PropertyGroupDescription(nameof(Booth.IsRented)));
@@ -46,6 +50,7 @@ namespace ReolMarket.MVVM.ViewModel
             NewRenterCommand = new RelayCommand(_ => NewRenter(), _ => CanRun());
             EditRenterCommand = new RelayCommand(_ => EditRenter(), _ => CanRun());
 
+            LoadAvailableBooths();
 
         }
 
@@ -57,6 +62,15 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (SetProperty(ref _selectedCustomer, value))
                 {
+                    // Auto-populate form fields when a customer is selected
+                    if (value != null && IsEditing)
+                    {
+                        CustomerName = value.CustomerName;
+                        Email = value.Email;
+                        PhoneNumber = value.PhoneNumber;
+                        Address = value.Address;
+                        PostalCode = value.PostalCode;
+                    }
                     _boothView.Refresh();
                     //RefreshCommands();
                 }
@@ -143,6 +157,12 @@ namespace ReolMarket.MVVM.ViewModel
         {
             IsEditing = false;
             SelectedCustomer = null;
+
+            CustomerName = string.Empty;
+            Email = string.Empty;
+            PhoneNumber = string.Empty;
+            Address = string.Empty;
+            PostalCode = string.Empty;
         }
 
         public void EditRenter()
@@ -160,17 +180,18 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (IsEditing == true)
                 {
-                    if (SelectedCustomer != null)
+                    var customerToUpdate = SelectedCustomer;
+                    if (customerToUpdate != null)
                     {
-                        SelectedCustomer.CustomerName = CustomerName!.Trim();
-                        SelectedCustomer.Email = Email!.Trim();
-                        SelectedCustomer.PhoneNumber = PhoneNumber!.Trim();
-                        SelectedCustomer.Address = Address!.Trim();
-                        SelectedCustomer.PostalCode = PostalCode!.Trim();
+                        customerToUpdate.CustomerName = CustomerName!.Trim();
+                        customerToUpdate.Email = Email!.Trim();
+                        customerToUpdate.PhoneNumber = PhoneNumber!.Trim();
+                        customerToUpdate.Address = Address!.Trim();
+                        customerToUpdate.PostalCode = PostalCode!.Trim();
 
-                        _customerRepo.Update(SelectedCustomer);
+                        _customerRepo.Update(customerToUpdate);
                     }
-
+                    SelectedCustomer = customerToUpdate;
                 }
                 else
                 {
@@ -184,14 +205,46 @@ namespace ReolMarket.MVVM.ViewModel
                         PostalCode = _postalCode,
                     };
                     _customerRepo.Add(customer);
+                    SelectedCustomer = customer;
                 }
+                UpdateBoothAssignments();
                 _boothView.Refresh();
             });
         }
 
+        private void UpdateBoothAssignments()
+        {
+            if (SelectedCustomer == null) return;
+
+            var selectedBooths = AvailableBooths.Where(bvm => bvm.IsSelected).Select(bvm => bvm.Booth).ToList();
+            var unselectedBooths = AvailableBooths.Where(bvm => !bvm.IsSelected && bvm.Booth.CustomerID == SelectedCustomer.CustomerID)
+                                                    .Select(bvm => bvm.Booth).ToList();
+
+            // Assign selected booths to customer
+            foreach (var booth in selectedBooths)
+            {
+                booth.CustomerID = SelectedCustomer.CustomerID;
+                booth.IsRented = true;
+                booth.Status = BoothStatus.Optaget;
+            }
+
+            // Remove assignments from unselected booths
+            foreach (var booth in unselectedBooths)
+            {
+                booth.CustomerID = null;
+                booth.IsRented = false;
+                booth.Status = BoothStatus.Ledig;
+            }
+
+            // Update booths in repository
+            _boothRepo.UpdateRange(selectedBooths.Concat(unselectedBooths));
+        }
+
         private bool BoothFilter(object obj)
         {
-            if (obj is not Booth b) return false;
+            if (obj is not BoothViewModel bvm) return false;  // ✅ Cast to BoothViewModel
+
+            var b = bvm.Booth;  // ✅ Get the underlying Booth
 
             bool isFree = b.CustomerID == null && !b.IsRented && b.Status == BoothStatus.Ledig;
 
@@ -206,7 +259,22 @@ namespace ReolMarket.MVVM.ViewModel
                 b.CustomerID == cid.Value
                 && (b.IsRented || b.Status == BoothStatus.Optaget);
 
-            return isCustomers || isFree;     // <-- Edit mode with customer: customer’s booths OR free
+            return isCustomers || isFree;     // <-- Edit mode with customer: customer's booths OR free
+        }
+
+        private void LoadAvailableBooths()
+        {
+            AvailableBooths.Clear();
+
+            // Use your existing repository approach
+            var availableBooths = Booths;
+
+            // Create ViewModels only for UI selection purposes
+            foreach (var booth in availableBooths)
+            {
+                AvailableBooths.Add(new BoothViewModel(booth));
+            }
+            _boothView.Refresh();
         }
 
         protected override void Validate()

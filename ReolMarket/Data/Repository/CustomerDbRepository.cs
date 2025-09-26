@@ -32,6 +32,9 @@ namespace ReolMarket.Data.Repository
         protected override string SqlDeleteById => @"
             DELETE FROM Customer
             WHERE Customer_ID = @Customer_ID";
+
+        protected override string SqlUpdateRange => throw new NotImplementedException();
+
         protected override Customer Map(IDataRecord r) => new Customer
         {
             CustomerID = r.GetGuid(r.GetOrdinal("Customer_ID")),
@@ -69,6 +72,11 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(Customer e) => e.CustomerID;
+
+        protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<Customer> entities)
+        {
+            throw new NotImplementedException();
+        }
 
         //protected override void AssignGeneratedIdIfAny(Customer e, object? id)
         //{

@@ -90,10 +90,10 @@
     </Style>
 
     <Style TargetType="Button" x:Key="HideButton" BasedOn="{StaticResource Btn.Base}">
-        <Setter Property="Visibility" Value="Collapsed"/>
+        <Setter Property="Visibility" Value="Visible"/>
         <Style.Triggers>
-            <DataTrigger Binding="{Binding IsEditing}" Value="False">
-                <Setter Property="Visibility" Value="Visible"/>
+            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>

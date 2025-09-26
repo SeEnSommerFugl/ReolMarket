@@ -119,18 +119,40 @@
 
                 </StackPanel>
 
-                <Button Grid.Row="1" Grid.ColumnSpan="2" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Command="{Binding SaveCommand}" Grid.Row="1" Grid.ColumnSpan="2" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
 
             </Grid>
 
             <Grid Grid.Column="1">
                 <Border Grid.Column="2" Style="{StaticResource Card}">
-                    <StackPanel>
-                        <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+
+                        <DataGrid Grid.Row="1" 
+                      ItemsSource="{Binding BoothView}" 
+                      Style="{StaticResource Grid.Base}" 
+                      x:Name="LejerReolerGrid"
+                      ScrollViewer.CanContentScroll="True"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
+                      MaxHeight="300">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
+                                <DataGridTemplateColumn Header="Select" Width="60" CanUserSort="False" CanUserReorder="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding Booth.BoothNumber}"/>
+                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding Booth.StartDate}"/>
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -144,7 +166,6 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource Btn.Primary}" Content="Fortsæt" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -153,14 +174,12 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource Btn.Danger}" Content="Opsig" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
-                            <!-- Note til migselv: ItemsSource: {Binding SelectedLejer.Reoler} -->
                         </DataGrid>
-                    </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
 
@@ -168,7 +187,7 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <Button Style="{StaticResource HideButton}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+            <Button Command="{Binding SaveCommand}" Style="{StaticResource HideButton}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
         </Grid>
         
     </Grid>

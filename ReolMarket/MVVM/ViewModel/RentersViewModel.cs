@@ -157,7 +157,7 @@ public class RentersViewModel : BaseViewModel
         NavigateAdminPopUpCommand = new RelayCommand(_ =>
         {
             Keyboard.ClearFocus();
-            var adminVM = new AdminPopUpViewModel(new BoothDbRepository(), new CustomerDbRepository());
+                                  var adminVM = new AdminPopUpViewModel(new BoothDbRepository(), new CustomerDbRepository());
             var win = new AdminPopUpView
             {
                 DataContext = adminVM,

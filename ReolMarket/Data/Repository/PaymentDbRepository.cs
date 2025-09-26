@@ -29,6 +29,8 @@ namespace ReolMarket.Data.Repository
         DELETE FROM Payment
          WHERE PaymentID = @PaymentID;";
 
+        protected override string SqlUpdateRange => throw new NotImplementedException();
+
         protected override Payment Map(IDataRecord r) => new Payment
         {
             PaymentID = r.GetGuid(r.GetOrdinal("PaymentID")),
@@ -53,6 +55,11 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(Payment e) => e.PaymentID;
+
+        protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<Payment> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

@@ -29,6 +29,8 @@ namespace ReolMarket.Data.Repository
         DELETE FROM ShoppingCart
          WHERE ShoppingCartId = @ShoppingCartId;";
 
+        protected override string SqlUpdateRange => throw new NotImplementedException();
+
         protected override ShoppingCart Map(IDataRecord r) => new ShoppingCart
         {
             ShoppingCartId = r.GetGuid(r.GetOrdinal("ShoppingCartId")),
@@ -50,6 +52,11 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(ShoppingCart e) => e.ShoppingCartId;
+
+        protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<ShoppingCart> entities)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

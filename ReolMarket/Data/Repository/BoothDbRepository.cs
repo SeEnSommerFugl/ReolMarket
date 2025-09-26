@@ -1,4 +1,6 @@
 ﻿using System.Data;
+using System.Text;
+using System.Transactions;
 using Microsoft.Data.SqlClient;
 using ReolMarket.MVVM.Model;
 
@@ -26,6 +28,13 @@ namespace ReolMarket.Data.Repository
                 NumberOfShelves = @NumberOfShelves,
                 HasHangerBar = @HasHangerBar,
                 IsRented = @IsRented,
+                Status = @Status,
+                Customer_ID = @Customer_ID
+            WHERE Booth_ID = @Booth_ID;";
+
+        protected override string SqlUpdateRange => @"
+            UPDATE Booth
+                SET IsRented = @IsRented,
                 Status = @Status,
                 Customer_ID = @Customer_ID
             WHERE Booth_ID = @Booth_ID;";
@@ -78,9 +87,48 @@ namespace ReolMarket.Data.Repository
 
         protected override Guid GetKey(Booth e) => e.BoothID;
 
-        //protected override void AssignGeneratedIdIfAny(Booth e, object? id)
+        //protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<Booth> booths)
         //{
-        //    if (id is Guid i) e.BoothID = i;
+        //    var boothList = booths.ToList();
+
+        //    foreach (var booth in boothList)
+        //    {
+        //        cmd.Parameters.Add("@IsRented", SqlDbType.Bit).Value = booth.IsRented;
+        //        cmd.Parameters.Add("@Status", SqlDbType.Int).Value = (int)booth.Status;
+        //        cmd.Parameters.Add("@Customer_ID", SqlDbType.UniqueIdentifier)
+        //           .Value = (object?)booth.CustomerID ?? DBNull.Value;
+        //        cmd.Parameters.Add("@Booth_ID", SqlDbType.UniqueIdentifier).Value = booth.BoothID;
+        //    }
         //}
+        protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<Booth> booths)
+        {
+            var boothList = booths.ToList();
+            if (!boothList.Any()) return;
+
+            // Clear any existing parameters
+            cmd.Parameters.Clear();
+
+            // Build dynamic SQL for multiple updates
+            var sql = new StringBuilder();
+            for (int i = 0; i < boothList.Count; i++)
+            {
+                if (i > 0) sql.AppendLine();
+
+                sql.AppendLine($@"UPDATE Booth
+                    SET IsRented = @IsRented{i},
+                        Status = @Status{i},
+                        Customer_ID = @Customer_ID{i}
+                    WHERE Booth_ID = @Booth_ID{i};");
+
+                var booth = boothList[i];
+                cmd.Parameters.Add($"@IsRented{i}", SqlDbType.Bit).Value = booth.IsRented;
+                cmd.Parameters.Add($"@Status{i}", SqlDbType.Int).Value = (int)booth.Status;
+                cmd.Parameters.Add($"@Customer_ID{i}", SqlDbType.UniqueIdentifier)
+                   .Value = (object?)booth.CustomerID ?? DBNull.Value;
+                cmd.Parameters.Add($"@Booth_ID{i}", SqlDbType.UniqueIdentifier).Value = booth.BoothID;
+            }
+
+            cmd.CommandText = sql.ToString();
+        }
     }
 }
