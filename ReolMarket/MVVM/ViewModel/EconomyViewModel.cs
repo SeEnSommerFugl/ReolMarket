@@ -56,13 +56,13 @@ namespace ReolMarket.MVVM.ViewModel
         //    Title = "Monthly Settlement";
         //    GenerateCommand = new RelayCommand(_ => ExecuteGenerate(), _ => !IsBusy);
         //}
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo) 
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo)
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
 
-            GenerateCommand = new RelayCommand(_ => ExecuteGenerate(), _ => !IsBusy);
+            ExecuteGenerate();
         }
 
         /// <summary>
@@ -73,12 +73,12 @@ namespace ReolMarket.MVVM.ViewModel
             RunBusy(() =>
             {
                 CustomerSettlements.Clear();
-                foreach(var customer in _customerRepo.GetAll()) 
+                foreach (var customer in _customerRepo.GetAll())
                 {
                     var booths = _boothRepo.GetAll().Where(b => b.CustomerID == customer.CustomerID).ToList();
                     int boothCount = booths.Count();
 
-                    decimal rentPerBooth = boothCount switch 
+                    decimal rentPerBooth = boothCount switch
                     {
                         0 => 0m,
                         1 => 850m,
@@ -93,7 +93,7 @@ namespace ReolMarket.MVVM.ViewModel
                     decimal comission = Math.Round(salesTotal * (comissionPercent / 100m), 2);
                     decimal payout = salesTotal - comission - totalRent;
 
-                    CustomerSettlements.Add(new CustomerSettlementVm 
+                    CustomerSettlements.Add(new CustomerSettlementVm
                     {
                         CustomerName = customer.CustomerName,
                         BoothCount = boothCount,
@@ -152,7 +152,8 @@ namespace ReolMarket.MVVM.ViewModel
     //    public decimal AmountToPay => Math.Round(ItemPrice - CommissionAmount, 2);
     //}
 
-    internal sealed class CustomerSettlementVm {
+    internal sealed class CustomerSettlementVm
+    {
         public string CustomerName { get; set; } = string.Empty;
         public int BoothCount { get; set; }
         public decimal RentPerBooth { get; set; }

@@ -18,6 +18,7 @@ namespace ReolMarket
             // ---- Singletons (shared across app) ----
             IBaseRepository<Booth, Guid> boothRepo = new BoothDbRepository();
             IBaseRepository<Customer, Guid> customerRepo = new CustomerDbRepository();
+            IBaseRepository<Sale, Guid> saleRepo = new SaleDbRepository();
             // Add others as needed:
             // IBaseRepository<Item, Guid> itemRepo = new ItemDbRepository();
 
@@ -25,8 +26,9 @@ namespace ReolMarket
 
             var itemsVM = new ItemsViewModel(/* e.g., itemRepo */);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
+            var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo);
 
-            var mainVM = new MainViewModel(itemsVM, rentersVM);
+            var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM);
 
             // ---- Shell window ----
             var mainWindow = new MainWindow(mainVM);
