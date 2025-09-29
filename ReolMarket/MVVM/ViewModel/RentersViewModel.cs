@@ -25,7 +25,6 @@ public class RentersViewModel : BaseViewModel
 
 
     // Backing fields
-    //private Booth? _selectedBooth;
     private string? _searchText;
     private bool _onlyFree;
     private BoothStatus? _statusFilter;
@@ -34,9 +33,6 @@ public class RentersViewModel : BaseViewModel
     // ICollectionView for filtering without data duplication
     private readonly ICollectionView _boothsView;
     private readonly ICollectionView _customersView;
-
-    // ✅ Micro-cache to speed up name lookups / linking (rebuilt on refresh)
-    //private Dictionary<Guid, Customer>? _customerById;
 
     /// <summary>
     /// Direct access to repository's ObservableCollection - single source of truth.
@@ -56,22 +52,6 @@ public class RentersViewModel : BaseViewModel
 
     public List<SearchModeItem> SearchModes { get; set; }
 
-    /// <summary>
-    /// The booth currently selected in the UI.
-    /// </summary>
-    //public Booth? SelectedBooth
-    //{
-    //    get => _selectedBooth;
-    //    set
-    //    {
-    //        if (SetProperty(ref _selectedBooth, value))
-    //        {
-    //            //CustomerFromSelectedBooth();
-    //            RefreshCommands(); // ✅ Keep buttons in sync
-
-    //        }
-    //    }
-    //}
 
     private Customer? _selectedCustomer;
     public Customer? SelectedCustomer
@@ -114,13 +94,7 @@ public class RentersViewModel : BaseViewModel
 
     // Commands
     public ICommand NavigateAdminPopUpCommand { get; }
-    //public ICommand RefreshCommand { get; }
-    //public ICommand AddBoothCommand { get; }
-    //public ICommand EditBoothCommand { get; }
-    //public ICommand DeleteBoothCommand { get; }
-    //public ICommand ClearFiltersCommand { get; }
     public ICommand SaveCustomerCommand { get; }
-    //public ICommand DeleteCustomerCommand { get; }
 
     /// <summary>
     /// Creates a new instance and initializes the view model.
@@ -148,12 +122,6 @@ public class RentersViewModel : BaseViewModel
 
         _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); _customersView.Refresh(); };
 
-
-
-        //// ✅ If the underlying collection changes, refresh the view
-        //Booths.CollectionChanged += OnBoothsChanged;
-
-        // Initialize commands (synchronous implementations)
         NavigateAdminPopUpCommand = new RelayCommand(_ =>
         {
             Keyboard.ClearFocus();
@@ -165,154 +133,14 @@ public class RentersViewModel : BaseViewModel
             };
             win.ShowDialog();
         });
-        //RefreshCommand = new RelayCommand(_ => RefreshData(), _ => CanModifyData());
-        //AddBoothCommand = new RelayCommand(_ => AddBooth(), _ => CanModifyData());
-        //EditBoothCommand = new RelayCommand(_ => EditBooth(), _ => CanEditBooth());
-        //DeleteBoothCommand = new RelayCommand(_ => DeleteBooth(), _ => CanDeleteBooth());
-        //ClearFiltersCommand = new RelayCommand(_ => ClearFilters(), _ => CanClearFilters());
-        //SaveCustomerCommand = new RelayCommand(_ => SaveCustomer(), _ => CanSaveCustomer());
-        //DeleteCustomerCommand = new RelayCommand(_ => ClearCustomer(), _ => CanClearCustomer());
 
-        // Initial load
-        //RefreshData();
     }
-
-    //private void OnBoothsChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    //{
-    //    // ✅ Minimal work: just refresh the view so sorting/filtering stays correct
-    //    _boothsView.Refresh();
-    //}
-
-    /// <summary>
-    /// Refreshes data from repositories and ensures customer relationships are set.
-    /// Synchronous version (no async/await).
-    /// </summary>
-    //private void RefreshData()
-    //{
-    //if (IsBusy) return;             // ✅ Guard to avoid re-entry
-    //IsBusy = true;                   // ✅ Manual busy handling since we're sync now
-    //try
-    //{
-    //    using (_boothsView.DeferRefresh())
-    //    {
-    //        // Preserve current selection
-    //        var currentKey = SelectedBooth?.BoothID;
-
-    //        // Load (ideally these update the same ObservableCollection instances)
-    //        _customerRepo.GetAll();
-    //        _boothRepo.GetAll();
-
-    //        // Rebuild lookups/refs without creating new Booth instances if you can
-    //        LinkCustomersToBooths();
-
-    //        // Restore selection if item still exists
-    //        if (currentKey != null)
-    //            SelectedBooth = Booths.FirstOrDefault(b => b.BoothID == currentKey);
-    //    }
-
-    //}
-    //finally
-    //{
-    //    IsBusy = false;
-    //    RefreshCommands();           // ✅ Update buttons after busy change
-    //}
-    //}
 
     private void RequestRefresh()
     {
         _refreshDebounce.Stop();
         _refreshDebounce.Start();
     }
-
-    //private void CustomerFromSelectedBooth()
-    //{
-    //    var c = SelectedBooth?.Customer;
-
-    //    CustomerName = c?.CustomerName ?? string.Empty;
-    //    CustomerEmail = c?.Email ?? string.Empty;
-    //    CustomerPhone = c?.PhoneNumber ?? string.Empty;
-    //    CustomerAddress = c?.Address ?? string.Empty;
-    //    CustomerPostalCode = c is null ? string.Empty : c.PostalCode.ToString();
-    //}
-
-    /// <summary>
-    /// Links Customer objects to Booths for easy binding (Booth.Customer.CustomerName).
-    /// </summary>
-    //private void LinkCustomersToBooths()
-    //{
-    ////_customerById = Customers.Count > 0
-    ////    ? Customers.ToDictionary(c => c.CustomerID)
-    ////    : new Dictionary<Guid, Customer>();
-
-    //var byId = Customers.GroupBy(c => c.CustomerID).ToDictionary(g => g.Key, g => g.First()); // guards dupes
-    //foreach (var booth in Booths)
-    //{
-    //    var id = booth.CustomerID;
-    //    booth.Customer = (id.HasValue && byId.TryGetValue(id.Value, out var c)) ? c : null;
-    //}
-    //}
-
-    private void SaveCustomer()
-    {
-        //if (SelectedBooth is null) return;
-
-        //// If booth has no customer, then create one
-        //if (SelectedBooth.Customer is null)
-        //{
-        //    var newCustomer = new Customer
-        //    {
-        //        CustomerID = Guid.NewGuid(),
-        //        CustomerName = CustomerName ?? "",
-        //        Email = CustomerEmail ?? "",
-        //        PhoneNumber = CustomerPhone ?? "",
-        //        Address = CustomerAddress ?? "",
-        //        PostalCode = CustomerPostalCode ?? "",
-        //    };
-
-        //    _customerRepo.Add(newCustomer);        // ✅ persist in repo
-        //    Customers.Add(newCustomer);            // ✅ add to observable
-
-        //    SelectedBooth.Customer = newCustomer;
-        //    SelectedBooth.CustomerID = newCustomer.CustomerID;
-        //    SelectedBooth.IsRented = true;
-        //    SelectedBooth.Status = BoothStatus.Optaget;
-        //}
-        //// If booth has customer, update the info
-        //else
-        //{
-        //    var c = SelectedBooth.Customer;
-        //    c.CustomerName = CustomerName ?? "";
-        //    c.Email = CustomerEmail ?? "";
-        //    c.PhoneNumber = CustomerPhone ?? "";
-        //    c.Address = CustomerAddress ?? "";
-        //    c.PostalCode = CustomerPostalCode ?? "";
-
-        //    _customerRepo.Update(c);
-        //}
-
-        //_boothRepo.Update(SelectedBooth);
-        //LinkCustomersToBooths();
-
-        //BoothsView.Refresh();
-    }
-
-
-    //if (SelectedBooth is null) return;
-
-    //var id = SelectedBooth.BoothID;
-
-    //SelectedBooth.Customer = null;
-    //SelectedBooth.CustomerID = null;
-    //SelectedBooth.IsRented = false;
-    //SelectedBooth.Status = BoothStatus.Ledig;
-
-    //CustomerName = CustomerEmail = CustomerPhone = CustomerAddress = CustomerPostalCode = string.Empty;
-
-    //_boothRepo.Update(SelectedBooth);
-    //LinkCustomersToBooths();
-    //BoothsView.Refresh();
-    //RefreshCommands();
-    //}
 
     /// <summary>
     /// Filter predicate for the ICollectionView.
@@ -381,160 +209,4 @@ public class RentersViewModel : BaseViewModel
                 new SearchModeItem { DisplayName = "Kunde email", SearchMode = SearchMode.CustomerEmail }
             };
     }
-
-    /// <summary>
-    /// Clears all active filters efficiently.
-    /// </summary>
-    //private void ClearFilters()
-    //{
-    //// ✅ Batch refreshes so the view only refreshes once
-    //using (_boothsView.DeferRefresh())
-    //{
-    //    // set backing fields to avoid calling the setters' Refresh() logic
-    //    SetProperty(ref _searchText, string.Empty);
-    //    SetProperty(ref _onlyFree, false);
-    //    SetProperty(ref _statusFilter, null);
-    //}
-    //}
-
-    /// <summary>
-    /// Adds a new booth (synchronous).
-    /// </summary>
-    //private void AddBooth()
-    //{
-    //if (IsBusy) return;
-    //IsBusy = true;
-    //try
-    //{
-    //    var nextNumber = Booths.Count == 0 ? 1 : Booths.Max(b => b.BoothNumber) + 1;
-
-    //    var newBooth = new Booth
-    //    {
-    //        BoothID = Guid.NewGuid(),
-    //        BoothNumber = nextNumber,
-    //        NumberOfShelves = 6,
-    //        HasHangerBar = false,
-    //        IsRented = false,
-    //        Status = BoothStatus.Ledig,
-    //        CustomerID = null,
-    //        Customer = null
-    //    };
-    //    using (BoothsView.DeferRefresh())
-    //    {
-    //        _boothRepo.Add(newBooth);   // ✅ Use sync repo method
-    //        SelectedBooth = newBooth;   // ✅ Focus newly created row
-    //        BoothsView.Refresh();
-    //    }
-    //}
-    //finally
-    //{
-    //    IsBusy = false;
-    //    RefreshCommands();
-    //}
-    //}
-
-    /// <summary>
-    /// Edits the selected booth (synchronous).
-    /// </summary>
-    //private void EditBooth()
-    //{
-    //if (IsBusy || SelectedBooth is null) return;
-    //IsBusy = true;
-    //try
-    //{
-    //    // 💡 Example edit: toggle hanger bar (replace with real edit flow / dialog)
-    //    SelectedBooth.HasHangerBar = !SelectedBooth.HasHangerBar;
-    //    if (SelectedBooth.HasHangerBar == true)
-    //    {
-    //        SelectedBooth.NumberOfShelves = 3;
-    //    }
-
-    //    SelectedBooth.IsRented = !SelectedBooth.IsRented;
-    //    if (SelectedBooth.IsRented == false)
-    //    {
-    //        SelectedBooth.Status = BoothStatus.Ledig;
-    //        SelectedBooth.CustomerID = null;
-    //        SelectedBooth.Customer = null;
-    //    }
-
-    //    _boothRepo.Update(SelectedBooth); // ✅ Sync save
-    //                                      // If Booth implements INotifyPropertyChanged, UI updates automatically.
-    //}
-    //finally
-    //{
-    //    IsBusy = false;
-    //    RefreshCommands();
-    //}
-    //}
-
-    /// <summary>
-    /// Deletes the selected booth (synchronous).
-    /// </summary>
-    //private void DeleteBooth()
-    //{
-    //    //if (IsBusy || SelectedBooth is null) return;
-
-    //// ✅ Prevent accidental delete of rented booths (extra guard; CanExecute already checks)
-    //if (SelectedBooth.IsRented) return;
-
-    //IsBusy = true;
-    //try
-    //{
-    //    var toDelete = SelectedBooth;
-    //    SelectedBooth = null;
-
-    //    _boothRepo.Delete(toDelete.BoothID); // ✅ Sync delete
-    //                                         // Items collection is repository-owned; view/listen refresh keeps UI in sync
-    //}
-    //finally
-    //{
-    //    IsBusy = false;
-    //    RefreshCommands();
-    //}
-    //}
-
-    #region Command Can Execute Methods
-
-    //private bool CanModifyData() => !IsBusy;
-
-    //private bool CanEditBooth() => !IsBusy && SelectedBooth != null;
-
-    //private bool CanDeleteBooth()
-    //    => !IsBusy && SelectedBooth != null && !SelectedBooth.IsRented;
-    //private bool CanClearFilters()
-    //    => SearchText is not null || OnlyFree is not false || StatusFilter is not null || SelectedSearchMode is not null;
-    //private bool CanSaveCustomer()
-    //    => !IsBusy && SelectedBooth != null && SelectedBooth.IsRented is false;
-    //private bool CanClearCustomer()
-    //    => !IsBusy && SelectedBooth?.Customer != null && SelectedBooth.IsRented is true;
-
-    #endregion
-
-    /// <summary>
-    /// Updates command states after selection or state changes.
-    /// </summary>
-    //private void RefreshCommands()
-    //{
-    //    (RefreshCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //    (AddBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //    (EditBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //    (DeleteBoothCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //    (SaveCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //    (DeleteCustomerCommand as RelayCommand)?.RaiseCanExecuteChanged();
-    //}
-
-    /// <summary>
-    /// Override to refresh commands when IsBusy changes.
-    /// </summary>
-    //protected override void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    //{
-    //    base.OnPropertyChanged(propertyName);
-
-    //    // ✅ Central place to react to busy changes
-    //    if (propertyName == nameof(IsBusy))
-    //    {
-    //        RefreshCommands();
-    //    }
-    //}
 }
-

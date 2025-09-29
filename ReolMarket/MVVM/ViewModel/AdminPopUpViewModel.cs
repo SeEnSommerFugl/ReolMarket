@@ -13,12 +13,10 @@ namespace ReolMarket.MVVM.ViewModel
     {
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
-
-        private readonly ICollectionView _renterComboBox;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ICollectionView BoothView { get; }
-        public ICollectionView RenterComboBox => _renterComboBox;
+        public ICollectionView RenterComboBox { get; }
 
         // Track selections using HashSet - super fast lookups!
         private HashSet<Guid> _selectedBoothIds = new HashSet<Guid>();
@@ -32,8 +30,8 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
 
-            _renterComboBox = CollectionViewSource.GetDefaultView(Customers);
-            _renterComboBox.SortDescriptions.Add(
+            RenterComboBox = CollectionViewSource.GetDefaultView(Customers);
+            RenterComboBox.SortDescriptions.Add(
                 new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
 
             BoothView = CollectionViewSource.GetDefaultView(Booths);
