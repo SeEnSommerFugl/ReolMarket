@@ -46,14 +46,14 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         private Customer? _selectedCustomer;
-        public Customer? SelectedCustomer 
+        public Customer? SelectedCustomer
         {
             get => _selectedCustomer;
-            set 
+            set
             {
-                if(SetProperty(ref _selectedCustomer, value)) 
+                if (SetProperty(ref _selectedCustomer, value))
                 {
-                    if(_selectedCustomer != null) 
+                    if (_selectedCustomer != null)
                     {
                         CustomerName = _selectedCustomer.CustomerName;
                     }
@@ -62,17 +62,14 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         private string _customerName;
-        public string CustomerName {
+        public string CustomerName
+        {
             get => _customerName;
-            set {
+            set
+            {
                 SetProperty(ref _customerName, value);
             }
         }
-
-        /// <summary>
-        /// The settlement results. One row per item sold.
-        /// </summary>
-        //public ObservableCollection<SettlementLineVm> SettlementLines { get; } = new();
 
         /// <summary>
         /// Command that generates the settlement list.
@@ -104,7 +101,7 @@ namespace ReolMarket.MVVM.ViewModel
                     .Where(c => _boothRepo.Items.Any(b => b.CustomerID == c.CustomerID && (b.IsRented || b.Status == BoothStatus.Optaget)))
                     .ToList();
 
-                foreach(var customer in customersWithBooths)
+                foreach (var customer in customersWithBooths)
                 {
                     var booths = _boothRepo.Items.Where(b => b.CustomerID == customer.CustomerID).ToList();
                     int boothCount = booths.Count();
@@ -138,8 +135,19 @@ namespace ReolMarket.MVVM.ViewModel
                 }
             }, "Generating settlement…");
         }
-    }
 
+
+        private bool FilterBooth(object obj, object obj2)
+        {
+            if (obj is not Booth booth || obj2 is not Customer customer)
+                return false;
+
+            var customerId = SelectedCustomer?.CustomerID;
+            var boothCustomerID = booth.CustomerID;
+
+            return customerId == boothCustomerID;
+        }
+    }
     internal sealed class CustomerSettlementVm
     {
         public string CustomerName { get; set; } = string.Empty;
