@@ -32,6 +32,7 @@ namespace ReolMarket.Data.Repository
         protected override string SqlDeleteById => @"
             DELETE FROM Customer
             WHERE Customer_ID = @Customer_ID";
+
         protected override Customer Map(IDataRecord r) => new Customer
         {
             CustomerID = r.GetGuid(r.GetOrdinal("Customer_ID")),

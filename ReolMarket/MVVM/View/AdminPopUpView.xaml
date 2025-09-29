@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReolMarket" 
-        xmlns:conv="clr-namespace:ReolMarket.Core"
+        xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
         Title="AdminPopUpView" Height="450" Width="800">
 
@@ -14,8 +13,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <conv:BoolVisibilityConverter x:Key="ShowIfTrue"/>
-            <conv:BoolVisibilityInverter x:Key="ShowIfFalse"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -40,20 +37,24 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1">
+        <Grid Grid.Row="1" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0">
+            <Grid Grid.Column="0" Style="{StaticResource ShowGridWhenNotEditing}">
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfFalse}}">
+                <StackPanel Grid.Column="0" Grid.Row="0">
                     <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
@@ -62,7 +63,7 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfFalse}}">
+                <StackPanel Grid.Column="1" Grid.Row="0">
                     <TextBox Text="{Binding CustomerName}"/>
                     <!-- Text="{Binding SelectedLejer.Name}" -->
                     <TextBox Text="{Binding Email}"/>
@@ -77,13 +78,18 @@
                 </StackPanel>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" Style="{StaticResource ShowGridWhenEditing}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
+                <StackPanel Grid.Column="0" Grid.Row="0">
                     <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
                     <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
@@ -93,7 +99,7 @@
 
                 </StackPanel>
 
-                <StackPanel Grid.Column="1" Visibility="{Binding IsEditing, Converter={StaticResource ShowIfTrue}}">
+                <StackPanel Grid.Column="1" Grid.Row="0">
                     <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="CustomerName" />
                     <!-- Text="{Binding CustomerName}" -->
                     <TextBox Text="{Binding SelectedCustomer.Email}"/>
@@ -110,16 +116,53 @@
 
                 </StackPanel>
 
+                <Button Command="{Binding SaveCommand}" Grid.Row="1" Grid.ColumnSpan="2" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+
             </Grid>
 
             <Grid Grid.Column="1">
                 <Border Grid.Column="2" Style="{StaticResource Card}">
-                    <StackPanel>
-                        <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+
+                        <DataGrid Grid.Row="1" 
+                                  ItemsSource="{Binding BoothView}" 
+                                  Style="{StaticResource Grid.Base}" 
+                                  x:Name="LejerReolerGrid"
+                                  VirtualizingPanel.IsVirtualizing="False"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.CanContentScroll="True"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  MaxHeight="300">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
+                                <DataGridTemplateColumn Header="Select" Width="60" CanUserSort="False" CanUserReorder="False">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox x:Name="BoothCheckBox"
+                                                      Checked="BoothCheckBox_Checked" 
+                                                      Unchecked="BoothCheckBox_Unchecked"
+                                                      Tag="{Binding BoothID}"
+                                                      Loaded="BoothCheckBox_Loaded"
+                                                      Unloaded="BoothCheckBox_Unloaded"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="Reol Nr" 
+                                                    Width="100" 
+                                                    Binding="{Binding BoothNumber}"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDate}"/>
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -133,23 +176,20 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource Btn.Primary}" Content="Fortsæt" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Slut Dato" Width="160"/>
+                                <DataGridTextColumn Header="Slut Dato" Width="160" Binding="{Binding EndDate}"/>
                                 <DataGridTemplateColumn Header="" Width="120">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource Btn.Danger}" Content="Opsig" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
-                            <!-- Note til migselv: ItemsSource: {Binding SelectedLejer.Reoler} -->
                         </DataGrid>
-                    </StackPanel>
+                    </Grid>
                 </Border>
             </Grid>
 
@@ -157,7 +197,7 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <Button Grid.Column="6"  Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48" HorizontalAlignment="Center"/>
+            <Button Command="{Binding SaveCommand}" Style="{StaticResource HideButton}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
         </Grid>
         
     </Grid>

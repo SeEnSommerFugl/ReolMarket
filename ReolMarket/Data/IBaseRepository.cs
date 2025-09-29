@@ -10,5 +10,6 @@ namespace ReolMarket.Data
         void Add(T entity);
         void Update(T entity);
         void Delete(TKey id);
+        void UpdateRange(IEnumerable<T> entities);
     }
 }

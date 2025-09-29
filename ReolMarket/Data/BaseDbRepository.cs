@@ -75,6 +75,34 @@ namespace ReolMarket.Data
             // simplest: resync Items so WPF stays consistent
             ReloadItems();
         }
+        public void UpdateRange(IEnumerable<T> entities)
+        {
+            var entitiesList = entities.ToList();
+            if (!entitiesList.Any()) return;
+
+            using var con = Db.OpenConnection();
+            using var transaction = con.BeginTransaction();
+
+            try
+            {
+                foreach (var entity in entitiesList)
+                {
+                    using var cmd = new SqlCommand(SqlUpdate, con, transaction);
+                    BindUpdate(cmd, entity);
+                    cmd.ExecuteNonQuery();
+                }
+
+                transaction.Commit();
+
+                // Only reload once after all updates are complete
+                ReloadItems();
+            }
+            catch
+            {
+                transaction.Rollback();
+                throw;
+            }
+        }
 
         public void Delete(TKey id)
         {
