@@ -237,6 +237,7 @@ namespace ReolMarket.MVVM.ViewModel
                     booth.IsRented = true;
                     booth.Status = BoothStatus.Optaget;
                     booth.StartDate = now;
+                    booth.EndDate = null;
                     updatedBooths.Add(booth);
                 }
                 else if (!isSelected && isCurrentCustomerBooth)
