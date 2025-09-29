@@ -14,14 +14,14 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
 
-        private readonly ICollectionView _boothView;
         private readonly ICollectionView _renterComboBox;
-
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
-        public ObservableCollection<BoothViewModel> AvailableBooths { get; set; }
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
-        public ICollectionView BoothView => _boothView;
+        public ICollectionView BoothView { get; }
         public ICollectionView RenterComboBox => _renterComboBox;
+
+        // Track selections using HashSet - super fast lookups!
+        private HashSet<Guid> _selectedBoothIds = new HashSet<Guid>();
 
         public ICommand SaveCommand { get; }
         public ICommand NewRenterCommand { get; }
@@ -31,27 +31,23 @@ namespace ReolMarket.MVVM.ViewModel
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
-            AvailableBooths = new ObservableCollection<BoothViewModel>();
-
-
 
             _renterComboBox = CollectionViewSource.GetDefaultView(Customers);
             _renterComboBox.SortDescriptions.Add(
                 new SortDescription(nameof(Customer.CustomerName), ListSortDirection.Ascending));
 
-            _boothView = CollectionViewSource.GetDefaultView(AvailableBooths);
-            _boothView.Filter = BoothFilter;
-            _boothView.GroupDescriptions.Add(
-                new PropertyGroupDescription(nameof(Booth.IsRented)));
-            _boothView.SortDescriptions.Add
-                (new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+            BoothView = CollectionViewSource.GetDefaultView(Booths);
+            BoothView.Filter = BoothFilter;
+            BoothView.SortDescriptions.Add(new SortDescription(nameof(Booth.IsRented), ListSortDirection.Descending));
+            BoothView.SortDescriptions.Add(new SortDescription(nameof(Booth.BoothNumber), ListSortDirection.Ascending));
+
+            Booths.CollectionChanged += (_, __) => BoothView.Refresh();
 
             SaveCommand = new RelayCommand(_ => AddOrEditRenter(), _ => CanSave());
             NewRenterCommand = new RelayCommand(_ => NewRenter(), _ => CanRun());
             EditRenterCommand = new RelayCommand(_ => EditRenter(), _ => CanRun());
 
-            LoadAvailableBooths();
-
+            //_boothView.Refresh();
         }
 
         private Customer? _selectedCustomer;
@@ -62,20 +58,22 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (SetProperty(ref _selectedCustomer, value))
                 {
+                    LoadAvailableBooths(); // This will handle pre-selection
+
                     // Auto-populate form fields when a customer is selected
-                    if (value != null && IsEditing)
+                    if (_selectedCustomer != null && IsEditing)
                     {
-                        CustomerName = value.CustomerName;
-                        Email = value.Email;
-                        PhoneNumber = value.PhoneNumber;
-                        Address = value.Address;
-                        PostalCode = value.PostalCode;
+                        CustomerName = _selectedCustomer.CustomerName;
+                        Email = _selectedCustomer.Email;
+                        PhoneNumber = _selectedCustomer.PhoneNumber;
+                        Address = _selectedCustomer.Address;
+                        PostalCode = _selectedCustomer.PostalCode;
                     }
-                    _boothView.Refresh();
-                    //RefreshCommands();
+
                 }
             }
         }
+        #region Properties
 
         private bool _isEditing;
         public bool IsEditing
@@ -83,8 +81,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _isEditing;
             set
             {
-                if (SetProperty(ref _isEditing, value)) ;
-                _boothView.Refresh();
+                SetProperty(ref _isEditing, value);
             }
         }
 
@@ -94,10 +91,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _customerName;
             set
             {
-                if (SetProperty(ref _customerName, value))
-                {
-                    Validate();
-                }
+                SetProperty(ref _customerName, value); // Remove the empty 'if' statement
             }
         }
 
@@ -107,10 +101,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _email;
             set
             {
-                if (SetProperty(ref _email, value))
-                {
-                    Validate();
-                }
+                SetProperty(ref _email, value); // Remove the empty 'if' statement
             }
         }
 
@@ -120,10 +111,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _phoneNumber;
             set
             {
-                if (SetProperty(ref _phoneNumber, value))
-                {
-                    Validate();
-                }
+                SetProperty(ref _phoneNumber, value); // Remove the empty 'if' statement
             }
         }
 
@@ -133,10 +121,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _address;
             set
             {
-                if (SetProperty(ref _address, value))
-                {
-                    Validate();
-                }
+                SetProperty(ref _address, value); // Remove the empty 'if' statement
             }
         }
 
@@ -146,10 +131,7 @@ namespace ReolMarket.MVVM.ViewModel
             get => _postalCode;
             set
             {
-                if (SetProperty(ref _postalCode, value))
-                {
-                    Validate();
-                }
+                SetProperty(ref _postalCode, value); // Remove the empty 'if' statement
             }
         }
 
@@ -170,8 +152,26 @@ namespace ReolMarket.MVVM.ViewModel
             IsEditing = true;
 
         }
+        #endregion
+
+        public bool IsBoothSelected(Guid boothId) => _selectedBoothIds.Contains(boothId);
 
 
+        public void SetBoothSelection(Guid boothId, bool isSelected)
+        {
+            if (isSelected)
+                _selectedBoothIds.Add(boothId);    // Add to HashSet
+            else
+                _selectedBoothIds.Remove(boothId); // Remove from HashSet
+        }
+
+        public void ToggleBoothSelection(Guid boothId)
+        {
+            if (_selectedBoothIds.Contains(boothId))
+                _selectedBoothIds.Remove(boothId);
+            else
+                _selectedBoothIds.Add(boothId);
+        }
         private void AddOrEditRenter()
         {
             if (!CanSave()) return;
@@ -189,9 +189,10 @@ namespace ReolMarket.MVVM.ViewModel
                         customerToUpdate.Address = Address!.Trim();
                         customerToUpdate.PostalCode = PostalCode!.Trim();
 
+                        Validate();
+                        UpdateBoothAssignments();
                         _customerRepo.Update(customerToUpdate);
                     }
-                    SelectedCustomer = customerToUpdate;
                 }
                 else
                 {
@@ -204,47 +205,63 @@ namespace ReolMarket.MVVM.ViewModel
                         Address = _address,
                         PostalCode = _postalCode,
                     };
+                    Validate();
                     _customerRepo.Add(customer);
                     SelectedCustomer = customer;
+                    UpdateBoothAssignments();
                 }
-                UpdateBoothAssignments();
-                _boothView.Refresh();
+
+
             });
         }
 
         private void UpdateBoothAssignments()
         {
+
             if (SelectedCustomer == null) return;
 
-            var selectedBooths = AvailableBooths.Where(bvm => bvm.IsSelected).Select(bvm => bvm.Booth).ToList();
-            var unselectedBooths = AvailableBooths.Where(bvm => !bvm.IsSelected && bvm.Booth.CustomerID == SelectedCustomer.CustomerID)
-                                                    .Select(bvm => bvm.Booth).ToList();
+            var updatedBooths = new List<Booth>();
+            var now = DateTime.Now;
+            var endOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
 
-            // Assign selected booths to customer
-            foreach (var booth in selectedBooths)
+            // Single pass through Booths to update assignments
+            foreach (var booth in Booths)
             {
-                booth.CustomerID = SelectedCustomer.CustomerID;
-                booth.IsRented = true;
-                booth.Status = BoothStatus.Optaget;
+                bool isSelected = _selectedBoothIds.Contains(booth.BoothID);
+                bool isCurrentCustomerBooth = booth.CustomerID == SelectedCustomer.CustomerID;
+
+                if (isSelected && !isCurrentCustomerBooth)
+                {
+                    // Assign booth to customer
+                    booth.CustomerID = SelectedCustomer.CustomerID;
+                    booth.IsRented = true;
+                    booth.Status = BoothStatus.Optaget;
+                    booth.StartDate = now;
+                    updatedBooths.Add(booth);
+                }
+                else if (!isSelected && isCurrentCustomerBooth)
+                {
+                    // Unassign booth
+                    booth.CustomerID = null;
+                    booth.IsRented = false;
+                    booth.Status = BoothStatus.Ledig;
+                    booth.StartDate = null;
+                    booth.EndDate = endOfMonth;
+                    updatedBooths.Add(booth);
+                }
             }
 
-            // Remove assignments from unselected booths
-            foreach (var booth in unselectedBooths)
+            if (updatedBooths.Any())
             {
-                booth.CustomerID = null;
-                booth.IsRented = false;
-                booth.Status = BoothStatus.Ledig;
+                _boothRepo.UpdateRange(updatedBooths);
+                BoothView.Refresh(); // Refresh only if updates occurred
             }
-
-            // Update booths in repository
-            _boothRepo.UpdateRange(selectedBooths.Concat(unselectedBooths));
         }
+
 
         private bool BoothFilter(object obj)
         {
-            if (obj is not BoothViewModel bvm) return false;  // ✅ Cast to BoothViewModel
-
-            var b = bvm.Booth;  // ✅ Get the underlying Booth
+            if (obj is not Booth b) return false;
 
             bool isFree = b.CustomerID == null && !b.IsRented && b.Status == BoothStatus.Ledig;
 
@@ -259,27 +276,38 @@ namespace ReolMarket.MVVM.ViewModel
                 b.CustomerID == cid.Value
                 && (b.IsRented || b.Status == BoothStatus.Optaget);
 
-            return isCustomers || isFree;     // <-- Edit mode with customer: customer's booths OR free
+            return isCustomers || isFree;    // <-- Edit mode with customer: customer's booths OR free
         }
 
         private void LoadAvailableBooths()
         {
-            AvailableBooths.Clear();
 
-            // Use your existing repository approach
-            var availableBooths = Booths;
-
-            // Create ViewModels only for UI selection purposes
-            foreach (var booth in availableBooths)
+            // Only clear selections for the current customer, then rebuild them from database state
+            if (_selectedCustomer != null)
             {
-if (_selectedCustomer != null && booth.CustomerID == _selectedCustomer.CustomerID)
-        {
-            boothVm.IsSelected = true;  // Pre-check this customer's booths
-        }
-                AvailableBooths.Add(new BoothViewModel(booth));
+                foreach (var boothId in Booths)
+                {
+                    _selectedBoothIds.Remove(boothId.BoothID);
+                }
+
+                // Re-add based on actual database state (IsRented = true)
+                foreach (var booth in Booths.Where(b =>
+                    b.CustomerID == _selectedCustomer.CustomerID && b.IsRented))
+                {
+                    _selectedBoothIds.Add(booth.BoothID);
+                }
             }
-            _boothView.Refresh();
+            else
+            {
+                // If no customer selected, clear all selections (for "Add New" mode)
+                _selectedBoothIds.Clear();
+            }
+            BoothView.Refresh();
         }
+
+
+
+        #region Validation
 
         protected override void Validate()
         {
@@ -288,7 +316,7 @@ if (_selectedCustomer != null && booth.CustomerID == _selectedCustomer.CustomerI
                 AddError(nameof(CustomerName), "Indtast venligst navn.");
 
             ClearErrors(nameof(Email));
-            if (!string.IsNullOrWhiteSpace(Email) && !IsValidEmail(Email))
+            if (string.IsNullOrWhiteSpace(Email) && !IsValidEmail(Email))
                 AddError(nameof(Email), "Forkert email format.");
 
             ClearErrors(nameof(PhoneNumber));
@@ -327,23 +355,6 @@ if (_selectedCustomer != null && booth.CustomerID == _selectedCustomer.CustomerI
         private bool CanSave() => !IsBusy && !HasErrors;
         private bool CanRun() => !IsBusy;
 
-
-        /// <summary>
-        /// The booth currently selected in the UI.
-        /// </summary>
-        //public Booth? SelectedBooth
-        //{
-        //    get => _selectedBooth;
-        //    set
-        //    {
-        //        if (SetProperty(ref _selectedBooth, value))
-        //        {
-        //            //CustomerFromSelectedBooth();
-        //            RefreshCommands(); // ✅ Keep buttons in sync
-
-        //        }
-        //    }
-        //}
-
     }
+    #endregion
 }

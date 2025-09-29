@@ -30,8 +30,6 @@ namespace ReolMarket.Data.Repository
         DELETE FROM Sale
          WHERE SaleID = @SaleID;";
 
-        protected override string SqlUpdateRange => throw new NotImplementedException();
-
         protected override Sale Map(IDataRecord r) => new Sale
         {
             SaleID = r.GetGuid(r.GetOrdinal("SaleID")),
@@ -63,10 +61,6 @@ namespace ReolMarket.Data.Repository
 
         protected override Guid GetKey(Sale e) => e.SaleID;
 
-        protected override void BindUpdateRange(SqlCommand cmd, IEnumerable<Sale> entities)
-        {
-            throw new NotImplementedException();
-        }
     }
 
 }

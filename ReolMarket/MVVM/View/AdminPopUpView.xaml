@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:ReolMarket" 
-        xmlns:conv="clr-namespace:ReolMarket.Core"
+        xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
         Title="AdminPopUpView" Height="450" Width="800">
 
@@ -14,8 +13,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <conv:BoolVisibilityConverter x:Key="ShowIfTrue"/>
-            <conv:BoolVisibilityInverter x:Key="ShowIfFalse"/>
         </ResourceDictionary>
     </Window.Resources>
 
@@ -134,25 +131,38 @@
                         <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
 
                         <DataGrid Grid.Row="1" 
-                      ItemsSource="{Binding BoothView}" 
-                      Style="{StaticResource Grid.Base}" 
-                      x:Name="LejerReolerGrid"
-                      ScrollViewer.CanContentScroll="True"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ScrollViewer.HorizontalScrollBarVisibility="Auto"
-                      MaxHeight="300">
+                                  ItemsSource="{Binding BoothView}" 
+                                  Style="{StaticResource Grid.Base}" 
+                                  x:Name="LejerReolerGrid"
+                                  VirtualizingPanel.IsVirtualizing="False"
+                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                  ScrollViewer.CanContentScroll="True"
+                                  AutoGenerateColumns="False"
+                                  CanUserAddRows="False"
+                                  CanUserDeleteRows="False"
+                                  GridLinesVisibility="Horizontal"
+                                  HeadersVisibility="Column"
+                                  MaxHeight="300">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Header="Select" Width="60" CanUserSort="False" CanUserReorder="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <CheckBox IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}" 
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                                            <CheckBox x:Name="BoothCheckBox"
+                                                      Checked="BoothCheckBox_Checked" 
+                                                      Unchecked="BoothCheckBox_Unchecked"
+                                                      Tag="{Binding BoothID}"
+                                                      Loaded="BoothCheckBox_Loaded"
+                                                      Unloaded="BoothCheckBox_Unloaded"
+                                                      HorizontalAlignment="Center"
+                                                      VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding Booth.BoothNumber}"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding Booth.StartDate}"/>
+                                <DataGridTextColumn Header="Reol Nr" 
+                                                    Width="100" 
+                                                    Binding="{Binding BoothNumber}"
+                                                    IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDate}"/>
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
@@ -169,7 +179,7 @@
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Slut Dato" Width="160"/>
+                                <DataGridTextColumn Header="Slut Dato" Width="160" Binding="{Binding EndDate}"/>
                                 <DataGridTemplateColumn Header="" Width="120">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>

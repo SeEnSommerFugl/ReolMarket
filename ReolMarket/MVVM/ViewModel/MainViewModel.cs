@@ -8,7 +8,7 @@ namespace ReolMarket.MVVM.ViewModel
     /// The main ViewModel for the application.
     /// It controls navigation between Booths, Items, and Renters views.
     /// </summary>
-    public class MainViewModel : BaseViewModel, INotifyPropertyChanged, INotifyDataErrorInfo, IDisposable
+    public class MainViewModel : BaseViewModel
     {
         private BaseViewModel? _currentView;
 
