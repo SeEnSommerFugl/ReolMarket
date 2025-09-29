@@ -60,6 +60,7 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(Sale e) => e.SaleID;
+
     }
 
 }

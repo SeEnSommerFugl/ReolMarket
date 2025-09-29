@@ -89,6 +89,24 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
+    <Style TargetType="Button" x:Key="HideButton" BasedOn="{StaticResource Btn.Base}">
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style TargetType="Button" x:Key="ShowButton" BasedOn="{StaticResource Btn.Base}">
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
     <!-- Venstre navigation -->
     <Style TargetType="Button" x:Key="Btn.Nav" BasedOn="{StaticResource Btn.Base}">
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
@@ -120,6 +138,20 @@
         <Setter Property="BorderThickness" Value="0,0,0,1"/>
     </Style>
 
+    <!-- ===== DataGrid ROW ===== -->
+    <Style TargetType="DataGridRow">
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsRented}" Value="True">
+                <Setter Property="Background" Value="#FFFFAEAE" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsRented}" Value="False">
+                <Setter Property="Background" Value="#FFAEFFAE" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <!-- ===== StackPanel ===== -->
     <Style x:Key="StackPanel.IsEdit.True" TargetType="StackPanel">
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
@@ -130,14 +162,16 @@
     </Style>
 
     <Style x:Key="StackPanel.IsEdit.False" TargetType="StackPanel">
-        <Setter Property="Visibility" Value="Visible"/>
+        <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsEditing}" Value="False">
-                <Setter Property="Visibility" Value="Collapsed"/>
+                <Setter Property="Visibility" Value="Visible"/>
             </DataTrigger>
         </Style.Triggers>
     </Style>
 
+
+    
     <!-- ===== Difference ===== -->
 
     <!-- POSITIVE DIFFERENCE -->
@@ -163,4 +197,26 @@
         <Setter Property="CornerRadius" Value="10"/>
         <Setter Property="Padding" Value="16"/>
     </Style>
+    
+    
+    <!-- GRID -->
+    <Style x:Key="ShowGridWhenEditing" TargetType="Grid">
+        <Setter Property="Visibility" Value="Collapsed"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                <Setter Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Inverse variant -->
+    <Style x:Key="ShowGridWhenNotEditing" TargetType="Grid">
+        <Setter Property="Visibility" Value="Visible"/>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
 </ResourceDictionary>

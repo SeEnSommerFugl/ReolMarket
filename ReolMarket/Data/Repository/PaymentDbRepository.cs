@@ -53,6 +53,7 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(Payment e) => e.PaymentID;
+
     }
 
 }

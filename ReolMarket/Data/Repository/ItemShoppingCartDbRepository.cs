@@ -26,6 +26,7 @@ namespace ReolMarket.Data.Repository
         protected override string SqlDeleteById => @"
             DELETE FROM ItemShoppingCart
             WHERE Item_ID = @Item_ID AND ShoppingCart_ID = @ShoppingCart_ID;";
+
         protected override ItemShoppingCart Map(IDataRecord r) => new ItemShoppingCart
         {
             ItemID = r.GetGuid(r.GetOrdinal("Item_ID")),
@@ -49,5 +50,6 @@ namespace ReolMarket.Data.Repository
             => throw new NotSupportedException("Update is not supported for this junction table.");
 
         protected override ItemShoppingCartKey GetKey(ItemShoppingCart e) => new ItemShoppingCartKey(e.ItemID, e.ShoppingCartID);
+
     }
 }

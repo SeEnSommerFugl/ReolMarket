@@ -22,11 +22,11 @@ namespace ReolMarket
             // IBaseRepository<Item, Guid> itemRepo = new ItemDbRepository();
 
             // ---- ViewModels (pass interfaces in) ----
-            var boothsVM = new RentersViewModelOLD();
+
             var itemsVM = new ItemsViewModel(/* e.g., itemRepo */);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
 
-            var mainVM = new MainViewModel(boothsVM, itemsVM, rentersVM);
+            var mainVM = new MainViewModel(itemsVM, rentersVM);
 
             // ---- Shell window ----
             var mainWindow = new MainWindow(mainVM);

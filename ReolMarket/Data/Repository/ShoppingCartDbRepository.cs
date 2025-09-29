@@ -50,6 +50,7 @@ namespace ReolMarket.Data.Repository
         }
 
         protected override Guid GetKey(ShoppingCart e) => e.ShoppingCartId;
+
     }
 
 }
