@@ -59,6 +59,10 @@
                     <DatePicker Grid.Column="4" SelectedDate="{Binding FromDate}" Height="34"/>
                     <DatePicker Grid.Column="6" SelectedDate="{Binding ToDate}" Height="34"/>
                     
+                    
+                    <!--<Calendar Grid.Column="4"
+          SelectedDate="{Binding PeriodStart}" />-->
+                    
                     <!--Søg text-->
                     <TextBox Grid.Column="8" Width="auto" Height="34"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
@@ -94,14 +98,20 @@
             </DataGrid>
             
             <!-- Detajler + Afregning-->
-            <Grid Grid.Row="4">
+            <Grid Grid.Row="4" MinHeight="180">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 
             <!--nøgletal-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
                 <Border Style="{StaticResource Card}">
                     <StackPanel>
                         <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
@@ -110,9 +120,11 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate>
                                     <Border Padding ="4" Margin="0,4,0,0">
+                                        
                                         <StackPanel Orientation="Horizontal" Margin="8,4">
                                             <TextBlock Text="{Binding Label}" Width="120" />
                                             <TextBlock Text="{Binding Value}" FontWeight="Bold"/>
+                                            
                                         </StackPanel>
                                     </Border>
                                 </DataTemplate>

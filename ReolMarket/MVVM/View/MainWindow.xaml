@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Maximized">
+        WindowState="Maximized" Height="775" Width="842">
 
     <Window.Background>
         <ImageBrush ImageSource="/Core/Images/Background.png" Stretch="UniformToFill"/>
@@ -40,6 +40,7 @@
         </StackPanel>
 
         <Frame Grid.Column="2"
-                  Content="{Binding CurrentView}"/>
+                  Content="{Binding CurrentView}"
+                  NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>
