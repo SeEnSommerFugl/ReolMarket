@@ -1,5 +1,0 @@
-{
-  "ConnectionStrings": {
-    "DefaultConnection": "Server=100.71.138.33,1433;Database=ReolMarket;User Id=David;Password=Sommerfugl123!;Encrypt=True;TrustServerCertificate=True;"
-  }
-}
