@@ -15,7 +15,6 @@ namespace ReolMarket.Data
             new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                //.AddJsonFile("appsettings.Local.json", optional: false, reloadOnChange: false)
                 .AddEnvironmentVariables()
                 .Build();
         /// <summary>
