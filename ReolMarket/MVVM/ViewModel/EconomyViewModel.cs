@@ -1,9 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
+using ReolMarket.MVVM.View;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -16,14 +21,22 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
-        private readonly ICollectionView _quickRangesComboBox;
+
+        private readonly DispatcherTimer _refreshDebounce = new() { Interval = TimeSpan.FromMilliseconds(200) };
+
+        private SearchModeItem? _selectedSearchMode;
 
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
-        public ObservableCollection<Customer> Customer => _customerRepo.Items;
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
-        public ICollectionView EconomyView { get; }
-        public ICollectionView QuickRangesComboBox => _quickRangesComboBox;
+        public ICollectionView EconomyBoard { get; }
+        public ICollectionView BoothView { get; }
+        public ICollectionView CustomerView { get; }
+        public ICollectionView SalesView { get; }
+        public CollectionViewGroup test { get; }
+        public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
+        public CollectionViewGroup collectionViewGroup { get; }
 
         /// <summary>
         /// Start date for the settlement period.
@@ -60,6 +73,26 @@ namespace ReolMarket.MVVM.ViewModel
                 }
             }
         }
+        public SearchModeItem? SelectedSearchMode
+        {
+            get => _selectedSearchMode;
+            set
+            {
+                if (SetProperty(ref _selectedSearchMode, value))
+                    EconomyBoard?.Refresh();
+
+            }
+        }
+        private string? _searchText;
+        public string? SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                    RequestRefresh(); // ✅ Instant feedback
+            }
+        }
 
         private string _customerName;
         public string CustomerName
@@ -84,6 +117,15 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
+
+            BoothView = CollectionViewSource.GetDefaultView(Booths);
+            CustomerView = CollectionViewSource.GetDefaultView(Customers);
+            SalesView = CollectionViewSource.GetDefaultView(Sales);
+
+
+
+
+            _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); EconomyBoard.Refresh(); };
 
             ExecuteGenerate();
         }
@@ -147,7 +189,52 @@ namespace ReolMarket.MVVM.ViewModel
 
             return customerId == boothCustomerID;
         }
+
+        private bool FilterCustomer(object obj)
+        {
+            if (obj is not Customer customer)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(SearchText) || SelectedSearchMode == null)
+                return true;
+
+            var s = SearchText.Trim();
+
+            return SelectedSearchMode.SearchMode switch
+            {
+                SearchMode.All =>
+                    customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.PhoneNumber.Contains(s) ||
+                    customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.Address.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.PostalCode.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                    b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+                SearchMode.BoothNumber =>
+                    Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                    b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+                SearchMode.CustomerName =>
+                    customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+                SearchMode.CustomerPhone =>
+                    customer.PhoneNumber.Contains(s),
+
+                SearchMode.CustomerEmail =>
+                    customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+                _ => true
+            };
+        }
+
+        private void RequestRefresh()
+        {
+            _refreshDebounce.Stop();
+            _refreshDebounce.Start();
+        }
     }
+
     internal sealed class CustomerSettlementVm
     {
         public string CustomerName { get; set; } = string.Empty;
