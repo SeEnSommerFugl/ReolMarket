@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using ReolMarket.Core;
 
 namespace ReolMarket.MVVM.ViewModel
@@ -36,23 +35,28 @@ namespace ReolMarket.MVVM.ViewModel
         /// </summary>
         public ICommand NavigateRentersCommand { get; }
 
+        public ICommand NavigateEconomyCommand { get; }
+
         private readonly ItemsViewModel _itemsViewModel;
         private readonly RentersViewModel _rentersViewModel;
+        private readonly EconomyViewModel _economyViewModel;
 
 
         /// <summary>
         /// Creates the MainViewModel and sets up navigation.
         /// </summary>
-        internal MainViewModel(ItemsViewModel items, RentersViewModel renters)
+        internal MainViewModel(ItemsViewModel items, RentersViewModel renters, EconomyViewModel economy)
         {
             Title = "ReolMarket";
 
             _itemsViewModel = items;
             _rentersViewModel = renters;
+            _economyViewModel = economy;
 
 
             NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
             NavigateItemsCommand = new RelayCommand(_ => CurrentView = _itemsViewModel);
+            NavigateEconomyCommand = new RelayCommand(_ => CurrentView = _economyViewModel);
 
             CurrentView = _currentView; // Show Booths by default
 
