@@ -5,22 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
-        Title="AdminPopUpView" Height="450" Width="800">
+        Title="AdminPopUpView" Height="450" Width="800" MinHeight="450" MinWidth="800">
 
     <Window.Resources>
-        <!-- Reference til separat style-fil -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
 
     <Grid>
 
-        <!--<Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
+        <!--<Button Grid.Column="1" Style="{StaticResource ButtonBase}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
  Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60" />
-        <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
+        <Button Grid.Column="1" Style="{StaticResource ButtonBase}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
  Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>-->
 
         <Grid.RowDefinitions>
@@ -32,8 +31,8 @@
 
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Command="{Binding NewRenterCommand}" Style="{StaticResource Btn.Base}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-                <Button Command="{Binding EditRenterCommand}" Style="{StaticResource Btn.Base}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Command="{Binding NewRenterCommand}" Style="{StaticResource ButtonBase}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                <Button Command="{Binding EditRenterCommand}" Style="{StaticResource ButtonBase}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
             </StackPanel>
         </Grid>
 
@@ -109,7 +108,7 @@
                     <TextBox Text="{Binding SelectedCustomer.Address}"/>
                     <TextBox Text="{Binding SelectedCustomer.PostalCode}"/>
                     <!-- Text="{Binding PostalCode}" -->
-                    <Border Style="{StaticResource Chip.Negative}">
+                    <Border Style="{StaticResource ChipNegative}">
                         <TextBlock Text="-100,60"/>
                     </Border>
                     <!-- Binding + farveskift via triggers senere -->
@@ -132,7 +131,7 @@
 
                         <DataGrid Grid.Row="1" 
                                   ItemsSource="{Binding BoothView}" 
-                                  Style="{StaticResource Grid.Base}" 
+                                  Style="{StaticResource DataGridBase}" 
                                   x:Name="LejerReolerGrid"
                                   VirtualizingPanel.IsVirtualizing="False"
                                   ScrollViewer.VerticalScrollBarVisibility="Auto"
@@ -166,7 +165,7 @@
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Style="{StaticResource Chip.Positive}">
+                                            <Border Style="{StaticResource ChipPositive}">
                                                 <TextBlock Text="+500,60 kr"/>
                                             </Border>
                                         </DataTemplate>
@@ -175,7 +174,7 @@
                                 <DataGridTemplateColumn Header="" Width="120">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource Btn.Primary}" Content="Fortsæt" Padding="8,4"/>
+                                            <Button Style="{StaticResource ButtonPrimary}" Content="Fortsæt" Padding="8,4"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -183,7 +182,7 @@
                                 <DataGridTemplateColumn Header="" Width="120">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource Btn.Danger}" Content="Opsig" Padding="8,4"/>
+                                            <Button Style="{StaticResource ButtonDanger}" Content="Opsig" Padding="8,4"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
@@ -197,7 +196,7 @@
         </Grid>
 
         <Grid Grid.Row="2">
-            <Button Command="{Binding SaveCommand}" Style="{StaticResource HideButton}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+            <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonIcon}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
         </Grid>
         
     </Grid>

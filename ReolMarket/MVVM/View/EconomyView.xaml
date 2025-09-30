@@ -9,13 +9,13 @@
       Title="EconomyView">
 
     <Page.Resources>
-        <!-- Reference til separat style-fil -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MVVM/View/Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
+
 
     <Grid>
         <Grid>
@@ -69,12 +69,6 @@
                              Padding="12,6" 
                              BorderBrush="{StaticResource Brush.Border }" BorderThickness="1" 
                              VerticalAlignment="Center"/>
-
-                    <Button Grid.Column="10" Content="Opdater" 
-                            Style="{StaticResource Btn.Base}"
-                            Command="{Binding RefreshCommand}" 
-                            Width="100" Height="34" Margin="12,0,0,0"
-                            HorizontalAlignment="Left" VerticalAlignment="Center"/>
                 </Grid>
             </Border>
             
@@ -82,7 +76,7 @@
 
             <DataGrid Grid.Row="2" ItemsSource="{Binding CustomerSettlements}"
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                      Style="{StaticResource Grid.Base}" >
+                      Style="{StaticResource DataGridBase}" >
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Dato" Width="160"
                                         Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
@@ -190,7 +184,7 @@
 
                             <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
                                     Content="UDBETAL / BOGFØR"
-                                    Style="{StaticResource Btn.Primary}"
+                                    Style="{StaticResource ButtonPrimary}"
                                     Command="{Binding SettleCommand}"
                                     Height="40" Margin="0,8,0,0"/>
                         </Grid>
@@ -201,9 +195,9 @@
             
             <!--HandlingsKnapper-->
             <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5,12,0,0" HorizontalAlignment="Center">
-                <Button Style="{StaticResource Btn.Primary}" Content="EKSPORTER CSV" Width="255" Height="48" Command="{Binding ExportCsvCommand}"/>
-                <Button Style="{StaticResource Btn.Primary}" Content="PRINT" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding PrintCommand}"/>
-                <Button Style="{StaticResource Btn.Primary}" Content="ÅBN KVITTERING" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding OpenReciptCommand}"/>
+                <Button Style="{StaticResource ButtonPrimary}" Content="EKSPORTER CSV" Width="255" Height="48" Command="{Binding ExportCsvCommand}"/>
+                <Button Style="{StaticResource ButtonPrimary}" Content="PRINT" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding PrintCommand}"/>
+                <Button Style="{StaticResource ButtonPrimary}" Content="ÅBN KVITTERING" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding OpenReciptCommand}"/>
             </StackPanel>
 
         </Grid>

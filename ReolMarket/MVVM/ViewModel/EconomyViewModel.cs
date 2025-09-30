@@ -152,5 +152,18 @@ namespace ReolMarket.MVVM.ViewModel
         public decimal CommissionAmount { get; set; }
 
         public decimal FinalPayout { get; set; }
+
+        /// <summary>
+        /// Used for various Chips designs in views, to change color based on account-balance.
+        /// </summary>
+        public bool? IsPositive
+        {
+            get
+            {
+                if (FinalPayout > 0) return true;
+                if (FinalPayout < 0) return false;
+                return null; // neutral
+            }
+        }
     }
 }
