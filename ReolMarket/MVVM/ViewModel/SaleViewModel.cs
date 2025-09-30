@@ -43,5 +43,14 @@ namespace ReolMarket.MVVM.ViewModel
             get => _periodEnd;
             set => SetProperty(ref _periodEnd, value);
         }
-}
+
+        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo)
+        {
+            _boothRepo = boothRepo;
+            _customerRepo = customerRepo;
+            _saleRepo = saleRepo;
+
+            //ExecuteGenerate();
+        }
+    }
 }
