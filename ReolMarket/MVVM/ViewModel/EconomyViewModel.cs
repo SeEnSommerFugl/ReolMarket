@@ -36,7 +36,6 @@ namespace ReolMarket.MVVM.ViewModel
         public CollectionViewGroup test { get; }
         public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
-        public CollectionViewGroup collectionViewGroup { get; }
 
         /// <summary>
         /// Start date for the settlement period.
