@@ -47,9 +47,9 @@
                            VerticalAlignment="Center"/>
 
                     <TextBlock Grid.Column="1"
-                               Text="Højre"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
+                           Text="Højre"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
 
             </Grid>
             <Grid Grid.Row="2" Background="LightSteelBlue">

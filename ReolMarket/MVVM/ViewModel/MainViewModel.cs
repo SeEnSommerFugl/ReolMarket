@@ -62,7 +62,7 @@ namespace ReolMarket.MVVM.ViewModel
             NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
             NavigateItemsCommand = new RelayCommand(_ => CurrentView = _itemsViewModel);
             NavigateEconomyCommand = new RelayCommand(_ => CurrentView = _economyViewModel);
-            //NavigateSaleCommand = new RelayCommand(_ => CurrentView = _saleViewModel);
+            NavigateSaleCommand = new RelayCommand(_ => CurrentView = _saleViewModel);
 
             CurrentView = _currentView; // Show Booths by default
 
