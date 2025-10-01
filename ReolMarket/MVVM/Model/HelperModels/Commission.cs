@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ReolMarket.MVVM.Model.Helper_models
+namespace ReolMarket.MVVM.Model.HelperModels
 {
     internal class Commission
     {

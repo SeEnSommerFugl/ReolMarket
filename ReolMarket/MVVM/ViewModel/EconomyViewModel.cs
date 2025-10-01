@@ -73,20 +73,24 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private SelectedMonth _selectedMonth;
-        public SearchModeItem? SelectedMonth {
+        private SelectedMonth? _selectedMonth;
+        public SelectedMonth? SelectedMonth
+        {
             get => _selectedMonth;
-            set {
+            set
+            {
                 if (SetProperty(ref _selectedMonth, value))
                     _economyView?.Refresh();
 
             }
         }
 
-        private SelectedYear _selectedYear;
-        public SearchModeItem? SelectedYear {
+        private SelectedYear? _selectedYear;
+        public SelectedYear? SelectedYear
+        {
             get => _selectedYear;
-            set {
+            set
+            {
                 if (SetProperty(ref _selectedYear, value))
                     _economyView?.Refresh();
 
