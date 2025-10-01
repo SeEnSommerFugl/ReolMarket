@@ -119,8 +119,8 @@ namespace ReolMarket.MVVM.ViewModel
                 return true;
             }
 
-            return saleDate.Date.Year == SelectedDate.Value.Year &&
-                saleDate.Date.Year == SelectedDate.Value.Month;
+            return saleDate.SaleDate.Year == SelectedDate.Value.Year &&
+                saleDate.SaleDate.Month == SelectedDate.Value.Month;
         }
 
         private string _customerName;
