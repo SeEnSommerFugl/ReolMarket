@@ -7,7 +7,10 @@
         xmlns:views="clr-namespace:ReolMarket.MVVM.View"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Maximized" MinWidth="1280" MinHeight="800"
+        WindowState="Normal"
+        Width="1920" Height="1080"
+        
+        MinWidth="1280" MinHeight="800"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
 
 
@@ -21,10 +24,18 @@
     <!-- Hovedlayout: venstre navigation | indhold -->
     <Grid Margin="16">
         <Grid.ColumnDefinitions>
+            <!-- Venstre rail -->
             <ColumnDefinition Width="220"/>
+            <!-- Venstre mellemrum -->
             <ColumnDefinition Width="16"/>
+            <!-- Indhold -->
             <ColumnDefinition Width="*"/>
+            <!-- Højre mellemrum (spejl) -->
+            <ColumnDefinition Width="16"/>
+            <!-- Højre gutter (spejl af venstre rail) -->
+            <ColumnDefinition Width="220"/>
         </Grid.ColumnDefinitions>
+
 
         <!-- Venstre navigation -->
         <StackPanel Grid.Column="0">
@@ -38,7 +49,7 @@
         <Frame Grid.Column="2"
        Content="{Binding CurrentView}"
        NavigationUIVisibility="Hidden"
-       d:Content="{d:DesignInstance views:RentersView, IsDesignTimeCreatable=True}"/>
+       d:Content="{d:DesignInstance Type=views:EconomyView, IsDesignTimeCreatable=True}"/>
 
     </Grid>
 </Window>

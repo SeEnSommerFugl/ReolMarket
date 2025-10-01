@@ -1,213 +1,241 @@
-﻿<Page x:Class="ReolMarket.MVVM.View.EconomyView"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ReolMarket"
-      mc:Ignorable="d" 
-      d:DesignWidth="1652" d:DesignHeight="1048"
+﻿<UserControl x:Class="ReolMarket.MVVM.View.EconomyView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d"
+             d:DesignWidth="1652" d:DesignHeight="1048"
+             Background="Transparent">
 
-      Title="EconomyView">
+    <!-- Lokale ressourcer: mørk kort-baggrund + styles der matcher dine -->
+    <UserControl.Resources>
+        <!-- Mørk panelbaggrund (justér farven hvis du vil) -->
+        <SolidColorBrush x:Key="CardBackground" Color="#162231" Opacity="0.92"/>
+        <SolidColorBrush x:Key="CardBorder" Color="#0E1724" Opacity="0.92"/>
 
-    <Page.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Page.Resources>
+        <!-- TitleToLeft alias til din eksisterende TitleLeft (TextBlock) -->
+        <Style x:Key="TitleToLeft" TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}"/>
+
+        <!-- TextBlock-udgave af InputRight (din globale er en TextBox-style) -->
+        <Style x:Key="InputRight" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="Foreground" Value="#D9E6FF"/>
+        </Style>
+
+        <!-- Genbrugelig “Card” til alle sektioner -->
+        <Style x:Key="Card" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource CardBackground}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="SnapsToDevicePixels" Value="True"/>
+        </Style>
+    </UserControl.Resources>
+
+    <!-- Layout: 3 rækker x 2 kolonner. Mørke “cards” inde i grid’et. -->
+    <Grid Background="Transparent" Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- top: Differencer -->
+            <RowDefinition Height="Auto"/>
+            <!-- midt: Nøgletal + Reol-tal -->
+            <RowDefinition Height="Auto"/>
+            <!-- bund: Salgs-tal -->
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- GRID 4: Udestående Differencer (DataGrid uden headers) -->
+        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource Card}" Margin="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Udestående Differencer"
+                           Style="{StaticResource H2}"
+                           Foreground="#EAF2FF"/>
+
+                <DataGrid Grid.Row="2"
+                          AutoGenerateColumns="False"
+                          HeadersVisibility="None"
+                          ColumnHeaderHeight="0"
+                          CanUserAddRows="False"
+                          CanUserDeleteRows="False"
+                          CanUserResizeRows="False"
+                          CanUserResizeColumns="False"
+                          GridLinesVisibility="None"
+                          Background="Transparent"
+                          BorderThickness="0"
+                          RowBackground="Transparent"
+                          AlternatingRowBackground="{x:Null}"
+                          IsReadOnly="True">
+
+                    <!-- Kolonner: Navn + Beløb -->
+                    <DataGrid.Columns>
+                        <!-- Navn-kolonne: fast placeholder-tekst via Style (ingen Binding nødvendig) -->
+                        <DataGridTextColumn Width="*" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TitleToLeft}">
+                                    <Setter Property="Text" Value="Alex Thomsen"/>
+                                    <Setter Property="Foreground" Value="#EAF2FF"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Beløb-kolonne: binder direkte til item (string) og farver via triggers -->
+                        <DataGridTextColumn Width="120" Binding="{Binding}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource InputRight}">
+                                    <!-- Farvning på placeholder-værdier -->
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding}" Value="+500">
+                                            <Setter Property="Foreground" Value="#3DDC84"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding}" Value="-250">
+                                            <Setter Property="Foreground" Value="#FF6B6B"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
 
 
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!--søg/filter-->
-                <RowDefinition Height="12"/>    <!-- spacing-->
-                <RowDefinition Height="*"/>     <!--Økonomi-Liste-->
-                <RowDefinition Height="12"/>    <!--spacing-->
-                <RowDefinition Height="auto"/>  <!--Afregning-->
-                <RowDefinition Height="auto"/>  <!--knapper-->
-            </Grid.RowDefinitions>
-    
-            <!--SØG+FILTER-->
-
-            <Border Style="{StaticResource Card}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>    <!--label: Søg i økonomi-->
-                        <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="120"/>     <!--combobox-->
-                        <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="120"/>    <!--fra-dato-->
-                        <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="120"/>    <!--til-dato-->
-                        <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="140"/>     <!--text-->
-                        <ColumnDefinition Width="*"/>       <!--Opdater knap-->
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Text="Søg i økonomi" 
-                               Style="{StaticResource H1}" 
-                               VerticalAlignment="Center"/>
-                    
-                    <!--QuickRanges-->
-                    <ComboBox Grid.Column="2" Height="34"
-                              ItemsSource="{Binding QuickRanges}"
-                              SelectedItem="{Binding SelectedQuickRange}"
-                              VerticalContentAlignment="Center"/>
-                    
-                    <!--Fra/til-dato-->
-                    <ComboBox ItemsSource="{Binding Years.Items}"
-                              SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
-                              Grid.Column="4"
-                              Height="34"
-                              VerticalContentAlignment="Center"/>
-                    <ComboBox ItemsSource="{Binding Months}"
-                              SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"
-                              Grid.Column="6"
-                              Height="34"
-                              VerticalContentAlignment="Center"/>
-
-                    <!--<Calendar Grid.Column="4"
-          SelectedDate="{Binding PeriodStart}" />-->
-                    
-                    <!--Søg text-->
-                    <TextBox Grid.Column="8" Width="auto" Height="34"
-                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                             Padding="12,6" 
-                             BorderBrush="{StaticResource Brush.Border }" BorderThickness="1" 
-                             VerticalAlignment="Center"/>
-                </Grid>
-            </Border>
-            
-            <!--øKoNomIII-->
-
-            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomerSettlements}"
-                      SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
-                      Style="{StaticResource DataGridBase}" >
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Dato" Width="160"
-                                        Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
-                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
-                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductNumber}"/>
-                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price, StringFormat={}{0:NO} kr.}"/>
-                    <DataGridTextColumn Header="Provision" Width="120" Binding="{Binding Commission, StringFormat={}{0:NO} kr.}"/>
-                    <DataGridTextColumn Header="Netto" Width="120" Binding="{Binding Net, StringFormat={}{0:NO} kr.}"/>
-                    <DataGridTextColumn Header="Status" Width="120" Binding="{Binding Status}"/>
-
-                </DataGrid.Columns>
-                
-            </DataGrid>
-            
-            <!-- Detajler + Afregning-->
-            <Grid Grid.Row="4" MinHeight="180">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                
-            <!--nøgletal-->
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                </Grid>
-                <Border Style="{StaticResource Card}">
-                    <StackPanel>
-                        <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
-        
-                        <ItemsControl ItemsSource="{Binding KeyFigures}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border Padding ="4" Margin="0,4,0,0">
-                                        
-                                        <StackPanel Orientation="Horizontal" Margin="8,4">
-                                            <TextBlock Text="{Binding Label}" Width="120" />
-                                            <TextBlock Text="{Binding Value}" FontWeight="Bold"/>
-                                            
-                                        </StackPanel>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </Border>
-
-                <!--Afregning-->
-                
-                <Border Grid.Column="2" Style="{StaticResource Card}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-
-                        <TextBlock Text="Afregning" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Center"/>
-
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-
-                            <TextBlock Text="ReolNr:" Style="{StaticResource LabelMuted}" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{Binding Settlement.BoothNumber}" Style="{StaticResource LabelMuted}"/>
-
-                            <TextBlock Text="Lejer:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{Binding Settlement.RenterName}" Grid.Row="0" Grid.Column="3" Style="{StaticResource LabelMuted}"/>
-
-                            <TextBlock Text="Brutto i periode:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{Binding Settlement.Gross}"/>
-
-                            <TextBlock Text="Provision %" Style="{StaticResource LabelMuted}" 
-                                       Grid.Row="1" Grid.Column="2" 
-                                       HorizontalAlignment="Right" 
-                                       VerticalAlignment="Bottom" />
-                            <TextBlock Text="{Binding Settlement.CommissionPct}" 
-                                       Grid.Row="1" 
-                                       Grid.Column="3" 
-                                       Width="120" Margin="0,0,0,8"/>
-
-                            <TextBlock Text="Netto til Udbetaling" Style="{StaticResource LabelMuted}" 
-                                       Grid.Row="2" Grid.Column="0" 
-                                       HorizontalAlignment="Right" 
-                                       VerticalAlignment="Bottom"/>
-                            <TextBlock Text="{Binding Settlement.Net}" 
-                                       Grid.Row="2" 
-                                       Grid.Column="1" Width="120" 
-                                       Margin="0,0,12,8"/>
-
-                            <TextBlock Text="Difference" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="2" HorizontalAlignment="Right" />
-                            <TextBlock Text="{Binding Settlement.Difference}" Grid.Row="2" Grid.Column="3" Width="120" Margin="0,0,0,8"/>
-
-                            <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="4"
-                                    Content="UDBETAL / BOGFØR"
-                                    Style="{StaticResource ButtonPrimary}"
-                                    Command="{Binding SettleCommand}"
-                                    Height="40" Margin="0,8,0,0"/>
-                        </Grid>
-                    </Grid>
-                </Border>
+                    <!-- Placeholder-rækker -->
+                    <DataGrid.ItemsSource>
+                        <x:Array Type="{x:Type sys:String}">
+                            <sys:String>+500</sys:String>
+                            <sys:String>+500</sys:String>
+                            <sys:String>-250</sys:String>
+                            <sys:String>-250</sys:String>
+                            <sys:String>+500</sys:String>
+                        </x:Array>
+                    </DataGrid.ItemsSource>
+                </DataGrid>
             </Grid>
-            
-            
-            <!--HandlingsKnapper-->
-            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5,12,0,0" HorizontalAlignment="Center">
-                <Button Style="{StaticResource ButtonPrimary}" Content="EKSPORTER CSV" Width="255" Height="48" Command="{Binding ExportCsvCommand}"/>
-                <Button Style="{StaticResource ButtonPrimary}" Content="PRINT" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding PrintCommand}"/>
-                <Button Style="{StaticResource ButtonPrimary}" Content="ÅBN KVITTERING" Width="255" Height="48" Margin="12,0,0,0" Command="{Binding OpenReciptCommand}"/>
-            </StackPanel>
+        </Border>
 
-        </Grid>
+        <!-- GRID 1: Nøgletal -->
+        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Card}" Margin="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
+
+                <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Samlet indtægt:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="500" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="1000" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyExpense}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="2000" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyDiff}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Udestående:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="5000" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyOutstanding}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+            </Grid>
+        </Border>
+
+        <!-- GRID 2: Reol-tal -->
+        <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Card}" Margin="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Reol-tal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
+
+                <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="50" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyRentedBooths}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="25" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyAvailableBooths}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="200" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyRentIncome}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="300" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyCommission}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+            </Grid>
+        </Border>
+
+        <!-- GRID 3: Salgs-tal -->
+        <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource Card}" Margin="8">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Salgs-tal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
+
+                <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Solgt for:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="1000" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlySalesTotal}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Antal af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="50" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlySalesAmount}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+
+                <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
+                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="100" Style="{StaticResource InputRight}"/>
+                    <!-- <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> -->
+                </DockPanel>
+            </Grid>
+        </Border>
     </Grid>
-</Page>
+</UserControl>
