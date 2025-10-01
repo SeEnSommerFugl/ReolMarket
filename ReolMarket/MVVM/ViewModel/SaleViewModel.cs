@@ -101,12 +101,12 @@ namespace ReolMarket.MVVM.ViewModel
             var cartItem = new ItemShoppingCart 
             {
                 ItemID = newItem.ItemID,
-                ShoppingCartID = cart.ShoppingCartId
+                ShoppingCartID = cart.ShoppingCartID
             };
 
             var sale = new Sale {
                 SaleDate = DateTime.Now,
-                ShoppingCartID = cart.ShoppingCartId,
+                ShoppingCartID = cart.ShoppingCartID,
                 PaymentID = Guid.NewGuid() //TODO Her skal laves en enum til kort og kontant
             };
             _saleRepo.Add(sale);
