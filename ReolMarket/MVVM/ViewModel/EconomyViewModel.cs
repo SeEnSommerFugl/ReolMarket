@@ -73,7 +73,6 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        public
 
         private string _customerName;
         public string CustomerName
@@ -171,16 +170,16 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
 
-        private bool FilterBooth()
-        {
-            if (obj is not Booth booth || obj2 is not Customer customer)
-                return false;
+        //private bool FilterBooth()
+        //{
+        //    if (obj is not Booth booth || obj2 is not Customer customer)
+        //        return false;
 
-            var customerId = SelectedCustomer?.CustomerID;
-            var boothCustomerID = booth.CustomerID;
+        //    var customerId = SelectedCustomer?.CustomerID;
+        //    var boothCustomerID = booth.CustomerID;
 
-            return customerId == boothCustomerID;
-        }
+        //    return customerId == boothCustomerID;
+        //}
 
         private bool FilterCustomer(object obj)
         {
