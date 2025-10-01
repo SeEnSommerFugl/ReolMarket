@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReolMarket.MVVM.Model.HelperModels
+﻿namespace ReolMarket.MVVM.Model.HelperModels
 {
     public sealed class Years
     {
@@ -14,7 +8,7 @@ namespace ReolMarket.MVVM.Model.HelperModels
         {
             int currentYear = DateTime.Now.Year;   // 2025 today
             int start = currentYear - 10;          // 2015
-            int end = currentYear + 10;          // 2035
+            int end = currentYear;
 
             Items = Enumerable.Range(start, end - start + 1)
                               .OrderByDescending(y => y) // newest first

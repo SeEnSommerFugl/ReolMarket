@@ -82,7 +82,7 @@
             
             <!--øKoNomIII-->
 
-            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomerSettlements}"
+            <DataGrid Grid.Row="2" ItemsSource="{Binding EconomyBoard}"
                       SelectedItem="{Binding SelectedTransaction, Mode=TwoWay}"
                       Style="{StaticResource DataGridBase}" >
                 <DataGrid.Columns>
