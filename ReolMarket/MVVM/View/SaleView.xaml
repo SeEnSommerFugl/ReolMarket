@@ -23,9 +23,9 @@
                 <!-- Højre knapper -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                     <Button Content="Ryd filtre" Command="{Binding ClearFiltersCommand}"
-                            Style="{StaticResource Btn.Base}" Height="34" Margin="12,0,0,0"/>
+                            Style="{StaticResource ButtonBase}" Height="34" Margin="12,0,0,0"/>
                     <Button Content="Opdater" Command="{Binding RefreshCommand}"
-                            Style="{StaticResource Btn.Primary}" Height="34" Margin="12,0,0,0"/>
+                            Style="{StaticResource ButtonPrimary}" Height="34" Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <!-- Venstre label -->
@@ -49,7 +49,7 @@
         <!-- Row 2: liste -->
         
         <DataGrid Grid.Row="2" ItemsSource="{Binding SaleView}"
-              Style="{StaticResource Grid.Base}">
+              Style="{StaticResource DataGridBase}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Dato" Width="160"
                             Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
@@ -61,7 +61,7 @@
 
         <!-- row 3 - Button -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Registrér salg" Style="{StaticResource Btn.Primary}"
+            <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
               Command="{Binding RegisterSaleCommand}"/>
         </StackPanel>
 
