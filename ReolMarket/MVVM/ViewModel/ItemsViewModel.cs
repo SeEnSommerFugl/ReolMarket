@@ -98,7 +98,6 @@ namespace ReolMarket.MVVM.ViewModel
         /// </summary>
         public ItemsViewModel(IBaseRepository<Item, Guid> itemRepo, IBaseRepository<Booth, Guid> boothRepo)
         {
-            Title = "Items";
 
             _itemRepo = itemRepo;
             _boothRepo = boothRepo;

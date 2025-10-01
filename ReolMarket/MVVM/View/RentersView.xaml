@@ -1,19 +1,18 @@
-﻿<Page x:Class="ReolMarket.MVVM.View.RentersView"
+﻿<UserControl x:Class="ReolMarket.MVVM.View.RentersView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       mc:Ignorable="d"
-      d:DesignWidth="1652" d:DesignHeight="1048"
-      Title="RentersView">
+      d:DesignWidth="1652" d:DesignHeight="1048">
 
-    <Page.Resources>
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Page.Resources>
+    </UserControl.Resources>
 
     <Grid Margin="12">
         <Grid.RowDefinitions>
@@ -154,4 +153,4 @@
         </StackPanel>
 
     </Grid>
-</Page>
+</UserControl>

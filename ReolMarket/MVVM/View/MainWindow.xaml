@@ -46,10 +46,9 @@
             <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
         </StackPanel>
 
-        <Frame Grid.Column="2"
-       Content="{Binding CurrentView}"
-       NavigationUIVisibility="Hidden"
-       d:Content="{d:DesignInstance Type=views:EconomyView, IsDesignTimeCreatable=True}"/>
+        <ContentControl Grid.Column="2"
+                Content="{Binding CurrentView}"
+                d:Content="{d:DesignInstance Type=views:EconomyView, IsDesignTimeCreatable=True}"/>
 
     </Grid>
 </Window>
