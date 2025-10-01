@@ -15,6 +15,9 @@
             <DataTemplate DataType="{x:Type vm:EconomyViewModel}">
                 <views:EconomyView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SaleViewModel}">
+                <views:SaleView/>
+            </DataTemplate>
             <!--<DataTemplate DataType="{x:Type vm:ItemsViewModel}">
                 <views:ItemsView/>
             </DataTemplate>-->

@@ -40,10 +40,10 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly ItemsViewModel _itemsViewModel;
         private readonly RentersViewModel _rentersViewModel;
         private readonly EconomyViewModel _economyViewModel;
+        private readonly SaleViewModel _saleViewModel;
 
         public ICommand NavigateSaleCommand { get; }
 
-        private readonly SaleViewModel _saleViewModel;
 
 
         /// <summary>

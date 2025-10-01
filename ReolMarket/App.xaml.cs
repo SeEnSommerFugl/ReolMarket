@@ -27,8 +27,9 @@ namespace ReolMarket
             var itemsVM = new ItemsViewModel(/* e.g., itemRepo */);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
             var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo);
+            var saleVM = new SaleViewModel(boothRepo, customerRepo, saleRepo);
 
-            var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM);
+            var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM, saleVM);
 
             // ---- Shell window ----
             var mainWindow = new MainWindow(mainVM);
