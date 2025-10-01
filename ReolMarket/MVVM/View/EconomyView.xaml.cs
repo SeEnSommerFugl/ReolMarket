@@ -18,7 +18,7 @@ namespace ReolMarket.MVVM.View
     /// <summary>
     /// Interaction logic for EconomyView.xaml
     /// </summary>
-    public partial class EconomyView : Page
+    public partial class EconomyView : UserControl
     {
         public EconomyView()
         {
