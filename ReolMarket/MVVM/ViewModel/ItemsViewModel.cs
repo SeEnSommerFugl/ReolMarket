@@ -1,7 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows.Input;
 using ReolMarket.Core;
-using ReolMarket.Data.Repository;     // ItemDbRepository, BoothDbRepository
+using ReolMarket.Data;
 using ReolMarket.MVVM.Model;          // Item, Booth
 
 namespace ReolMarket.MVVM.ViewModel
@@ -13,8 +13,8 @@ namespace ReolMarket.MVVM.ViewModel
     internal class ItemsViewModel : BaseViewModel
     {
         // Repositories (sync)
-        private readonly ItemDbRepository _itemRepo;
-        private readonly BoothDbRepository _boothRepo;
+        private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly IBaseRepository<Booth, Guid> _boothRepo;
 
         // Backing fields
         private Item? _selectedItem;
@@ -96,11 +96,12 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the view model and loads initial data.
         /// </summary>
-        public ItemsViewModel()
+        public ItemsViewModel(IBaseRepository<Item, Guid> itemRepo, IBaseRepository<Booth, Guid> boothRepo)
         {
             Title = "Items";
-            _itemRepo = new ItemDbRepository();
-            _boothRepo = new BoothDbRepository();
+
+            _itemRepo = itemRepo;
+            _boothRepo = boothRepo;
 
             RefreshCommand = new RelayCommand(_ => Load());
             AddItemCommand = new RelayCommand(_ => AddItem(), _ => !IsBusy);

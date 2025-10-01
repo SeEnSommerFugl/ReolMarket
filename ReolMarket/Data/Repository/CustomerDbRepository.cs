@@ -56,7 +56,7 @@ namespace ReolMarket.Data.Repository
             cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 255).Value = e.Email;
             cmd.Parameters.Add("@PhoneNumber", SqlDbType.NVarChar, 20).Value = e.PhoneNumber;
             cmd.Parameters.Add("@Address", SqlDbType.NVarChar, 255).Value = e.Address;
-            cmd.Parameters.Add("@PostalCode", SqlDbType.Int).Value = e.PostalCode;
+            cmd.Parameters.Add("@PostalCode", SqlDbType.NVarChar, 4).Value = e.PostalCode;
         }
 
         protected override void BindUpdate(SqlCommand cmd, Customer e)
@@ -65,7 +65,7 @@ namespace ReolMarket.Data.Repository
             cmd.Parameters.Add("@Email", SqlDbType.NVarChar, 255).Value = e.Email;
             cmd.Parameters.Add("@PhoneNumber", SqlDbType.NVarChar, 20).Value = e.PhoneNumber;
             cmd.Parameters.Add("@Address", SqlDbType.NVarChar, 255).Value = e.Address;
-            cmd.Parameters.Add("@PostalCode", SqlDbType.Int).Value = e.PostalCode;
+            cmd.Parameters.Add("@PostalCode", SqlDbType.NVarChar, 4).Value = e.PostalCode;
             cmd.Parameters.Add("@Customer_ID", SqlDbType.UniqueIdentifier).Value = e.CustomerID;
         }
 
