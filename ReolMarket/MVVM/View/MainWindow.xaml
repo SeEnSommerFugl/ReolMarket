@@ -6,20 +6,13 @@
         xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Maximized" Height="775" Width="842">
+        WindowState="Maximized" MinWidth="1280" MinHeight="800">
 
     <Window.Background>
         <ImageBrush ImageSource="/Core/Images/Background.png" Stretch="UniformToFill"/>
     </Window.Background>
 
     <Window.Resources>
-        <!-- Reference til separat style-fil -->
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            
-        </ResourceDictionary>
     </Window.Resources>
 
     <!-- Hovedlayout: venstre navigation | indhold -->
@@ -34,9 +27,9 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
-            <Button Style="{StaticResource Btn.Nav}" Content="Salg"/>
-            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
-            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
+            <Button Command="{Binding NavigateItemsCommand}" Style="{StaticResource ButtonNavigation}" Content="Salg"/>
+            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource ButtonNavigation}" Content="Udlejere"/>
+            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
         </StackPanel>
 
         <Frame Grid.Column="2"
