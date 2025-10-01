@@ -117,6 +117,7 @@
     <Style x:Key="TitleLeft" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
         <Setter Property="HorizontalAlignment" Value="Right"/>
         <Setter Property="VerticalAlignment"   Value="Center"/>
+        <Setter Property="FontSize"            Value="40"/> 
     </Style>
     <Style x:Key="InputRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
