@@ -37,9 +37,9 @@
                         <ColumnDefinition Width="12"/>      <!--spacing-->
                         <ColumnDefinition Width="120"/>     <!--combobox-->
                         <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="Auto"/>    <!--fra-dato-->
+                        <ColumnDefinition Width="120"/>    <!--fra-dato-->
                         <ColumnDefinition Width="12"/>      <!--spacing-->
-                        <ColumnDefinition Width="Auto"/>    <!--til-dato-->
+                        <ColumnDefinition Width="120"/>    <!--til-dato-->
                         <ColumnDefinition Width="12"/>      <!--spacing-->
                         <ColumnDefinition Width="140"/>     <!--text-->
                         <ColumnDefinition Width="*"/>       <!--Opdater knap-->
@@ -50,16 +50,23 @@
                                VerticalAlignment="Center"/>
                     
                     <!--QuickRanges-->
-                    <ComboBox Grid.Column="2" Height="34" Margin="0,12,0,16"
+                    <ComboBox Grid.Column="2" Height="34"
                               ItemsSource="{Binding QuickRanges}"
                               SelectedItem="{Binding SelectedQuickRange}"
                               VerticalContentAlignment="Center"/>
                     
                     <!--Fra/til-dato-->
-                    <DatePicker Grid.Column="4" SelectedDate="{Binding FromDate}" Height="34"/>
-                    <DatePicker Grid.Column="6" SelectedDate="{Binding ToDate}" Height="34"/>
-                    
-                    
+                    <ComboBox ItemsSource="{Binding Years.Items}"
+                              SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+                              Grid.Column="4"
+                              Height="34"
+                              VerticalContentAlignment="Center"/>
+                    <ComboBox ItemsSource="{Binding Months}"
+                              SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"
+                              Grid.Column="6"
+                              Height="34"
+                              VerticalContentAlignment="Center"/>
+
                     <!--<Calendar Grid.Column="4"
           SelectedDate="{Binding PeriodStart}" />-->
                     

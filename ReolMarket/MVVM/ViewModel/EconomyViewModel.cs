@@ -31,7 +31,6 @@ namespace ReolMarket.MVVM.ViewModel
         public ICollectionView BoothView { get; }
         public ICollectionView CustomerView { get; }
         public ICollectionView SalesView { get; }
-        public CollectionViewGroup test { get; }
         public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
         public Years Years { get; } = new Years();
@@ -83,7 +82,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedMonth, value))
-                    _economyView?.Refresh();
+                    EconomyBoard.Refresh();
 
             }
         }
@@ -95,7 +94,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedYear, value))
-                    _economyView?.Refresh();
+                    EconomyBoard.Refresh();
 
             }
         }
@@ -137,6 +136,7 @@ namespace ReolMarket.MVVM.ViewModel
 
             ExecuteGenerate();
         }
+
 
         private void LoadRentedBooths()
         {
