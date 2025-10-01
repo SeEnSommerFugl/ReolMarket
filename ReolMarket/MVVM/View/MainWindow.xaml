@@ -4,22 +4,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReolMarket"
+        xmlns:views="clr-namespace:ReolMarket.MVVM.View"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Maximized">
+        WindowState="Maximized" MinWidth="1280" MinHeight="800"
+        UseLayoutRounding="True" SnapsToDevicePixels="True">
+
 
     <Window.Background>
         <ImageBrush ImageSource="/Core/Images/Background.png" Stretch="UniformToFill"/>
     </Window.Background>
 
     <Window.Resources>
-        <!-- Reference til separat style-fil -->
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            
-        </ResourceDictionary>
     </Window.Resources>
 
     <!-- Hovedlayout: venstre navigation | indhold -->
@@ -40,6 +36,9 @@
         </StackPanel>
 
         <Frame Grid.Column="2"
-                  Content="{Binding CurrentView}"/>
+       Content="{Binding CurrentView}"
+       NavigationUIVisibility="Hidden"
+       d:Content="{d:DesignInstance views:RentersView, IsDesignTimeCreatable=True}"/>
+
     </Grid>
 </Window>

@@ -1,209 +1,157 @@
 ﻿<Page x:Class="ReolMarket.MVVM.View.RentersView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:ReolMarket"
-      xmlns:conv="clr-namespace:ReolMarket.Core"
-      mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      mc:Ignorable="d"
+      d:DesignWidth="1652" d:DesignHeight="1048"
       Title="RentersView">
 
     <Page.Resources>
-        <!-- Reference til separat style-fil -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <!--<conv:HiddenToShown x:Key="HideOrShow"/>-->
         </ResourceDictionary>
     </Page.Resources>
 
-    <Grid>
-        <!-- Indhold -->
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <!-- Søg -->
-                <RowDefinition Height="12"/>
-                <RowDefinition Height="*"/>
-                <!-- Lejere grid -->
-                <RowDefinition Height="12"/>
-                <RowDefinition Height="Auto"/>
-                <!-- Detaljer + reoler -->
-                <RowDefinition Height="Auto"/>
-                <!-- Handlingsknapper -->
-            </Grid.RowDefinitions>
+    <Grid Margin="12">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- Search -->
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="*"/>
+            <!-- Renters -->
+            <RowDefinition Height="12"/>
+            <RowDefinition Height="Auto"/>
+            <!-- Details -->
+            <RowDefinition Height="Auto"/>
+            <!-- Actions -->
+        </Grid.RowDefinitions>
 
-            <!-- Søg / filter -->
-            <Border Grid.Row="0" Style="{StaticResource Card}">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="16"/>
-                        <ColumnDefinition Width="100"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="12"/>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+        <!-- ================= SEARCH ================= -->
+        <GroupBox Grid.Row="0" Style="{StaticResource CardSection}" Header="Søg">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160"/>
+                    <!-- mode -->
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="*"/>
+                    <!-- query -->
+                    <ColumnDefinition Width="12"/>
+                    <ColumnDefinition Width="180"/>
+                    <!-- admin -->
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Søg" Style="{StaticResource H1}" VerticalAlignment="Center"/>
-                    <!-- ComboBox til søgetype -->
-                    <ComboBox Grid.Column="2" Margin="6,12,10,16" Height="34"
-                       x:Name="SearchModeCombo"
-                       ItemsSource="{Binding SearchModes}"
-                       SelectedItem="{Binding SelectedSearchMode}"
-                       DisplayMemberPath="DisplayName" VerticalContentAlignment="Center"/>
-                    <!-- Søgetekst -->
-                    <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}" Grid.Column="4" Height="34" VerticalAlignment="Center"
-                        x:Name="SearchTextBox"
-                        Padding="12,6" BorderBrush="{StaticResource Brush.Border}" BorderThickness="1"/>
-                    <Button Command="{Binding NavigateAdminPopUpCommand}" Grid.Column="6" Style="{StaticResource Btn.Base}" Content="ADMIN" Width="150" Height="48"/>
-                    <!--BINDINGS (plads):
-       - ComboBox.ItemsSource  -> {Binding SearchModes}
-       - ComboBox.SelectedItem -> {Binding SelectedSearchMode}
-       - TextBox.Text          -> {Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}-->
-                </Grid>
-            </Border>
+                <ComboBox Grid.Column="0"
+                  Style="{StaticResource ComboRight}"
+                  ItemsSource="{Binding SearchModes}"
+                  SelectedItem="{Binding SelectedSearchMode}"
+                  DisplayMemberPath="DisplayName"/>
 
-            <!-- Lejere-liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding CustomersView}" SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}" Style="{StaticResource Grid.Base}">
+                <TextBox Grid.Column="2"
+                 Style="{StaticResource InputRight}"
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <Button Grid.Column="4"
+                Style="{StaticResource ButtonPrimary}"
+                Content="ADMIN"
+                Command="{Binding NavigateAdminPopUpCommand}"/>
+            </Grid>
+        </GroupBox>
+
+        <!-- ================= RENTERS GRID ================= -->
+        <GroupBox Grid.Row="2" Style="{StaticResource CardSection}" Header="Lejere">
+            <DataGrid ItemsSource="{Binding CustomersView}"
+                SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+                Style="{StaticResource DataGridBase}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Reol" 
-                                 Binding="{Binding BoothNumber}"
-                                 Width="60" />
-                    <DataGridTextColumn Header="Lejer" 
-                                 Binding="{Binding CustomerName}"
-                                 Width="*" />
-                    <DataGridTextColumn Header="Start dato" Width="140" />
-                    <DataGridTemplateColumn Header="Difference" Width="140">
+                    <DataGridTextColumn Header="Reol"       Width="80"  Binding="{Binding BoothNumber}"/>
+                    <DataGridTextColumn Header="Lejer"      Width="*"   Binding="{Binding CustomerName}"/>
+                    <DataGridTextColumn Header="Start dato" Width="160"/>
+                    <DataGridTemplateColumn Header="Difference" Width="160"
+                                  CellStyle="{StaticResource DataGridCellMoney}">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <!-- Note til migselv: DataTriggers senere til Chip.Positive/Negative -->
-                                <Border Style="{StaticResource Chip.Positive}">
-                                    <TextBlock Text="+500,60 kr"/>
-                                </Border>
+                                <TextBlock Text="{Binding Difference, StringFormat={}{0:N2} kr.}" FontWeight="SemiBold"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Slut Dato" Width="140" />
+                    <DataGridTextColumn Header="Slut Dato" Width="160"/>
                 </DataGrid.Columns>
-                <!-- ItemsSource (plads): {Binding Lejere} -->
             </DataGrid>
+        </GroupBox>
 
-            <!-- Detaljer + reoler for valgt lejer -->
-            <Grid Grid.Row="4">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="16"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
+        <!-- ================= DETAILS ================= -->
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
 
-                <!-- Profilkort -->
-                <Border Style="{StaticResource Card}">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        
+            <!-- Profile -->
+            <GroupBox Style="{StaticResource CardSection}" Header="Lejer info">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="180"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                        <!--<Grid Grid.Row="0">
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Navn:"        Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCustomer.CustomerName}" Margin="0,0,0,6"/>
 
-                            <TextBlock Grid.Column="0" Text="Den valgte lejer" Style="{StaticResource H2}" Margin="0,0,0,8" HorizontalAlignment="Left" Width="128"/>
-                            <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
-                             Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60" />
-                            <Button Grid.Column="1" Style="{StaticResource Btn.Base}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
-                             Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>
-                        </Grid>-->
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:"       Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedCustomer.Email}" Margin="0,0,0,6"/>
 
-                            <StackPanel Grid.Column="0">
-                                <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock  Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-                                <TextBlock Text="Total difference:" Style="{StaticResource LabelMuted}"/>
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Telefon:"     Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedCustomer.PhoneNumber}" Margin="0,0,0,6"/>
 
-                            </StackPanel>
-                            
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="{Binding SelectedCustomer.CustomerName}"/>
-                                <!-- Text="{Binding SelectedLejer.Name}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.Email}"/>
-                                <!-- Text="{Binding SelectedLejer.Email}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}"/>
-                                <!-- Text="{Binding SelectedLejer.Phone}" -->
-                                <TextBlock Text="{Binding SelectedCustomer.Address}"/>
-                                <TextBlock Text="{Binding SelectedCustomer.PostalCode}"/>
-                                <!-- Text="{Binding SelectedLejer.PostalCode}" -->
-                                <Border Style="{StaticResource Chip.Negative}">
-                                    <TextBlock Text="-100,60"/>
-                                </Border>
-                                <!-- Binding + farveskift via triggers senere -->
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Adresse:"     Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedCustomer.Address}" Margin="0,0,0,6"/>
 
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Postnummer:"  Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedCustomer.PostalCode}" Margin="0,0,0,6"/>
 
-                        </StackPanel>
-                        </Grid>
-                    </Grid>
-                </Border>
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Total difference:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0"/>
+                    <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource ChipNegative}">
+                        <TextBlock Style="{StaticResource ChipText}" Text="-100,60 kr"/>
+                    </Border>
+                </Grid>
+            </GroupBox>
 
-                <!-- Reoler for valgt lejer -->
-                <Border Grid.Column="2" Style="{StaticResource Card}">
-                    <StackPanel>
-                        <TextBlock Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
-                        <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource Grid.Base}" x:Name="LejerReolerGrid">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="Reol Nr" Width="100" Binding="{Binding BoothNumber}"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDato}"/>
-                                <DataGridTemplateColumn Header="Difference" Width="140">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Border Style="{StaticResource Chip.Positive}">
-                                                <TextBlock Text="+500,60 kr"/>
-                                            </Border>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{StaticResource Btn.Primary}" Content="Fortsæt" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Slut Dato" Width="160"/>
-                                <DataGridTemplateColumn Header="" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{StaticResource Btn.Danger}" Content="Opsig" Padding="8,4"/>
-                                            <!-- Command/Parameter plads -->
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                            <!-- Note til migselv: ItemsSource: {Binding SelectedLejer.Reoler} -->
-                        </DataGrid>
-                    </StackPanel>
-                </Border>
-            </Grid>
-
-            <!-- Handlingsknapper -->
-            <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="5,12,0,0" HorizontalAlignment="Left">
-                <Button Style="{StaticResource Btn.Primary}" Content="BETAL DIFFERENCE" Width="150" Height="48"/>
-                <!-- Command plads til difference her -->
-                <Button Style="{StaticResource Btn.Base}" Content="TILFØJ REOL" Width="150" Height="48" Margin="12,0,0,0"/>
-                <!-- Command plads til "Tilføj reol" her -->
-            </StackPanel>
+            <!-- Booths for selected -->
+            <GroupBox Grid.Column="2" Style="{StaticResource CardSection}" Header="Den valgte lejers reoler">
+                <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource DataGridBase}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Reol Nr"   Width="120" Binding="{Binding BoothNumber}"/>
+                        <DataGridTextColumn Header="Start Dato" Width="200" Binding="{Binding StartDato}"/>
+                        <DataGridTemplateColumn Header="Difference" Width="180"
+                                    CellStyle="{StaticResource DataGridCellMoney}"
+                                    CellTemplate="{StaticResource CellTemplate.MoneyDifference}"/>
+                        <DataGridTemplateColumn Header="" Width="160"
+                                    CellTemplate="{StaticResource CellTemplate.PrimaryAction}"/>
+                        <DataGridTextColumn Header="Slut Dato" Width="200"/>
+                        <DataGridTemplateColumn Header="" Width="160"
+                                    CellTemplate="{StaticResource CellTemplate.DangerAction}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
         </Grid>
+
+        <!-- ================= ACTIONS ================= -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Margin="0,12,0,0">
+            <Button Style="{StaticResource ButtonPrimary}" Content="BETAL DIFFERENCE" Width="220"/>
+            <Button Style="{StaticResource ButtonBase}"    Content="TILFØJ REOL"      Width="220" Margin="12,0,0,0"/>
+        </StackPanel>
+
     </Grid>
 </Page>

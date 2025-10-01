@@ -2,6 +2,6 @@
 {
     public class ShoppingCart
     {
-        public Guid ShoppingCartId { get; set; } = Guid.NewGuid();
+        public Guid ShoppingCartID { get; set; } = Guid.NewGuid();
     }
 }

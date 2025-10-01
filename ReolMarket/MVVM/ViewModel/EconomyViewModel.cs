@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Input;
+using System.Windows.Data;
+using System.Windows.Threading;
 using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -16,79 +18,143 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
-        private readonly ICollectionView _quickRangesComboBox;
+        private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly SalesRowService _service;
+
+        private readonly DispatcherTimer _refreshDebounce = new() { Interval = TimeSpan.FromMilliseconds(200) };
+
+        private SearchModeItem? _selectedSearchMode;
 
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
-        public ObservableCollection<Customer> Customer => _customerRepo.Items;
+        public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
-        public ICollectionView EconomyView { get; }
-        public ICollectionView QuickRangesComboBox => _quickRangesComboBox;
+        public ObservableCollection<Item> Items => _itemRepo.Items;
+        public ICollectionView BoothView { get; }
+        public ICollectionView CustomerView { get; }
+        public ICollectionView SalesView { get; }
+        public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
+        public Years Years { get; } = new Years();
+        public IReadOnlyList<Month> Months { get; } =
+            Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+        public ObservableCollection<SalesRow> SalesRows { get; } = new();
 
-        /// <summary>
-        /// Start date for the settlement period.
-        /// </summary>
-        private DateTime _periodStart = new(DateTime.Today.Year, DateTime.Today.Month, 1);
-        public DateTime PeriodStart
-        {
-            get => _periodStart;
-            set => SetProperty(ref _periodStart, value);
-        }
 
-        /// <summary>
-        /// End date for the settlement period.
-        /// </summary>
-        private DateTime _periodEnd = DateTime.Today;
-        public DateTime PeriodEnd
-        {
-            get => _periodEnd;
-            set => SetProperty(ref _periodEnd, value);
-        }
 
         private Customer? _selectedCustomer;
-        public Customer? SelectedCustomer 
+        public Customer? SelectedCustomer
         {
             get => _selectedCustomer;
-            set 
+            set
             {
-                if(SetProperty(ref _selectedCustomer, value)) 
+                if (SetProperty(ref _selectedCustomer, value))
                 {
-                    if(_selectedCustomer != null) 
+                    if (_selectedCustomer != null)
                     {
                         CustomerName = _selectedCustomer.CustomerName;
                     }
                 }
             }
         }
+        public SearchModeItem? SelectedSearchMode
+        {
+            get => _selectedSearchMode;
+            set
+            {
+                if (SetProperty(ref _selectedSearchMode, value))
+                    SalesView?.Refresh();
+
+            }
+        }
+        private string? _searchText;
+        public string? SearchText
+        {
+            get => _searchText;
+            set
+            {
+                if (SetProperty(ref _searchText, value))
+                    RequestRefresh();
+            }
+        }
+
+        private Month _selectedMonth;
+        public Month SelectedMonth
+        {
+            get => _selectedMonth;
+            set
+            {
+                if (SetProperty(ref _selectedMonth, value))
+                    SalesView.Refresh();
+
+            }
+        }
+
+        private int _selectedYear;
+        public int SelectedYear
+        {
+            get => _selectedYear;
+            set
+            {
+                if (SetProperty(ref _selectedYear, value))
+                    SalesView.Refresh();
+
+            }
+        }
 
         private string _customerName;
-        public string CustomerName {
+        public string CustomerName
+        {
             get => _customerName;
-            set {
+            set
+            {
                 SetProperty(ref _customerName, value);
             }
         }
 
         /// <summary>
-        /// The settlement results. One row per item sold.
-        /// </summary>
-        //public ObservableCollection<SettlementLineVm> SettlementLines { get; } = new();
-
-        /// <summary>
-        /// Command that generates the settlement list.
-        /// </summary>
-        public ICommand GenerateCommand { get; }
-
-        /// <summary>
         /// Creates the view model and sets default dates.
         /// </summary>
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo)
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, SalesRowService service)
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
+            _itemRepo = itemRepo;
 
-            ExecuteGenerate();
+            _selectedYear = DateTime.Now.Year;
+            _selectedMonth = (Month)DateTime.Now.Month;
+
+            BoothView = CollectionViewSource.GetDefaultView(Booths);
+            CustomerView = CollectionViewSource.GetDefaultView(Customers);
+            SalesView = CollectionViewSource.GetDefaultView(Sales);
+
+
+
+            _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); SalesView.Refresh(); };
+
+            LoadSalesRows();
+            //ExecuteGenerate();
+        }
+
+        private bool FilterSalesView(object obj)
+        {
+            if (obj is not Sale sale) return false;
+
+            //bool
+
+
+            bool matchesMonth = SelectedMonth == 0 || sale.SaleDate.Month == (int)SelectedMonth;
+            bool matchesYear = SelectedYear == 0 || sale.SaleDate.Year == SelectedYear;
+
+            return matchesMonth && matchesYear;
+        }
+
+
+        public void LoadSalesRows()
+        {
+            SalesRows.Clear();
+            foreach (var row in _service.GetSalesRows())
+                SalesRows.Add(row);
         }
 
         /// <summary>
@@ -104,7 +170,7 @@ namespace ReolMarket.MVVM.ViewModel
                     .Where(c => _boothRepo.Items.Any(b => b.CustomerID == c.CustomerID && (b.IsRented || b.Status == BoothStatus.Optaget)))
                     .ToList();
 
-                foreach(var customer in customersWithBooths)
+                foreach (var customer in customersWithBooths)
                 {
                     var booths = _boothRepo.Items.Where(b => b.CustomerID == customer.CustomerID).ToList();
                     int boothCount = booths.Count();
@@ -138,6 +204,62 @@ namespace ReolMarket.MVVM.ViewModel
                 }
             }, "Generating settlement…");
         }
+
+
+        //private bool FilterBooth()
+        //{
+        //    if (obj is not Booth booth || obj2 is not Customer customer)
+        //        return false;
+
+        //    var customerId = SelectedCustomer?.CustomerID;
+        //    var boothCustomerID = booth.CustomerID;
+
+        //    return customerId == boothCustomerID;
+        //}
+
+        private bool FilterCustomer(object obj)
+        {
+            if (obj is not Customer customer)
+                return false;
+
+            if (string.IsNullOrWhiteSpace(SearchText) || SelectedSearchMode == null)
+                return true;
+
+            var s = SearchText.Trim();
+
+            return SelectedSearchMode.SearchMode switch
+            {
+                SearchMode.All =>
+                    customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.PhoneNumber.Contains(s) ||
+                    customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.Address.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    customer.PostalCode.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+                    Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                    b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+                SearchMode.BoothNumber =>
+                    Booths.Any(b => b.CustomerID == customer.CustomerID &&
+                                    b.BoothNumber.ToString().Contains(s, StringComparison.OrdinalIgnoreCase)),
+
+                SearchMode.CustomerName =>
+                    customer.CustomerName.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+                SearchMode.CustomerPhone =>
+                    customer.PhoneNumber.Contains(s),
+
+                SearchMode.CustomerEmail =>
+                    customer.Email.Contains(s, StringComparison.OrdinalIgnoreCase),
+
+                _ => true
+            };
+        }
+
+        private void RequestRefresh()
+        {
+            _refreshDebounce.Stop();
+            _refreshDebounce.Start();
+        }
     }
 
     internal sealed class CustomerSettlementVm
@@ -152,5 +274,18 @@ namespace ReolMarket.MVVM.ViewModel
         public decimal CommissionAmount { get; set; }
 
         public decimal FinalPayout { get; set; }
+
+        /// <summary>
+        /// Used for various Chips designs in views, to change color based on account-balance.
+        /// </summary>
+        public bool? IsPositive
+        {
+            get
+            {
+                if (FinalPayout > 0) return true;
+                if (FinalPayout < 0) return false;
+                return null; // neutral
+            }
+        }
     }
 }
