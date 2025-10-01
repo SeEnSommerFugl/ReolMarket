@@ -19,6 +19,7 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
         private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly SalesRowService _service;
 
         private readonly DispatcherTimer _refreshDebounce = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
@@ -36,6 +37,7 @@ namespace ReolMarket.MVVM.ViewModel
         public Years Years { get; } = new Years();
         public IReadOnlyList<Month> Months { get; } =
             Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+        public ObservableCollection<SalesRow> SalesRows { get; } = new();
 
 
 
@@ -130,6 +132,7 @@ namespace ReolMarket.MVVM.ViewModel
 
             _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); SalesView.Refresh(); };
 
+            LoadSalesRows();
             ExecuteGenerate();
         }
 
