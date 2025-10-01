@@ -114,7 +114,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the view model and sets default dates.
         /// </summary>
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo)
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, SalesRowService service)
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
@@ -133,7 +133,7 @@ namespace ReolMarket.MVVM.ViewModel
             _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); SalesView.Refresh(); };
 
             LoadSalesRows();
-            ExecuteGenerate();
+            //ExecuteGenerate();
         }
 
         private bool FilterSalesView(object obj)
@@ -149,16 +149,12 @@ namespace ReolMarket.MVVM.ViewModel
             return matchesMonth && matchesYear;
         }
 
-        private void LoadRentedBooths()
+
+        public void LoadSalesRows()
         {
-            var rentedBooths = Booths.Where(b => Customers.Any(c => c.CustomerID == b.CustomerID && (b.IsRented || b.Status == BoothStatus.Optaget)))
-                    .ToList();
-
-
-            foreach (var booth in rentedBooths)
-            {
-
-            }
+            SalesRows.Clear();
+            foreach (var row in _service.GetSalesRows())
+                SalesRows.Add(row);
         }
 
         /// <summary>
