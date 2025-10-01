@@ -7,11 +7,11 @@ namespace ReolMarket.Data.Repository
     internal sealed class ShoppingCartDbRepository : BaseDbRepository<ShoppingCart, Guid>
     {
         protected override string SqlSelectAll => @"
-        SELECT ShoppingCart_ID, Quantity, TotalPrice
+        SELECT ShoppingCart_ID
         FROM ShoppingCart";
 
         protected override string SqlSelectById => @"
-        SELECT ShoppingCart_ID, Quantity, TotalPrice
+        SELECT ShoppingCart_ID
         FROM ShoppingCart
         WHERE ShoppingCart_ID = @ShoppingCart_ID";
 
@@ -21,8 +21,6 @@ namespace ReolMarket.Data.Repository
 
         protected override string SqlUpdate => @"
         UPDATE ShoppingCart
-           SET Quantity  = @Quantity,
-               TotalPrice = @TotalPrice
          WHERE ShoppingCart_ID = @ShoppingCart_ID;";
 
         protected override string SqlDeleteById => @"

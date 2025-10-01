@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ReolMarket.Data;
+﻿using ReolMarket.Data;
+using static ReolMarket.MVVM.Model.ItemShoppingCart;
 
 namespace ReolMarket.MVVM.Model.HelperModels
 {
@@ -12,17 +8,18 @@ namespace ReolMarket.MVVM.Model.HelperModels
         private readonly IBaseRepository<Customer, Guid> _cust;
         private readonly IBaseRepository<Booth, Guid> _booth;
         private readonly IBaseRepository<Item, Guid> _item;
-        private readonly IBaseRepository<ItemShoppingCart, Guid> _itemShoppingCart;
+        //private readonly IBaseRepository<ItemShoppingCart, Guid> _itemShoppingCart;
         private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCart;
         private readonly IBaseRepository<Sale, Guid> _sale;
+        private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCartKey> _itemShoppingCart;
 
         public SalesRowService(
             IBaseRepository<Customer, Guid> customer,
             IBaseRepository<Booth, Guid> booth,
             IBaseRepository<Item, Guid> item,
-            IBaseRepository<ItemShoppingCart, Guid> itemShoppingCart,
             IBaseRepository<ShoppingCart, Guid> shoppingCart,
-            IBaseRepository<Sale, Guid> sale)
+            IBaseRepository<Sale, Guid> sale,
+            IBaseRepository<ItemShoppingCart, ItemShoppingCartKey> itemShoppingCart)
         {
             _cust = customer;
             _booth = booth;
