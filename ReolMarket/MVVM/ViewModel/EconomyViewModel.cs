@@ -34,6 +34,9 @@ namespace ReolMarket.MVVM.ViewModel
         public CollectionViewGroup test { get; }
         public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
+        public Years Years { get; } = new Years();
+        public IReadOnlyList<Month> Months { get; } =
+            Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
 
 
 
@@ -73,8 +76,8 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private SelectedMonth? _selectedMonth;
-        public SelectedMonth? SelectedMonth
+        private Month _selectedMonth;
+        public Month SelectedMonth
         {
             get => _selectedMonth;
             set
@@ -85,8 +88,8 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private SelectedYear? _selectedYear;
-        public SelectedYear? SelectedYear
+        private int _selectedYear;
+        public int SelectedYear
         {
             get => _selectedYear;
             set
@@ -95,32 +98,6 @@ namespace ReolMarket.MVVM.ViewModel
                     _economyView?.Refresh();
 
             }
-        }
-
-        public DateTime? SelectedDate 
-        {
-            get 
-            {
-                if(SelectedMonth != null && SelectedYear != null) 
-                {
-                    return new DateTime(
-                        int.Parse(SelectedYear.Value.Year),
-                        int.Parse(SelectedMonth.Value.Month));
-                }
-                return null;
-            }
-        }
-
-        //TODO filter der sammenligner saleDate og selectedDate
-        private bool FilterEconomy(Sale saleDate) 
-        {
-            if(SelectedMonth == null) 
-            {
-                return true;
-            }
-
-            return saleDate.SaleDate.Year == SelectedDate.Value.Year &&
-                saleDate.SaleDate.Month == SelectedDate.Value.Month;
         }
 
         private string _customerName;
@@ -146,6 +123,9 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
+
+            _selectedYear = DateTime.Now.Year;
+            _selectedMonth = (Month)DateTime.Now.Month;
 
             BoothView = CollectionViewSource.GetDefaultView(Booths);
             CustomerView = CollectionViewSource.GetDefaultView(Customers);
