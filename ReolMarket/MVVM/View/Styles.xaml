@@ -44,16 +44,7 @@
     </Style>
 
 
-    <!-- Ikon-knap: -->
-    <Style x:Key="ButtonIcon" TargetType="Button" BasedOn="{StaticResource ButtonBase}">
-        <Setter Property="Width" Value="32"/>
-        <Setter Property="Height" Value="32"/>
-        <Setter Property="Padding" Value="0"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
-        <!-- Inheritance -->
-        <Setter Property="Foreground" Value="{DynamicResource Brush.Fg.Primary}"/>
-    </Style>
+
 
 
     <!-- =================== BUTTONS =================== -->
@@ -86,6 +77,17 @@
     <Style x:Key="ButtonDanger"  TargetType="Button" BasedOn="{StaticResource ButtonBase}">
         <Setter Property="Background"   Value="{StaticResource Brush.Danger}"/>
         <Setter Property="BorderBrush"  Value="{StaticResource Brush.Danger}"/>
+    </Style>
+
+    <!-- Ikon-knap: -->
+    <Style x:Key="ButtonIcon" TargetType="Button" BasedOn="{StaticResource ButtonBase}">
+        <Setter Property="Width" Value="32"/>
+        <Setter Property="Height" Value="32"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <!-- Inheritance -->
+        <Setter Property="Foreground" Value="{DynamicResource Brush.Fg.Primary}"/>
     </Style>
 
     <!-- =================== INPUTS =================== -->

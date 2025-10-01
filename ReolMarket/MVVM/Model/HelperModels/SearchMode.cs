@@ -6,6 +6,8 @@
         BoothNumber,
         CustomerName,
         CustomerPhone,
-        CustomerEmail
+        CustomerEmail,
+        Positiv,
+        Negativ
     }
 }

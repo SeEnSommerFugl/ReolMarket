@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ReolMarket"
         mc:Ignorable="d"
-        Title="AdminPopUpView" Height="450" Width="800" MinHeight="450" MinWidth="800">
+        Title="AdminPopUpView" Height="720" Width="1280" MinHeight="450" MinWidth="800">
 
     <Window.Resources>
         <ResourceDictionary>
@@ -17,14 +17,11 @@
 
     <Grid>
 
-        <!--<Button Grid.Column="1" Style="{StaticResource ButtonBase}" Content="Udlej reol" Command="{Binding SaveCustomerCommand}"
- Visibility="{Binding SelectedBooth, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60" />
-        <Button Grid.Column="1" Style="{StaticResource ButtonBase}" Content="Frigiv reol" Command="{Binding DeleteCustomerCommand}"
- Visibility="{Binding SelectedBooth.Customer, Converter={StaticResource HideOrShow}, FallbackValue=Collapsed}" Height="20" VerticalAlignment="Top" HorizontalAlignment="Right" FontSize="10" Width="60"/>-->
-
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="24"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
@@ -36,90 +33,82 @@
             </StackPanel>
         </Grid>
 
-        <Grid Grid.Row="1" >
+        <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="24"/>
+                <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <Grid Grid.Column="0" Style="{StaticResource ShowGridWhenNotEditing}">
+            <Grid Grid.Column="0">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Grid.Row="0">
-                    <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" Grid.Row="0">
-                    <TextBox Text="{Binding CustomerName}"/>
-                    <!-- Text="{Binding SelectedLejer.Name}" -->
-                    <TextBox Text="{Binding Email}"/>
-                    <!-- Text="{Binding SelectedLejer.Email}" -->
-                    <TextBox Text="{Binding PhoneNumber}"/>
-                    <!-- Text="{Binding SelectedLejer.Phone}" -->
-                    <TextBox Text="{Binding Address}"/>
-                    <TextBox Text="{Binding PostalCode}"/>
-                    <!-- Text="{Binding SelectedLejer.PostalCode}" -->
-
-                    <!-- Binding + farveskift via triggers senere -->
-                </StackPanel>
-            </Grid>
-
-            <Grid Grid.Row="1" Style="{StaticResource ShowGridWhenEditing}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
-                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-                <StackPanel Grid.Column="0" Grid.Row="0">
-                    <TextBlock  Text="Navn:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Telefon:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock  Text="Adresse:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}"/>
-                    <TextBlock Text="Total difference:" Style="{StaticResource LabelMuted}"/>
+                <Grid Grid.Row="0" Style="{StaticResource ShowGridWhenNotEditing}">
 
-                </StackPanel>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
 
-                <StackPanel Grid.Column="1" Grid.Row="0">
-                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="CustomerName" />
-                    <!-- Text="{Binding CustomerName}" -->
-                    <TextBox Text="{Binding SelectedCustomer.Email}"/>
-                    <!-- Text="{Binding Email}" -->
-                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber}"/>
-                    <!-- Text="{Binding Phone}" -->
-                    <TextBox Text="{Binding SelectedCustomer.Address}"/>
-                    <TextBox Text="{Binding SelectedCustomer.PostalCode}"/>
-                    <!-- Text="{Binding PostalCode}" -->
-                    <Border Style="{StaticResource ChipNegative}">
-                        <TextBlock Text="-100,60"/>
-                    </Border>
-                    <!-- Binding + farveskift via triggers senere -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                </StackPanel>
+                    <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
+                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
+                    <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
+                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
 
-                <Button Command="{Binding SaveCommand}" Grid.Row="1" Grid.ColumnSpan="2" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+                    <TextBox Text="{Binding CustomerName}" Grid.Row="0" Grid.Column="1"/>
+                    <TextBox Text="{Binding Email}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBox Text="{Binding PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
+                    <TextBox Text="{Binding Address}" Grid.Row="3" Grid.Column="1"/>
+                    <TextBox Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1"/>
 
+
+                </Grid>
+
+                <Grid Grid.Row="0" Style="{StaticResource ShowGridWhenEditing}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
+                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
+                    <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
+                    <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
+                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
+
+                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="CustomerName" Grid.Row="0" Grid.Column="1" />
+                    <TextBox Text="{Binding SelectedCustomer.Email}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
+                    <TextBox Text="{Binding SelectedCustomer.Address}" Grid.Row="3" Grid.Column="1"/>
+                    <TextBox Text="{Binding Selected.PostalCode}" Grid.Row="4" Grid.Column="1"/>
+
+                </Grid>
             </Grid>
 
-            <Grid Grid.Column="1">
+            <Grid Grid.Column="2">
                 <Border Grid.Column="2" Style="{StaticResource Card}">
                     <Grid>
                         <Grid.RowDefinitions>
@@ -130,37 +119,36 @@
                         <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
 
                         <DataGrid Grid.Row="1" 
-                                  ItemsSource="{Binding BoothView}" 
-                                  Style="{StaticResource DataGridBase}" 
-                                  x:Name="LejerReolerGrid"
-                                  VirtualizingPanel.IsVirtualizing="False"
-                                  ScrollViewer.VerticalScrollBarVisibility="Auto"
-                                  ScrollViewer.CanContentScroll="True"
-                                  AutoGenerateColumns="False"
-                                  CanUserAddRows="False"
-                                  CanUserDeleteRows="False"
-                                  GridLinesVisibility="Horizontal"
-                                  HeadersVisibility="Column"
-                                  MaxHeight="300">
+                      ItemsSource="{Binding BoothView}" 
+                      Style="{StaticResource DataGridBase}" 
+                      x:Name="LejerReolerGrid"
+                      VirtualizingPanel.IsVirtualizing="False"
+                      ScrollViewer.VerticalScrollBarVisibility="Auto"
+                      ScrollViewer.CanContentScroll="True"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      GridLinesVisibility="Horizontal"
+                      HeadersVisibility="Column">
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Header="Select" Width="60" CanUserSort="False" CanUserReorder="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox x:Name="BoothCheckBox"
-                                                      Checked="BoothCheckBox_Checked" 
-                                                      Unchecked="BoothCheckBox_Unchecked"
-                                                      Tag="{Binding BoothID}"
-                                                      Loaded="BoothCheckBox_Loaded"
-                                                      Unloaded="BoothCheckBox_Unloaded"
-                                                      HorizontalAlignment="Center"
-                                                      VerticalAlignment="Center"/>
+                                          Checked="BoothCheckBox_Checked" 
+                                          Unchecked="BoothCheckBox_Unchecked"
+                                          Tag="{Binding BoothID}"
+                                          Loaded="BoothCheckBox_Loaded"
+                                          Unloaded="BoothCheckBox_Unloaded"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
                                 <DataGridTextColumn Header="Reol Nr" 
-                                                    Width="100" 
-                                                    Binding="{Binding BoothNumber}"
-                                                    IsReadOnly="True"/>
+                                        Width="100" 
+                                        Binding="{Binding BoothNumber}"
+                                        IsReadOnly="True"/>
                                 <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDate}"/>
                                 <DataGridTemplateColumn Header="Difference" Width="140">
                                     <DataGridTemplateColumn.CellTemplate>
@@ -193,9 +181,11 @@
             </Grid>
 
 
+
         </Grid>
 
-        <Grid Grid.Row="2">
+            
+        <Grid Grid.Row="4">
             <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonIcon}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
         </Grid>
         
