@@ -1,7 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Threading;
 using ReolMarket.Core;
 using ReolMarket.Data;
@@ -19,6 +18,8 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
+        private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly SalesRowService _service;
 
         private readonly DispatcherTimer _refreshDebounce = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
@@ -27,7 +28,7 @@ namespace ReolMarket.MVVM.ViewModel
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
         public ObservableCollection<Customer> Customers => _customerRepo.Items;
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
-        public ICollectionView EconomyBoard { get; }
+        public ObservableCollection<Item> Items => _itemRepo.Items;
         public ICollectionView BoothView { get; }
         public ICollectionView CustomerView { get; }
         public ICollectionView SalesView { get; }
@@ -36,6 +37,7 @@ namespace ReolMarket.MVVM.ViewModel
         public Years Years { get; } = new Years();
         public IReadOnlyList<Month> Months { get; } =
             Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+        public ObservableCollection<SalesRow> SalesRows { get; } = new();
 
 
 
@@ -60,7 +62,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedSearchMode, value))
-                    EconomyBoard?.Refresh();
+                    SalesView?.Refresh();
 
             }
         }
@@ -71,7 +73,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _searchText, value))
-                    RequestRefresh(); // ✅ Instant feedback
+                    RequestRefresh();
             }
         }
 
@@ -82,7 +84,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedMonth, value))
-                    EconomyBoard.Refresh();
+                    SalesView.Refresh();
 
             }
         }
@@ -94,7 +96,7 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 if (SetProperty(ref _selectedYear, value))
-                    EconomyBoard.Refresh();
+                    SalesView.Refresh();
 
             }
         }
@@ -110,18 +112,14 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         /// <summary>
-        /// Command that generates the settlement list.
-        /// </summary>
-        public ICommand GenerateCommand { get; }
-
-        /// <summary>
         /// Creates the view model and sets default dates.
         /// </summary>
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo)
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, SalesRowService service)
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
+            _itemRepo = itemRepo;
 
             _selectedYear = DateTime.Now.Year;
             _selectedMonth = (Month)DateTime.Now.Month;
@@ -132,22 +130,31 @@ namespace ReolMarket.MVVM.ViewModel
 
 
 
-            _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); EconomyBoard.Refresh(); };
+            _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); SalesView.Refresh(); };
 
-            ExecuteGenerate();
+            LoadSalesRows();
+            //ExecuteGenerate();
+        }
+
+        private bool FilterSalesView(object obj)
+        {
+            if (obj is not Sale sale) return false;
+
+            //bool
+
+
+            bool matchesMonth = SelectedMonth == 0 || sale.SaleDate.Month == (int)SelectedMonth;
+            bool matchesYear = SelectedYear == 0 || sale.SaleDate.Year == SelectedYear;
+
+            return matchesMonth && matchesYear;
         }
 
 
-        private void LoadRentedBooths()
+        public void LoadSalesRows()
         {
-            var rentedBooths = Booths.Where(b => Customers.Any(c => c.CustomerID == b.CustomerID && (b.IsRented || b.Status == BoothStatus.Optaget)))
-                    .ToList();
-
-
-            foreach (var booth in rentedBooths)
-            {
-
-            }
+            SalesRows.Clear();
+            foreach (var row in _service.GetSalesRows())
+                SalesRows.Add(row);
         }
 
         /// <summary>
