@@ -97,6 +97,20 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        public DateTime? SelectedDate 
+        {
+            get 
+            {
+                if(SelectedMonth != null && SelectedYear != null) 
+                {
+                    return new DateTime(
+                        int.Parse(SelectedYear.Value.Year),
+                        int.Parse(SelectedMonth.Value.Month));
+                }
+                return null;
+            }
+        }
+
         private string _customerName;
         public string CustomerName
         {
