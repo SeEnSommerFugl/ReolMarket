@@ -111,6 +111,18 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        //TODO filter der sammenligner saleDate og selectedDate
+        private bool FilterEconomy(Sale saleDate) 
+        {
+            if(SelectedMonth == null) 
+            {
+                return true;
+            }
+
+            return saleDate.Date.Year == SelectedDate.Value.Year &&
+                saleDate.Date.Year == SelectedDate.Value.Month;
+        }
+
         private string _customerName;
         public string CustomerName
         {
