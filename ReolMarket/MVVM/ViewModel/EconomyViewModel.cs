@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -8,7 +7,6 @@ using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
 using ReolMarket.MVVM.Model.HelperModels;
-using ReolMarket.MVVM.View;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -37,25 +35,7 @@ namespace ReolMarket.MVVM.ViewModel
         public ICollectionView QuickRangesComboBox { get; }
         public ObservableCollection<CustomerSettlementVm> CustomerSettlements { get; } = new();
 
-        /// <summary>
-        /// Start date for the settlement period.
-        /// </summary>
-        private DateTime _periodStart = new(DateTime.Today.Year, DateTime.Today.Month, 1);
-        public DateTime PeriodStart
-        {
-            get => _periodStart;
-            set => SetProperty(ref _periodStart, value);
-        }
 
-        /// <summary>
-        /// End date for the settlement period.
-        /// </summary>
-        private DateTime _periodEnd = DateTime.Today;
-        public DateTime PeriodEnd
-        {
-            get => _periodEnd;
-            set => SetProperty(ref _periodEnd, value);
-        }
 
         private Customer? _selectedCustomer;
         public Customer? SelectedCustomer
@@ -93,6 +73,8 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        public
+
         private string _customerName;
         public string CustomerName
         {
@@ -123,10 +105,21 @@ namespace ReolMarket.MVVM.ViewModel
 
 
 
-
             _refreshDebounce.Tick += (_, __) => { _refreshDebounce.Stop(); EconomyBoard.Refresh(); };
 
             ExecuteGenerate();
+        }
+
+        private void LoadRentedBooths()
+        {
+            var rentedBooths = Booths.Where(b => Customers.Any(c => c.CustomerID == b.CustomerID && (b.IsRented || b.Status == BoothStatus.Optaget)))
+                    .ToList();
+
+
+            foreach (var booth in rentedBooths)
+            {
+
+            }
         }
 
         /// <summary>
@@ -178,7 +171,7 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
 
-        private bool FilterBooth(object obj, object obj2)
+        private bool FilterBooth()
         {
             if (obj is not Booth booth || obj2 is not Customer customer)
                 return false;
