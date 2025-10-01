@@ -20,14 +20,14 @@ namespace ReolMarket
             IBaseRepository<Customer, Guid> customerRepo = new CustomerDbRepository();
             IBaseRepository<Sale, Guid> saleRepo = new SaleDbRepository();
             // Add others as needed:
-            // IBaseRepository<Item, Guid> itemRepo = new ItemDbRepository();
+            IBaseRepository<Item, Guid> itemRepo = new ItemDbRepository();
 
             // ---- ViewModels (pass interfaces in) ----
 
             var itemsVM = new ItemsViewModel(/* e.g., itemRepo */);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
             var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo);
-            var saleVM = new SaleViewModel(boothRepo, customerRepo, saleRepo);
+            var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo);
 
             var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM, saleVM);
 
