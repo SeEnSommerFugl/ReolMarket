@@ -141,19 +141,19 @@
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Samlet indtægt:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="500" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/>
                     <!-- <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="1000" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="{Binding MonthlyExpenses}"  Style="{StaticResource InputRight}"/>
                     <!-- <TextBlock Text="{Binding MonthlyExpense}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="2000" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="{Binding MonthlyDifference}" Style="{StaticResource InputRight}"/>
                     <!-- <TextBlock Text="{Binding MonthlyDiff}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
