@@ -120,6 +120,7 @@ namespace ReolMarket.MVVM.ViewModel
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
             _itemRepo = itemRepo;
+            _service = service;
 
             _selectedYear = DateTime.Now.Year;
             _selectedMonth = (Month)DateTime.Now.Month;

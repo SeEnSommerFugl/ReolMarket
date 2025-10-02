@@ -29,6 +29,8 @@
 
     <Style x:Key="H1" TargetType="TextBlock">
         <Setter Property="FontSize" Value="32"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontWeight" Value="Bold"/>
         <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
     </Style>
@@ -36,6 +38,8 @@
     <Style x:Key="H2" TargetType="TextBlock">
         <Setter Property="FontSize" Value="22"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
     </Style>
 

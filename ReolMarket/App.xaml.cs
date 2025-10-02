@@ -24,7 +24,7 @@ namespace ReolMarket
             IBaseRepository<ShoppingCart, Guid> cartRepo = new ShoppingCartDbRepository();
             IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo = new ItemShoppingCartDbRepository();
 
-            SalesRowService salesRowService = new SalesRowService(customerRepo, boothRepo, itemRepo, (IBaseRepository<ItemShoppingCart, Guid>)itemCartRepo, cartRepo, saleRepo);
+            SalesRowService salesRowService = new SalesRowService(customerRepo, boothRepo, itemRepo, cartRepo, saleRepo, itemCartRepo);
 
             // ---- ViewModels (pass interfaces in) ----
 
