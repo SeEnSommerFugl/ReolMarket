@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
-using ReolMarket.Core;
+﻿using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
+using ReolMarket.MVVM.View;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -19,6 +21,9 @@ namespace ReolMarket.MVVM.ViewModel
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
         public ICollectionView SaleView { get; }
+        public Years Years { get; } = new Years();
+        public IReadOnlyList<Month> Months { get; } =
+            Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
 
         private string? _itemName;
         public string? ItemName
@@ -50,26 +55,24 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        /// <summary>
-        /// Start date for the sale period.
-        /// </summary>
+        private Month _selectedMonth;
+        public Month SelectedMonth {
+            get => _selectedMonth;
+            set {
+                if (SetProperty(ref _selectedMonth, value))
+                    SaleView.Refresh();
 
-        private DateTime _periodStart = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        public DateTime PeriodStart
-        {
-            get => _periodStart;
-            set => SetProperty(ref _periodStart, value);
+            }
         }
 
-        /// <summary>
-        /// end date for the sale period.
-        /// </summary>
+        private int _selectedYear;
+        public int SelectedYear {
+            get => _selectedYear;
+            set {
+                if (SetProperty(ref _selectedYear, value))
+                    SaleView.Refresh();
 
-        private DateTime _periodEnd = DateTime.Today;
-        public DateTime PeriodEnd
-        {
-            get => _periodEnd;
-            set => SetProperty(ref _periodEnd, value);
+            }
         }
 
         public ICommand RegisterSaleCommand { get; }
@@ -79,6 +82,9 @@ namespace ReolMarket.MVVM.ViewModel
             _boothRepo = boothRepo;
             _saleRepo = saleRepo;
             _itemRepo = itemRepo;
+
+            _selectedYear = DateTime.Now.Year;
+            _selectedMonth = (Month)DateTime.Now.Month;
 
             RegisterSaleCommand = new RelayCommand(_ => RegisterSale(), _ => CanRegisterSale());
         }

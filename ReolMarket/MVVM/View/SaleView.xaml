@@ -97,16 +97,29 @@
             <!-- Registrer salg (RecordSales)-->
             <Border Grid.Row="0" Style="{StaticResource Card}">
                 <StackPanel>
+                    <!-- Header -->
                     <TextBlock Text="Registrer salg" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
+
+                    <!-- Reolnummer -->
                     <TextBlock Text="Reol" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White" />
                     <TextBox/>
+
+                    <!-- Produktnavn -->
                     <TextBlock Text="Produkt" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
                     <TextBox/>
+
+                    <!-- Mængde/kvantitet -->
+                    <TextBlock  Text="Mængde" 
+                                       HorizontalAlignment="Left" 
+                                       Foreground="White"/>
+                    <TextBox/>
+
+                    <!-- Pris -->
                     <TextBlock Text="Pris" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
@@ -128,7 +141,7 @@
             </Border>
 
             <!-- Salgs-tal (SalesFigures) -->
-            <Border Grid.Row="2" Style="{StaticResource Card}">
+            <!--<Border Grid.Row="2" Style="{StaticResource Card}">
                 <StackPanel>
                     <TextBlock Text="Salgstal" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
@@ -144,7 +157,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
-            </Border>
+            </Border>-->
 
             <!-- Udestående differencer (OutstandingDifferences) -->
             <Border Grid.Row="4" Style="{StaticResource Card}">
