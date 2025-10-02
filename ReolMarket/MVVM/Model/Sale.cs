@@ -7,6 +7,5 @@
         public decimal TotalPrice { get; set; }
         public Guid ShoppingCartID { get; set; }
         public Guid PaymentID { get; set; }
-        public decimal TotalPrice { get; set; }
     }
 }
