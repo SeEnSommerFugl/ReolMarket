@@ -18,10 +18,12 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Item, Guid> _itemRepo;
         private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
-        private readonly IBaseRepository<ItemShoppingCart, Guid> _itemShoppingCartRepo;
+        private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> _itemShoppingCartRepo;
+        private readonly IBaseRepository<Payment, Guid> _paymentRepo;
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Payment> PaymentMethod => _paymentRepo.Items;
         public ICollectionView SaleView { get; }
         public Years Years { get; } = new Years();
         public IReadOnlyList<Month> Months { get; } =
@@ -33,7 +35,8 @@ namespace ReolMarket.MVVM.ViewModel
             get => _itemName;
             set
             {
-                SetProperty(ref _itemName, value);
+                if(SetProperty(ref _itemName, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -43,7 +46,8 @@ namespace ReolMarket.MVVM.ViewModel
             get => _itemPrice;
             set
             {
-                SetProperty(ref _itemPrice, value);
+                if(SetProperty(ref _itemPrice, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -53,7 +57,8 @@ namespace ReolMarket.MVVM.ViewModel
             get => _boothNumber;
             set
             {
-                SetProperty(ref _boothNumber, value);
+                if(SetProperty(ref _boothNumber, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -61,7 +66,19 @@ namespace ReolMarket.MVVM.ViewModel
         public int? Quantity {
             get => _quantity;
             set {
-                SetProperty(ref _quantity, value);
+                if(SetProperty(ref _quantity, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
+            }
+        }
+
+        private Payment? _selectedPayment;
+        public Payment? SelectedPayment 
+            {
+            get => _selectedPayment;
+            set 
+            {
+                if(SetProperty(ref _selectedPayment, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -87,11 +104,15 @@ namespace ReolMarket.MVVM.ViewModel
 
         public ICommand RegisterSaleCommand { get; }
 
-        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo)
+        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, 
+            IBaseRepository<ShoppingCart, Guid> shoppingCartRepo, IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemShoppingCartRepo, IBaseRepository<Payment, Guid> paymentRepo)
         {
             _boothRepo = boothRepo;
             _saleRepo = saleRepo;
             _itemRepo = itemRepo;
+            _shoppingCartRepo = shoppingCartRepo;
+            _itemShoppingCartRepo = itemShoppingCartRepo;
+            _paymentRepo = paymentRepo;
 
             _selectedYear = DateTime.Now.Year;
             _selectedMonth = (Month)DateTime.Now.Month;
@@ -131,7 +152,7 @@ namespace ReolMarket.MVVM.ViewModel
                 SaleID = Guid.NewGuid(),
                 SaleDate = DateTime.Now,
                 ShoppingCartID = cart.ShoppingCartID,
-                //PaymentID = payment.PaymentID,
+                PaymentID = SelectedPayment.PaymentID,
                 TotalPrice = cartItem.Quantity * cartItem.UnitPrice
             };
             _saleRepo.Add(sale);
@@ -147,7 +168,8 @@ namespace ReolMarket.MVVM.ViewModel
             return !string.IsNullOrWhiteSpace(ItemName)
                 && ItemPrice > 0
                 && Quantity > 0
-                && BoothNumber.HasValue;
+                && BoothNumber.HasValue
+                && SelectedPayment != null;
         }
     }
 }
