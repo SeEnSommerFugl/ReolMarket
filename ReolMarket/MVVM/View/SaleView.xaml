@@ -16,12 +16,15 @@
 
     <Grid Margin="16">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>  <!-- row 4 mid row-->
-            <RowDefinition Height="12"/>    <!--spacing-->
-            <RowDefinition Height="*"/>     <!-- fill -->
+            <RowDefinition Height="Auto"/>  <!-- Row 1 filter bar -->
+            <RowDefinition Height="12"/>    <!-- spacing -->
+            <RowDefinition Height="*"/>     <!-- Row 2 -->
+            <RowDefinition Height="12"/>    <!-- spacing -->
+            <RowDefinition Height="Auto"/>  <!-- Row 3 -->
+            
         </Grid.RowDefinitions>
 
-        <!-- Row 1: filter bar -->
+        <!-- Row 1: Top filter -->
         <Border Style="{StaticResource Card}">
             <DockPanel LastChildFill="True">
                 <!-- Højre knapper -->
@@ -32,22 +35,21 @@
                             Style="{StaticResource ButtonPrimary}" Height="34" Margin="12,0,0,0"/>
                 </StackPanel>
 
-                <!-- left title -->
+                <!-- Venstre label -->
                 <TextBlock DockPanel.Dock="Left" Text="Salg" Style="{StaticResource H1}"
                    VerticalAlignment="Center" Margin="0,0,12,0"/>
 
-                <!-- ComboBoxes -->
-                    <TextBlock  Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <ComboBox   ItemsSource="{Binding Months}" 
-                                HorizontalAlignment="Left"
-                                SelectedIndex="{Binding SelectedMonth, Mode=TwoWay}"
-                                Height="34" Width="120" Margin="0,0,12,0"/>
+                <!-- Midterfilter (wrap hvis smalt) -->
+                
+                    <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <ComboBox ItemsSource="{Binding Months}"
+                            SelectedIndex="{Binding SelectedMonth, Mode=TwoWay}"
+                            Height="34" Width="120" Margin="0,0,12,0"/>
 
-                    <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                    <ComboBox   ItemsSource="{Binding Years}" 
-                                HorizontalAlignment="Left"
-                                SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
-                                Height="34" Width="100"/>
+                    <TextBlock Text="År:" Style="{StaticResource LabelMuted}"/>
+                    <ComboBox ItemsSource="{Binding Years}"
+                            SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+                            Height="34" Width="100"/>
             </DockPanel>
         </Border>
 
@@ -72,4 +74,110 @@
 
         </Grid>
     
-</UserControl>
+</Page>
+                <!-- Registrer salg (RecordSales)-->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Registrer salg" Style="{StaticResource H2}" 
+                                   HorizontalAlignment="Center"/>
+                        <TextBlock Text="Reol" 
+                                   HorizontalAlignment="Left" 
+                                   Foreground="White" />
+                        <TextBox/>
+                        <TextBlock Text="Produkt" 
+                                   HorizontalAlignment="Left" 
+                                   Foreground="White"/>
+                        <TextBox/>
+                        <TextBlock Text="Pris" 
+                                   HorizontalAlignment="Left" 
+                                   Foreground="White"/>
+                        <TextBox/>
+
+
+                        <DataGrid ItemsSource="{Binding RecordSales}"
+                                  HeadersVisibility="None"
+                                  GridLinesVisibility="None" 
+                                  Background="Transparent" 
+                                  BorderBrush="Transparent"
+                                  Margin="0,8,0,0"> 
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Label}" Width="*" />
+                                <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Salgs-tal (SalesFigures) -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Salgstal" Style="{StaticResource H2}" 
+                                   HorizontalAlignment="Center"/>
+                        <DataGrid  ItemsSource="{Binding SalesFigures}"
+                                   HeadersVisibility="None"
+                                   GridLinesVisibility="None" 
+                                   Background="Transparent" 
+                                   BorderBrush="Transparent"
+                                   Margin="0,8,0,0"> 
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Label}" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*" />   <!-- Udestående differencer -->
+                    <RowDefinition Height="12"/>    <!-- spacing -->
+                    <RowDefinition Height="*"/>     <!-- Reol-tal -->               
+                </Grid.RowDefinitions>
+
+                <!-- Udestående differencer (OutstandingDifferences) -->
+                <Border Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock  Text="Udestående Differencer" Style="{StaticResource H2}" 
+                                    HorizontalAlignment="Center"/>
+                        <DataGrid   ItemsSource="{Binding OutstandingDifferences}"
+                                    HeadersVisibility="None"
+                                    GridLinesVisibility="None" 
+                                    Background="Transparent" 
+                                    BorderBrush="Transparent"
+                                    Margin="0,8,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn 
+                                    Binding="{Binding RenterName}" 
+                                    Width="*" />
+                                <DataGridTextColumn 
+                                    Binding="{Binding Amount}" 
+                                    Width="140">
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+
+                <!-- Reol-tal -->
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock  Text="Reol tal" Style="{StaticResource H2}" 
+                                    HorizontalAlignment="Center"/>
+                        <DataGrid   ItemsSource="{Binding BoothFigures}" 
+                                    HeadersVisibility="None"
+                                    GridLinesVisibility="None" 
+                                    Background="Transparent" 
+                                    BorderBrush="Transparent"
+                                    Margin="0,8,0,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Label}" Width="*" />
+                                <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>
