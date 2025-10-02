@@ -2,7 +2,6 @@
 using ReolMarket.Data;
 using ReolMarket.Data.Repository;
 using ReolMarket.MVVM.Model;
-using ReolMarket.MVVM.Model.HelperModels;
 using ReolMarket.MVVM.ViewModel;
 
 namespace ReolMarket
@@ -24,13 +23,10 @@ namespace ReolMarket
             IBaseRepository<ShoppingCart, Guid> cartRepo = new ShoppingCartDbRepository();
             IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo = new ItemShoppingCartDbRepository();
 
-            SalesRowService salesRowService = new SalesRowService(customerRepo, boothRepo, itemRepo, cartRepo, saleRepo, itemCartRepo);
-
             // ---- ViewModels (pass interfaces in) ----
-
             var itemsVM = new ItemsViewModel(itemRepo, boothRepo);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
-            var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo, salesRowService);
+            var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo);
             var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo);
 
             var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM, saleVM);
