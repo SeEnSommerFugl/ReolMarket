@@ -2,7 +2,6 @@
 {
     public enum Month
     {
-        WTF = 0,
         Januar = 1,
         Februar = 2,
         Marts = 3,

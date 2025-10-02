@@ -2,7 +2,6 @@
 {
     public sealed class Years
     {
-        public string bla { get; set; } = "blub";
         public IReadOnlyList<int> Items { get; }
 
         public Years()
