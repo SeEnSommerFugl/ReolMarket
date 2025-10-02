@@ -1,9 +1,11 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Windows.Input;
-using ReolMarket.Core;
+﻿using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
+using ReolMarket.MVVM.View;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Input;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -15,10 +17,17 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
+        private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> _itemShoppingCartRepo;
+        private readonly IBaseRepository<Payment, Guid> _paymentRepo;
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
+        public ObservableCollection<Payment> PaymentMethod => _paymentRepo.Items;
         public ICollectionView SaleView { get; }
+        public Years Years { get; } = new Years();
+        public IReadOnlyList<Month> Months { get; } =
+            Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
 
         private string? _itemName;
         public string? ItemName
@@ -26,7 +35,8 @@ namespace ReolMarket.MVVM.ViewModel
             get => _itemName;
             set
             {
-                SetProperty(ref _itemName, value);
+                if(SetProperty(ref _itemName, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -36,7 +46,8 @@ namespace ReolMarket.MVVM.ViewModel
             get => _itemPrice;
             set
             {
-                SetProperty(ref _itemPrice, value);
+                if(SetProperty(ref _itemPrice, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
@@ -46,39 +57,65 @@ namespace ReolMarket.MVVM.ViewModel
             get => _boothNumber;
             set
             {
-                SetProperty(ref _boothNumber, value);
+                if(SetProperty(ref _boothNumber, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
             }
         }
 
-        /// <summary>
-        /// Start date for the sale period.
-        /// </summary>
-
-        private DateTime _periodStart = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-        public DateTime PeriodStart
-        {
-            get => _periodStart;
-            set => SetProperty(ref _periodStart, value);
+        private int? _quantity;
+        public int? Quantity {
+            get => _quantity;
+            set {
+                if(SetProperty(ref _quantity, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
+            }
         }
 
-        /// <summary>
-        /// end date for the sale period.
-        /// </summary>
+        private Payment? _selectedPayment;
+        public Payment? SelectedPayment 
+            {
+            get => _selectedPayment;
+            set 
+            {
+                if(SetProperty(ref _selectedPayment, value))
+                    ((RelayCommand)RegisterSaleCommand).RaiseCanExecuteChanged();
+            }
+        }
 
-        private DateTime _periodEnd = DateTime.Today;
-        public DateTime PeriodEnd
-        {
-            get => _periodEnd;
-            set => SetProperty(ref _periodEnd, value);
+        private Month _selectedMonth;
+        public Month SelectedMonth {
+            get => _selectedMonth;
+            set {
+                if (SetProperty(ref _selectedMonth, value))
+                    SaleView.Refresh();
+
+            }
+        }
+
+        private int _selectedYear;
+        public int SelectedYear {
+            get => _selectedYear;
+            set {
+                if (SetProperty(ref _selectedYear, value))
+                    SaleView.Refresh();
+
+            }
         }
 
         public ICommand RegisterSaleCommand { get; }
 
-        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo)
+        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, 
+            IBaseRepository<ShoppingCart, Guid> shoppingCartRepo, IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemShoppingCartRepo, IBaseRepository<Payment, Guid> paymentRepo)
         {
             _boothRepo = boothRepo;
             _saleRepo = saleRepo;
             _itemRepo = itemRepo;
+            _shoppingCartRepo = shoppingCartRepo;
+            _itemShoppingCartRepo = itemShoppingCartRepo;
+            _paymentRepo = paymentRepo;
+
+            _selectedYear = DateTime.Now.Year;
+            _selectedMonth = (Month)DateTime.Now.Month;
 
             RegisterSaleCommand = new RelayCommand(_ => RegisterSale(), _ => CanRegisterSale());
         }
@@ -89,6 +126,7 @@ namespace ReolMarket.MVVM.ViewModel
 
             var newItem = new Item
             {
+                ItemID = Guid.NewGuid(),
                 ItemName = ItemName,
                 ItemPrice = (decimal)ItemPrice,
                 BoothID = booth.BoothID,
@@ -96,23 +134,32 @@ namespace ReolMarket.MVVM.ViewModel
             };
             _itemRepo.Add(newItem);
 
-            var cart = new ShoppingCart();
+            var cart = new ShoppingCart 
+            {
+                ShoppingCartID = Guid.NewGuid()
+            };
+            _shoppingCartRepo.Add(cart);
+
             var cartItem = new ItemShoppingCart
             {
                 ItemID = newItem.ItemID,
                 ShoppingCartID = cart.ShoppingCartID
             };
+            _itemShoppingCartRepo.Add(cartItem);
 
             var sale = new Sale
             {
+                SaleID = Guid.NewGuid(),
                 SaleDate = DateTime.Now,
                 ShoppingCartID = cart.ShoppingCartID,
-                PaymentID = Guid.NewGuid() //TODO Her skal laves en enum til kort og kontant
+                PaymentID = SelectedPayment.PaymentID,
+                TotalPrice = cartItem.Quantity * cartItem.UnitPrice
             };
             _saleRepo.Add(sale);
 
             ItemName = string.Empty;
-            ItemPrice = 0;
+            ItemPrice = null;
+            Quantity = null;
             BoothNumber = null;
         }
 
@@ -120,7 +167,9 @@ namespace ReolMarket.MVVM.ViewModel
         {
             return !string.IsNullOrWhiteSpace(ItemName)
                 && ItemPrice > 0
-                && BoothNumber.HasValue;
+                && Quantity > 0
+                && BoothNumber.HasValue
+                && SelectedPayment != null;
         }
     }
 }

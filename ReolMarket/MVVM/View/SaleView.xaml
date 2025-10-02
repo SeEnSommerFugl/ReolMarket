@@ -28,7 +28,7 @@
                 <RowDefinition Height="12"/>    <!-- spacing -->
                 <RowDefinition Height="*"/>     <!-- Row 2 -->
                 <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="Auto"/>  <!-- Row 3 -->
+                <!--<RowDefinition Height="Auto"/>-->  <!-- Row 3 -->
             </Grid.RowDefinitions>
 
             <!-- Row 1: Top filter -->
@@ -57,6 +57,7 @@
                         <ComboBox ItemsSource="{Binding Years}"
                                 SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
                                 Height="34" Width="100"/>
+                        
                     </StackPanel>
                 </DockPanel>
             </Border>
@@ -73,11 +74,11 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <!-- row 3 - Button -->
+            <!-- row 3 - Button --><!--
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
                   Command="{Binding RegisterSaleCommand}"/>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
 
         <!-- Middle Column (spacing handled by ColumnDefinition) -->
@@ -97,21 +98,44 @@
             <!-- Registrer salg (RecordSales)-->
             <Border Grid.Row="0" Style="{StaticResource Card}">
                 <StackPanel>
+                    <!-- Header -->
                     <TextBlock Text="Registrer salg" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
+
+                    <!-- Reolnummer -->
                     <TextBlock Text="Reol" 
                                        HorizontalAlignment="Left" 
-                                       Foreground="White" />
-                    <TextBox/>
+                                       Foreground="White"/>
+                    <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- Produktnavn -->
                     <TextBlock Text="Produkt" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- Mængde/kvantitet -->
+                    <TextBlock  Text="Mængde" 
+                                       HorizontalAlignment="Left" 
+                                       Foreground="White"/>
+                    <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <!-- Pris -->
                     <TextBlock Text="Pris" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding ItemPrice, UpdateSourceTrigger=PropertyChanged}"/>
 
+                    <TextBlock Text="Betalingsmetode" 
+                                       HorizontalAlignment="Left" 
+                                       Foreground="White"/>
+                    <ComboBox ItemsSource="{Binding PaymentMethod}"
+                              DisplayMemberPath="PaymentMethod"
+                              SelectedItem="{Binding SelectedPayment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+                    <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
+                            Command="{Binding RegisterSaleCommand}"
+                            Margin="10,10,10,0"/>
 
                     <DataGrid ItemsSource="{Binding RecordSales}"
                                       HeadersVisibility="None"
@@ -128,7 +152,7 @@
             </Border>
 
             <!-- Salgs-tal (SalesFigures) -->
-            <Border Grid.Row="2" Style="{StaticResource Card}">
+            <!--<Border Grid.Row="2" Style="{StaticResource Card}">
                 <StackPanel>
                     <TextBlock Text="Salgstal" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
@@ -144,7 +168,7 @@
                         </DataGrid.Columns>
                     </DataGrid>
                 </StackPanel>
-            </Border>
+            </Border>-->
 
             <!-- Udestående differencer (OutstandingDifferences) -->
             <Border Grid.Row="4" Style="{StaticResource Card}">

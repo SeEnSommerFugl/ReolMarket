@@ -23,6 +23,7 @@ namespace ReolMarket
             IBaseRepository<Item, Guid> itemRepo = new ItemDbRepository();
             IBaseRepository<ShoppingCart, Guid> cartRepo = new ShoppingCartDbRepository();
             IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo = new ItemShoppingCartDbRepository();
+            IBaseRepository<Payment, Guid> paymentRepo = new PaymentDbRepository();
 
             SalesRowService salesRowService = new SalesRowService(customerRepo, boothRepo, itemRepo, cartRepo, saleRepo, itemCartRepo);
 
@@ -31,7 +32,7 @@ namespace ReolMarket
             var itemsVM = new ItemsViewModel(itemRepo, boothRepo);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
             var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo, salesRowService);
-            var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo);
+            var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo, cartRepo, itemCartRepo, paymentRepo);
 
             var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM, saleVM);
 
