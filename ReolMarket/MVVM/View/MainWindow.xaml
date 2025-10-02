@@ -19,6 +19,11 @@
     </Window.Background>
 
     <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <!-- Hovedlayout: venstre navigation | indhold -->
@@ -41,14 +46,13 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
-            <Button Command="{Binding NavigateSaleCommand}"  Style="{StaticResource Btn.Nav}" Content="Salg"/>
-            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
-            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
+            <Button Command="{Binding NavigateSaleCommand}"  Style="{StaticResource ButtonNavigation}" Content="Salg"/>
+            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource ButtonNavigation}" Content="Udlejere"/>
+            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
         </StackPanel>
 
         <ContentControl Grid.Column="2"
-                Content="{Binding CurrentView}"
-                d:Content="{d:DesignInstance Type=views:EconomyView, IsDesignTimeCreatable=True}"/>
+                Content="{Binding CurrentView}"/>
 
     </Grid>
 </Window>

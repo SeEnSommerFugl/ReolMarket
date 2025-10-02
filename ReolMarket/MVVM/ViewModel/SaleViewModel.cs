@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Net.Http.Headers;
 using System.Windows.Input;
 using ReolMarket.Core;
 using ReolMarket.Data;
@@ -19,33 +18,33 @@ namespace ReolMarket.MVVM.ViewModel
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
-        public ICollectionView SaleView {  get; }
+        public ICollectionView SaleView { get; }
 
         private string? _itemName;
         public string? ItemName
         {
             get => _itemName;
-            set 
+            set
             {
                 SetProperty(ref _itemName, value);
             }
         }
 
         private decimal? _itemPrice;
-        public decimal? ItemPrice 
+        public decimal? ItemPrice
         {
             get => _itemPrice;
-            set 
+            set
             {
                 SetProperty(ref _itemPrice, value);
             }
         }
 
         private int? _boothNumber;
-        public int? BoothNumber 
+        public int? BoothNumber
         {
             get => _boothNumber;
-            set 
+            set
             {
                 SetProperty(ref _boothNumber, value);
             }
@@ -59,13 +58,13 @@ namespace ReolMarket.MVVM.ViewModel
         public DateTime PeriodStart
         {
             get => _periodStart;
-            set => SetProperty(ref _periodStart, value); 
+            set => SetProperty(ref _periodStart, value);
         }
 
         /// <summary>
         /// end date for the sale period.
         /// </summary>
-        
+
         private DateTime _periodEnd = DateTime.Today;
         public DateTime PeriodEnd
         {
@@ -84,11 +83,11 @@ namespace ReolMarket.MVVM.ViewModel
             RegisterSaleCommand = new RelayCommand(_ => RegisterSale(), _ => CanRegisterSale());
         }
 
-        private void RegisterSale() 
+        private void RegisterSale()
         {
             var booth = Booths.FirstOrDefault(b => b.BoothNumber == BoothNumber);
 
-            var newItem = new Item 
+            var newItem = new Item
             {
                 ItemName = ItemName,
                 ItemPrice = (decimal)ItemPrice,
@@ -98,15 +97,16 @@ namespace ReolMarket.MVVM.ViewModel
             _itemRepo.Add(newItem);
 
             var cart = new ShoppingCart();
-            var cartItem = new ItemShoppingCart 
+            var cartItem = new ItemShoppingCart
             {
                 ItemID = newItem.ItemID,
-                ShoppingCartID = cart.ShoppingCartId
+                ShoppingCartID = cart.ShoppingCartID
             };
 
-            var sale = new Sale {
+            var sale = new Sale
+            {
                 SaleDate = DateTime.Now,
-                ShoppingCartID = cart.ShoppingCartId,
+                ShoppingCartID = cart.ShoppingCartID,
                 PaymentID = Guid.NewGuid() //TODO Her skal laves en enum til kort og kontant
             };
             _saleRepo.Add(sale);
@@ -116,7 +116,7 @@ namespace ReolMarket.MVVM.ViewModel
             BoothNumber = null;
         }
 
-        private bool CanRegisterSale() 
+        private bool CanRegisterSale()
         {
             return !string.IsNullOrWhiteSpace(ItemName)
                 && ItemPrice > 0

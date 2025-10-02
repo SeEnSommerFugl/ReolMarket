@@ -1,12 +1,19 @@
-﻿<Page x:Class="ReolMarket.MVVM.View.SaleView"
+﻿<UserControl x:Class="ReolMarket.MVVM.View.SaleView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        d:DesignWidth="1652" d:DesignHeight="1048"
-        Title="SaleView">
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        mc:Ignorable="d"
+        d:DesignWidth="1652" d:DesignHeight="1048">
 
-   
-    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
     <Grid Margin="16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>  <!-- Row 1 filter bar -->
@@ -23,9 +30,9 @@
                 <!-- Højre knapper -->
                 <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
                     <Button Content="Ryd filtre" Command="{Binding ClearFiltersCommand}"
-                            Style="{StaticResource Btn.Base}" Height="34" Margin="12,0,0,0"/>
+                            Style="{StaticResource ButtonBase}" Height="34" Margin="12,0,0,0"/>
                     <Button Content="Opdater" Command="{Binding RefreshCommand}"
-                            Style="{StaticResource Btn.Primary}" Height="34" Margin="12,0,0,0"/>
+                            Style="{StaticResource ButtonPrimary}" Height="34" Margin="12,0,0,0"/>
                 </StackPanel>
 
                 <!-- Venstre label -->
@@ -49,7 +56,7 @@
         <!-- Row 2: liste -->
         
         <DataGrid Grid.Row="2" ItemsSource="{Binding SaleView}"
-              Style="{StaticResource Grid.Base}">
+              Style="{StaticResource DataGridBase}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Dato" Width="160"
                             Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
@@ -61,10 +68,10 @@
 
         <!-- row 3 - Button -->
         <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Registrér salg" Style="{StaticResource Btn.Primary}"
+            <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
               Command="{Binding RegisterSaleCommand}"/>
         </StackPanel>
 
         </Grid>
     
-</Page>
+</UserControl>
