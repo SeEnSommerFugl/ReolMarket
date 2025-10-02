@@ -41,9 +41,9 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
-            <Button Command="{Binding NavigateItemsCommand}" Style="{StaticResource ButtonNavigation}" Content="Salg"/>
-            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource ButtonNavigation}" Content="Udlejere"/>
-            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
+            <Button Command="{Binding NavigateSaleCommand}"  Style="{StaticResource Btn.Nav}" Content="Salg"/>
+            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource Btn.Nav}" Content="Udlejere"/>
+            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource Btn.Nav}" Content="Økonomi"/>
         </StackPanel>
 
         <ContentControl Grid.Column="2"

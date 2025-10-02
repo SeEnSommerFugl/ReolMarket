@@ -1,0 +1,70 @@
+﻿<Page x:Class="ReolMarket.MVVM.View.SaleView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+        d:DesignWidth="1652" d:DesignHeight="1048"
+        Title="SaleView">
+
+   
+    
+    <Grid Margin="16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>  <!-- Row 1 filter bar -->
+            <RowDefinition Height="12"/>    <!-- spacing -->
+            <RowDefinition Height="*"/>     <!-- Row 2 -->
+            <RowDefinition Height="12"/>    <!-- spacing -->
+            <RowDefinition Height="Auto"/>  <!-- Row 3 -->
+            
+        </Grid.RowDefinitions>
+
+        <!-- Row 1: Top filter -->
+        <Border Style="{StaticResource Card}">
+            <DockPanel LastChildFill="True">
+                <!-- Højre knapper -->
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                    <Button Content="Ryd filtre" Command="{Binding ClearFiltersCommand}"
+                            Style="{StaticResource Btn.Base}" Height="34" Margin="12,0,0,0"/>
+                    <Button Content="Opdater" Command="{Binding RefreshCommand}"
+                            Style="{StaticResource Btn.Primary}" Height="34" Margin="12,0,0,0"/>
+                </StackPanel>
+
+                <!-- Venstre label -->
+                <TextBlock DockPanel.Dock="Left" Text="Salg" Style="{StaticResource H1}"
+                   VerticalAlignment="Center" Margin="0,0,12,0"/>
+
+                <!-- Midterfilter (wrap hvis smalt) -->
+                
+                    <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                    <ComboBox ItemsSource="{Binding Months}"
+                            SelectedIndex="{Binding SelectedMonth, Mode=TwoWay}"
+                            Height="34" Width="120" Margin="0,0,12,0"/>
+
+                    <TextBlock Text="År:" Style="{StaticResource LabelMuted}"/>
+                    <ComboBox ItemsSource="{Binding Years}"
+                            SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+                            Height="34" Width="100"/>
+            </DockPanel>
+        </Border>
+
+        <!-- Row 2: liste -->
+        
+        <DataGrid Grid.Row="2" ItemsSource="{Binding SaleView}"
+              Style="{StaticResource Grid.Base}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Dato" Width="160"
+                            Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
+                <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
+                <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- row 3 - Button -->
+        <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+            <Button Content="Registrér salg" Style="{StaticResource Btn.Primary}"
+              Command="{Binding RegisterSaleCommand}"/>
+        </StackPanel>
+
+        </Grid>
+    
+</Page>
