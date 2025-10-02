@@ -2,6 +2,7 @@
 {
     public enum Month
     {
+        WTF = 0,
         Januar = 1,
         Februar = 2,
         Marts = 3,
@@ -14,5 +15,6 @@
         Oktober = 10,
         November = 11,
         December = 12
+
     }
 }
