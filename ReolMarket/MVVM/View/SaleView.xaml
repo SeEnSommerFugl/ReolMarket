@@ -28,7 +28,7 @@
                 <RowDefinition Height="12"/>    <!-- spacing -->
                 <RowDefinition Height="*"/>     <!-- Row 2 -->
                 <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="Auto"/>  <!-- Row 3 -->
+                <!--<RowDefinition Height="Auto"/>-->  <!-- Row 3 -->
             </Grid.RowDefinitions>
 
             <!-- Row 1: Top filter -->
@@ -74,11 +74,11 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <!-- row 3 - Button -->
+            <!-- row 3 - Button --><!--
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
                 <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
                   Command="{Binding RegisterSaleCommand}"/>
-            </StackPanel>
+            </StackPanel>-->
         </Grid>
 
         <!-- Middle Column (spacing handled by ColumnDefinition) -->
