@@ -105,31 +105,30 @@
                     <!-- Reolnummer -->
                     <TextBlock Text="Reol" 
                                        HorizontalAlignment="Left" 
-                                       Foreground="White" />
-                    <TextBox/>
+                                       Foreground="White"/>
+                    <TextBox Text="{Binding BoothNumber}"/>
 
                     <!-- Produktnavn -->
                     <TextBlock Text="Produkt" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding ItemName}"/>
 
                     <!-- Mængde/kvantitet -->
                     <TextBlock  Text="Mængde" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding Quantity}"/>
 
                     <!-- Pris -->
                     <TextBlock Text="Pris" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
-                    <TextBox/>
+                    <TextBox Text="{Binding ItemPrice}"/>
 
                     <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
                             Command="{Binding RegisterSaleCommand}"
                             Margin="10,10,10,0"/>
-
 
                     <DataGrid ItemsSource="{Binding RecordSales}"
                                       HeadersVisibility="None"

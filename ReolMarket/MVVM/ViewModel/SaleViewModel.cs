@@ -17,6 +17,8 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
         private readonly IBaseRepository<Booth, Guid> _boothRepo;
         private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
+        private readonly IBaseRepository<ItemShoppingCart, Guid> _itemShoppingCartRepo;
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
@@ -52,6 +54,14 @@ namespace ReolMarket.MVVM.ViewModel
             set
             {
                 SetProperty(ref _boothNumber, value);
+            }
+        }
+
+        private int? _quantity;
+        public int? Quantity {
+            get => _quantity;
+            set {
+                SetProperty(ref _quantity, value);
             }
         }
 
@@ -95,6 +105,7 @@ namespace ReolMarket.MVVM.ViewModel
 
             var newItem = new Item
             {
+                ItemID = Guid.NewGuid(),
                 ItemName = ItemName,
                 ItemPrice = (decimal)ItemPrice,
                 BoothID = booth.BoothID,
@@ -102,23 +113,32 @@ namespace ReolMarket.MVVM.ViewModel
             };
             _itemRepo.Add(newItem);
 
-            var cart = new ShoppingCart();
+            var cart = new ShoppingCart 
+            {
+                ShoppingCartID = Guid.NewGuid()
+            };
+            _shoppingCartRepo.Add(cart);
+
             var cartItem = new ItemShoppingCart
             {
                 ItemID = newItem.ItemID,
                 ShoppingCartID = cart.ShoppingCartID
             };
+            _itemShoppingCartRepo.Add(cartItem);
 
             var sale = new Sale
             {
+                SaleID = Guid.NewGuid(),
                 SaleDate = DateTime.Now,
                 ShoppingCartID = cart.ShoppingCartID,
-                PaymentID = Guid.NewGuid() //TODO Her skal laves en enum til kort og kontant
+                //PaymentID = payment.PaymentID,
+                TotalPrice = cartItem.Quantity * cartItem.UnitPrice
             };
             _saleRepo.Add(sale);
 
             ItemName = string.Empty;
-            ItemPrice = 0;
+            ItemPrice = null;
+            Quantity = null;
             BoothNumber = null;
         }
 
@@ -126,6 +146,7 @@ namespace ReolMarket.MVVM.ViewModel
         {
             return !string.IsNullOrWhiteSpace(ItemName)
                 && ItemPrice > 0
+                && Quantity > 0
                 && BoothNumber.HasValue;
         }
     }
