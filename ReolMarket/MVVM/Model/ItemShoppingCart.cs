@@ -5,5 +5,7 @@
         public Guid ItemID { get; set; }
         public Guid ShoppingCartID { get; set; }
         public readonly record struct ItemShoppingCartKey(Guid ItemId, Guid CartId);
-    }
+        public int Quantity { get; set; }
+        public decimal UnitPrice { get; set; }
+}
 }

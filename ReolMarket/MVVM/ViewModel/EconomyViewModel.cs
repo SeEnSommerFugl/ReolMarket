@@ -45,27 +45,6 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private string? _searchText;
-        public string? SearchText
-        {
-            get => _searchText;
-            set
-            {
-                if (SetProperty(ref _searchText, value)) ;
-            }
-        }
-
-        private int _selectedYear;
-        public int SelectedYear
-        {
-            get => _selectedYear;
-            set
-            {
-                if (SetProperty(ref _selectedYear, value))
-                    SalesView.Refresh();
-
-            }
-        }
 
         private string _customerName;
         public string CustomerName
