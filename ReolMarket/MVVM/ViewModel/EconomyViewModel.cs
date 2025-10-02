@@ -72,6 +72,16 @@ namespace ReolMarket.MVVM.ViewModel
                 SetProperty(ref _customerName, value);
             }
         }
+        private int _monthlyRentedBooths;
+        public int MonthlyRentedBooths
+        {
+            get => MonthlyRentedBoothsCalulator();
+            set
+            {
+                SetProperty(ref _monthlyRentedBooths, value);
+            }
+        }
+
 
         public decimal Rent => _economy.Rent;
         public decimal Electricity => _economy.Electricity;
@@ -128,6 +138,19 @@ namespace ReolMarket.MVVM.ViewModel
             };
 
             return customerBoothCount * pricePerBooth;
+        }
+
+        private int MonthlyRentedBoothsCalulator()
+        {
+            int rentedBooths = 0;
+            foreach (var booth in Booths)
+            {
+                if (booth.IsRented && (booth.EndDate == null || booth.EndDate.Value.Month != DateTime.Now.Month))
+                {
+                    rentedBooths++;
+                }
+            }
+            return rentedBooths;
         }
     }
 }

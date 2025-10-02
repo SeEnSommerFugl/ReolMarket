@@ -181,8 +181,7 @@
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="50" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyRentedBooths}" Style="{StaticResource InputRight}"/> -->
+                    <TextBlock Text="{Binding MonthlyRentedBooths}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">

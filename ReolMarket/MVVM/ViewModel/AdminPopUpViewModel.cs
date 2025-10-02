@@ -178,18 +178,18 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 if (IsEditing == true)
                 {
-                    var customerToUpdate = SelectedCustomer;
-                    if (customerToUpdate != null)
+
+                    if (SelectedCustomer != null)
                     {
-                        customerToUpdate.CustomerName = CustomerName!.Trim();
-                        customerToUpdate.Email = Email!.Trim();
-                        customerToUpdate.PhoneNumber = PhoneNumber!.Trim();
-                        customerToUpdate.Address = Address!.Trim();
-                        customerToUpdate.PostalCode = PostalCode!.Trim();
+                        CustomerName = SelectedCustomer.CustomerName!.Trim();
+                        Email = SelectedCustomer.Email!.Trim();
+                        PhoneNumber = SelectedCustomer.PhoneNumber!.Trim();
+                        Address = SelectedCustomer.Address!.Trim();
+                        PostalCode = SelectedCustomer.PostalCode!.Trim();
 
                         Validate();
+                        _customerRepo.Update(SelectedCustomer);
                         UpdateBoothAssignments();
-                        _customerRepo.Update(customerToUpdate);
                     }
                 }
                 else
