@@ -186,14 +186,12 @@
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="25" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyAvailableBooths}" Style="{StaticResource InputRight}"/> -->
+                    <TextBlock Text="{Binding MonthlyAvailableBooths}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="200" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyRentIncome}" Style="{StaticResource InputRight}"/> -->
+                    <TextBlock Text="{Binding MonthlyRentIncome}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">

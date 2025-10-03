@@ -81,6 +81,26 @@ namespace ReolMarket.MVVM.ViewModel
                 SetProperty(ref _monthlyRentedBooths, value);
             }
         }
+        private int _monthlyAvailableBooths;
+        public int MonthlyAvailableBooths
+        {
+            get => MonthlyAvailableBoothsCalculator();
+            set
+            {
+                SetProperty(ref _monthlyAvailableBooths, value);
+            }
+        }
+        private decimal _monthlyRentIncome;
+        public decimal MonthlyRentIncome
+        {
+            get => CalculateRentalIncome();
+            set
+            {
+                SetProperty(ref _monthlyRentIncome, value);
+            }
+        }
+
+
 
 
         public decimal Rent => _economy.Rent;
@@ -115,6 +135,16 @@ namespace ReolMarket.MVVM.ViewModel
             }
 
             return totalIncome;
+        }
+        private decimal CalculateRentalIncome()
+        {
+            decimal totalRentalIncome = 0;
+            foreach (var customer in Customers)
+            {
+                var customerRentalIncome = CalculateCustomerRentalIncome(customer.CustomerID);
+                totalRentalIncome += customerRentalIncome;
+            }
+            return totalRentalIncome;
         }
 
         private decimal CalculateCustomerRentalIncome(Guid customerId)
@@ -151,6 +181,19 @@ namespace ReolMarket.MVVM.ViewModel
                 }
             }
             return rentedBooths;
+        }
+
+        private int MonthlyAvailableBoothsCalculator()
+        {
+            int availableBooths = 0;
+            foreach (var booth in Booths)
+            {
+                if (!booth.IsRented || (booth.EndDate != null && booth.EndDate.Value.Month == DateTime.Now.Month))
+                {
+                    availableBooths++;
+                }
+            }
+            return availableBooths;
         }
     }
 }
