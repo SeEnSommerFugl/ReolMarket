@@ -253,7 +253,7 @@ namespace ReolMarket.MVVM.ViewModel
             return Sales.Count;
         }
 
-        // Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
+        // TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
 
         private decimal MonthlyOutstandingPayments()
         {
