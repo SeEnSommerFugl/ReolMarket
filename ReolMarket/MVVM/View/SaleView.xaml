@@ -115,7 +115,7 @@
                     <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <!-- Mængde/kvantitet -->
-                    <TextBlock  Text="Mængde" 
+                    <TextBlock  Text="Antal" 
                                        HorizontalAlignment="Left" 
                                        Foreground="White"/>
                     <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
