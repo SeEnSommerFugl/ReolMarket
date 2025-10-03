@@ -142,19 +142,16 @@
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Samlet indtægt:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
                     <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
                     <TextBlock Text="{Binding MonthlyExpenses}"  Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyExpense}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
                     <TextBlock Text="{Binding MonthlyDifference}" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyDiff}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
@@ -196,8 +193,7 @@
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="300" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyCommission}" Style="{StaticResource InputRight}"/> -->
+                     <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
             </Grid>
         </Border>
@@ -217,20 +213,17 @@
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Solgt for:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="1000" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlySalesTotal}" Style="{StaticResource InputRight}"/> -->
+                    <TextBlock Text="{Binding MonthlySalesTotal}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Antal af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="50" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlySalesAmount}" Style="{StaticResource InputRight}"/> -->
+                     <TextBlock Text="{Binding MonthlySalesAmount}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="100" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> -->
+                     <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
             </Grid>
         </Border>

@@ -100,6 +100,37 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        private decimal _monthlyComission;
+        public decimal MonthlyComission
+        {
+            get => CalculateMonthlyCommission();
+            set
+            {
+                SetProperty(ref _monthlyComission, value);
+            }
+        }
+
+        private decimal _monthlySalesTotal;
+        public decimal MonthlySalesTotal
+        {
+            get => CalculateMonthlySalesTotal();
+            set
+            {
+                SetProperty(ref _monthlySalesTotal, value);
+            }
+        }
+
+        private int _monthlySalesAmount;
+        public int MonthlySalesAmount
+        {
+            get => CalculateMonthlySalesAmount();
+            set
+            {
+                SetProperty(ref _monthlySalesAmount, value);
+            }
+        }
+
+
 
 
 
@@ -194,6 +225,40 @@ namespace ReolMarket.MVVM.ViewModel
                 }
             }
             return availableBooths;
+        }
+
+        private decimal CalculateMonthlyCommission()
+        {
+            decimal totalCommission = 0;
+            foreach (var sale in Sales)
+            {
+                // Assuming a flat 10% commission rate for simplicity
+                totalCommission += Math.Round(sale.TotalPrice * 0.10m, 2);
+            }
+            return totalCommission;
+        }
+
+        private decimal CalculateMonthlySalesTotal()
+        {
+            decimal totalSales = 0;
+            foreach (var sale in Sales)
+            {
+                totalSales += sale.TotalPrice;
+            }
+            return totalSales;
+        }
+
+        private int CalculateMonthlySalesAmount()
+        {
+            return Sales.Count;
+        }
+
+        // Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
+
+        private decimal MonthlyOutstandingPayments()
+        {
+            var customerBooths = Booths.Where(b => b.CustomerID == Customers.First().CustomerID).ToList();
+            return 0;
         }
     }
 }
