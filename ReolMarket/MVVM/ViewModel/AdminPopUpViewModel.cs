@@ -188,8 +188,8 @@ namespace ReolMarket.MVVM.ViewModel
                         PostalCode = SelectedCustomer.PostalCode!.Trim();
 
                         Validate();
-                        _customerRepo.Update(SelectedCustomer);
                         UpdateBoothAssignments();
+                        _customerRepo.Update(SelectedCustomer);
                     }
                 }
                 else
@@ -207,6 +207,7 @@ namespace ReolMarket.MVVM.ViewModel
                     _customerRepo.Add(customer);
                     SelectedCustomer = customer;
                     UpdateBoothAssignments();
+
                 }
 
 
@@ -227,6 +228,7 @@ namespace ReolMarket.MVVM.ViewModel
             {
                 bool isSelected = _selectedBoothIds.Contains(booth.BoothID);
                 bool isCurrentCustomerBooth = booth.CustomerID == SelectedCustomer.CustomerID;
+                bool needsUpdate = false;
 
                 if (isSelected && !isCurrentCustomerBooth)
                 {
@@ -236,7 +238,7 @@ namespace ReolMarket.MVVM.ViewModel
                     booth.Status = BoothStatus.Optaget;
                     booth.StartDate = now;
                     booth.EndDate = null;
-                    updatedBooths.Add(booth);
+                    needsUpdate = true;
                 }
                 else if (!isSelected && isCurrentCustomerBooth)
                 {
@@ -246,15 +248,18 @@ namespace ReolMarket.MVVM.ViewModel
                     booth.Status = BoothStatus.Ledig;
                     booth.StartDate = null;
                     booth.EndDate = endOfMonth;
+                    needsUpdate = true;
+                }
+
+                if (needsUpdate)
+                {
                     updatedBooths.Add(booth);
                 }
             }
+            _boothRepo.UpdateRange(updatedBooths);
+            BoothView.Refresh();
+            LoadAvailableBooths();
 
-            if (updatedBooths.Any())
-            {
-                _boothRepo.UpdateRange(updatedBooths);
-                BoothView.Refresh(); // Refresh only if updates occurred
-            }
         }
 
 
@@ -284,22 +289,17 @@ namespace ReolMarket.MVVM.ViewModel
             // Only clear selections for the current customer, then rebuild them from database state
             if (_selectedCustomer != null)
             {
-                foreach (var boothId in Booths)
+                if (_selectedCustomer != null)
                 {
-                    _selectedBoothIds.Remove(boothId.BoothID);
+                    // Re-add based on actual database state (IsRented = true AND belongs to customer)
+                    foreach (var booth in Booths.Where(b =>
+                        b.CustomerID == _selectedCustomer.CustomerID &&
+                        b.IsRented &&
+                        b.Status == BoothStatus.Optaget))
+                    {
+                        _selectedBoothIds.Add(booth.BoothID);
+                    }
                 }
-
-                // Re-add based on actual database state (IsRented = true)
-                foreach (var booth in Booths.Where(b =>
-                    b.CustomerID == _selectedCustomer.CustomerID && b.IsRented))
-                {
-                    _selectedBoothIds.Add(booth.BoothID);
-                }
-            }
-            else
-            {
-                // If no customer selected, clear all selections (for "Add New" mode)
-                _selectedBoothIds.Clear();
             }
             BoothView.Refresh();
         }
