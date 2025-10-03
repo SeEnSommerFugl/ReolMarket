@@ -143,7 +143,9 @@ namespace ReolMarket.MVVM.ViewModel
             var cartItem = new ItemShoppingCart
             {
                 ItemID = newItem.ItemID,
-                ShoppingCartID = cart.ShoppingCartID
+                ShoppingCartID = cart.ShoppingCartID,
+                Quantity = Quantity ?? 1,
+                UnitPrice = newItem.ItemPrice
             };
             _itemShoppingCartRepo.Add(cartItem);
 
