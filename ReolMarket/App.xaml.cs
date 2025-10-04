@@ -27,7 +27,7 @@ namespace ReolMarket
             // ---- ViewModels (pass interfaces in) ----
             var itemsVM = new ItemsViewModel(itemRepo, boothRepo);
             var rentersVM = new RentersViewModel(boothRepo, customerRepo);
-            var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo);
+            var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo, itemCartRepo, cartRepo);
             var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo, cartRepo, itemCartRepo, paymentRepo);
 
             var mainVM = new MainViewModel(itemsVM, rentersVM, economyVM, saleVM);

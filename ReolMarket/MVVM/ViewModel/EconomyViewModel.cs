@@ -4,6 +4,7 @@ using System.Windows.Data;
 using ReolMarket.Core;
 using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
+using ReolMarket.MVVM.Model.HelperModels;
 
 namespace ReolMarket.MVVM.ViewModel
 {
@@ -17,6 +18,8 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<Customer, Guid> _customerRepo;
         private readonly IBaseRepository<Sale, Guid> _saleRepo;
         private readonly IBaseRepository<Item, Guid> _itemRepo;
+        private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> _itemCartRepo;
+        private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
         private readonly Economy _economy = new Economy();
 
 
@@ -31,12 +34,15 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the view model and sets default dates.
         /// </summary>
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo)
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, 
+            IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo, IBaseRepository<ShoppingCart, Guid> shoppingCartRepo)
         {
             _boothRepo = boothRepo;
             _customerRepo = customerRepo;
             _saleRepo = saleRepo;
             _itemRepo = itemRepo;
+            _itemCartRepo = itemCartRepo;
+            _shoppingCartRepo = shoppingCartRepo;
 
             BoothView = CollectionViewSource.GetDefaultView(Booths);
             CustomerView = CollectionViewSource.GetDefaultView(Customers);
@@ -253,12 +259,45 @@ namespace ReolMarket.MVVM.ViewModel
             return Sales.Count;
         }
 
-        // TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
-
-        private decimal MonthlyOutstandingPayments()
+        private ObservableCollection<CustomerOutstanding> _montlyOutstandingPayments;
+        public ObservableCollection<CustomerOutstanding> MonthlyOutstandingPayments 
         {
-            var customerBooths = Booths.Where(b => b.CustomerID == Customers.First().CustomerID).ToList();
-            return 0;
+            get => _montlyOutstandingPayments ??= CalculateMonthlyOutstandingPayments();
+            set 
+            {
+                SetProperty(ref _montlyOutstandingPayments, value);
+            }
+        }
+
+        // TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
+        private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments() 
+        {
+            var result = (from customer in Customers
+                          let customerBooths = Booths.Where(b => b.CustomerID == customer.CustomerID)
+                          where customerBooths.Any()
+                          let boothIds = customerBooths.Select(b => b.BoothID).ToHashSet()
+                          let customerItemIds = Items.Where(i => boothIds.Contains(i.BoothID))
+                                                     .Select(i => i.ItemID)
+                                                     .ToHashSet()
+                          where customerItemIds.Any()
+                          let relevantItemCarts = _itemCartRepo.Items.Where(isc => customerItemIds.Contains(isc.ItemID))
+                          let relevantCartIds = relevantItemCarts.Select(isc => isc.ShoppingCartID).Distinct().ToHashSet()
+                          where relevantCartIds.Any()
+                          let relevantSales = Sales.Where(s => relevantCartIds.Contains(s.ShoppingCartID)
+                                                    && s.SaleDate.Month == DateTime.Now.Month
+                                                    && s.SaleDate.Year == DateTime.Now.Year)
+                          let totalSales = relevantSales.Sum(s => s.TotalPrice)
+                          let commission = Math.Round(totalSales * 0.10m, 2)
+                          let rent = CalculateCustomerRentalIncome(customer.CustomerID)
+                          let outstanding = totalSales - commission - rent
+                          select new CustomerOutstanding {
+                              CustomerName = customer.CustomerName,
+                              SalesTotal = totalSales,
+                              Commission = commission,
+                              Rent = rent,
+                              Outstanding = outstanding
+                          }).ToList();
+            return new ObservableCollection<CustomerOutstanding>(result);
         }
     }
 }
