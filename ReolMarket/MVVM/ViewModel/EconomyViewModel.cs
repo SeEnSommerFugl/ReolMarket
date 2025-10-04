@@ -34,7 +34,7 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the view model and sets default dates.
         /// </summary>
-        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, 
+        public EconomyViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo,
             IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo, IBaseRepository<ShoppingCart, Guid> shoppingCartRepo)
         {
             _boothRepo = boothRepo;
@@ -260,17 +260,18 @@ namespace ReolMarket.MVVM.ViewModel
         }
 
         private ObservableCollection<CustomerOutstanding> _montlyOutstandingPayments;
-        public ObservableCollection<CustomerOutstanding> MonthlyOutstandingPayments 
+        public ObservableCollection<CustomerOutstanding> MonthlyOutstandingPayments
         {
             get => _montlyOutstandingPayments ??= CalculateMonthlyOutstandingPayments();
-            set 
+            set
             {
                 SetProperty(ref _montlyOutstandingPayments, value);
             }
         }
 
         //TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem.Minus derefter comission og månedlig leje (se.
-        private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments() {
+        private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments()
+        {
             var result = (from customer in Customers
                           let customerBooths = Booths.Where(b => b.CustomerID == customer.CustomerID)
                           where customerBooths.Any()
@@ -289,7 +290,8 @@ namespace ReolMarket.MVVM.ViewModel
                           let commission = Math.Round(totalSales * 0.10m, 2)
                           let rent = CalculateCustomerRentalIncome(customer.CustomerID)
                           let outstanding = totalSales - commission - rent
-                          select new CustomerOutstanding {
+                          select new CustomerOutstanding
+                          {
                               CustomerName = customer.CustomerName,
                               SalesTotal = totalSales,
                               Commission = commission,
