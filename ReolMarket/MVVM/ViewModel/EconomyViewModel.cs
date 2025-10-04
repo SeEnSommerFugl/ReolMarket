@@ -298,5 +298,42 @@ namespace ReolMarket.MVVM.ViewModel
                           }).ToList();
             return new ObservableCollection<CustomerOutstanding>(result);
         }
+
+        //Her er den kedelige og læsevenlige version af CalculateMonthlyOutstandingPayments
+        //private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments() {
+        //    var results = new ObservableCollection<CustomerOutstanding>();
+
+        //    foreach (var customer in Customers) {
+        //        var customerBooths = Booths.Where(b => b.CustomerID == customer.CustomerID).ToList();
+        //        if (!customerBooths.Any()) continue;
+
+        //        var boothIds = customerBooths.Select(b => b.BoothID).ToHashSet();
+        //        var customerItems = Items.Where(i => boothIds.Contains(i.BoothID)).Select(i => i.ItemID).ToHashSet();
+
+        //        var relevantItemCarts = _itemCartRepo.Items
+        //            .Where(isc => customerItems.Contains(isc.ItemID))
+        //            .ToList();
+        //        if (!relevantItemCarts.Any()) continue;
+
+        //        var relevantCartIds = relevantItemCarts.Select(isc => isc.ShoppingCartID).Distinct().ToHashSet();
+
+        //        var relevantSales = Sales.Where(s => relevantCartIds.Contains(s.ShoppingCartID) && s.SaleDate.Month == DateTime.Now.Month && s.SaleDate.Year == DateTime.Now.Year).ToList();
+
+        //        var totalSales = relevantSales.Sum(s => s.TotalPrice);
+        //        var commission = Math.Round(totalSales * 0.10m, 2);
+        //        var rent = CalculateCustomerRentalIncome(customer.CustomerID);
+        //        var outstanding = totalSales - commission - rent;
+
+        //        results.Add(new CustomerOutstanding {
+        //            CustomerName = customer.CustomerName,
+        //            SalesTotal = totalSales,
+        //            Commission = commission,
+        //            Rent = rent,
+        //            Outstanding = outstanding
+        //        });
+        //    }
+
+        //    return results;
+        //}
     }
 }
