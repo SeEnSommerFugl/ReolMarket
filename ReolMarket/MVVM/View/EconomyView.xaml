@@ -7,8 +7,7 @@
              mc:Ignorable="d"
              d:DesignWidth="1652" d:DesignHeight="1048"
              Background="Transparent">
-
-    <!-- Lokale ressourcer: mørk kort-baggrund + styles der matcher dine -->
+    <!-- //TODO::this is to do comment -->
     <UserControl.Resources>
         <!-- Mørk panelbaggrund (justér farven hvis du vil) -->
         <SolidColorBrush x:Key="CardBackground" Color="#162231" Opacity="0.92"/>

@@ -356,7 +356,25 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
-
-
+    <!-- =================== RADIO BUTTON =================== -->
+    <Style x:Key="HighlightRadioButtonStyle" TargetType="RadioButton">
+        <Setter Property="Background" Value="LightGray"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+                    <Border Background="{TemplateBinding Background}"
+                        BorderBrush="DarkGray" BorderThickness="1" CornerRadius="4"
+                        Padding="8" Margin="4">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="Red"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
 </ResourceDictionary>
