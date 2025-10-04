@@ -8,6 +8,6 @@ namespace ReolMarket.MVVM.Model.HelperModels
 {
     internal class Commission
     {
-
+        public decimal CommissionRate = 0.10m; // 10% commission rate
     }
 }

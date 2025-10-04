@@ -3,11 +3,11 @@
 namespace ReolMarket.MVVM.View
 {
     /// <summary>
-    /// Interaction logic for ItemsView.xaml
+    /// Interaction logic for SaleView.xaml
     /// </summary>
-    public partial class ItemsView : Page
+    public partial class SaleView : UserControl
     {
-        public ItemsView()
+        public SaleView()
         {
             InitializeComponent();
         }

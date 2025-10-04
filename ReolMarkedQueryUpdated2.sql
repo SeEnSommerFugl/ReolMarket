@@ -173,3 +173,16 @@ INSERT INTO Sale(Sale_ID, SaleDate, ShoppingCart_ID, Payment_ID)
 VALUES
     (NEWID(), GETDATE(), @Cart1, @Payment1),
     (NEWID(), GETDATE(), @Cart2, @Payment2);
+
+-- Alter tables Sale og ItemShoppingCart
+ALTER TABLE Sale
+ADD TotalPrice decimal(10,2) NOT NULL;
+GO
+
+ALTER TABLE ItemShoppingCart
+ADD Quantity int NOT NULL DEFAULT 1;
+GO
+
+ALTER TABLE ItemShoppingCart
+ADD UnitPrice decimal(10,2) NOT NULL;
+GO

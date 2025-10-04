@@ -99,11 +99,11 @@
                     <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
                     <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
 
-                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer}" DisplayMemberPath="CustomerName" Grid.Row="0" Grid.Column="1" />
-                    <TextBox Text="{Binding SelectedCustomer.Email}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.Address}" Grid.Row="3" Grid.Column="1"/>
-                    <TextBox Text="{Binding Selected.PostalCode}" Grid.Row="4" Grid.Column="1"/>
+                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CustomerName" Grid.Row="0" Grid.Column="1" />
+                    <TextBox Text="{Binding SelectedCustomer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
+                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
+                    <TextBox Text="{Binding SelectedCustomer.Address, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1"/>
+                    <TextBox Text="{Binding SelectedCustomer.PostalCode, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1"/>
 
                 </Grid>
             </Grid>

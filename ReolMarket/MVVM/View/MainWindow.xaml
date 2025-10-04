@@ -7,7 +7,7 @@
         xmlns:views="clr-namespace:ReolMarket.MVVM.View"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Normal"
+        WindowState="Maximized"
         Width="1920" Height="1080"
         MinWidth="1280" MinHeight="800"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
@@ -18,6 +18,11 @@
     </Window.Background>
 
     <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ReolMarket;component/MVVM/View/Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
 
     <!-- Hovedlayout: venstre navigation | indhold -->
@@ -40,15 +45,13 @@
         <StackPanel Grid.Column="0">
             <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
                  FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
-            <Button Command="{Binding NavigateItemsCommand}" Style="{StaticResource ButtonNavigation}" Content="Salg"/>
+            <Button Command="{Binding NavigateSaleCommand}"  Style="{StaticResource ButtonNavigation}" Content="Salg"/>
             <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource ButtonNavigation}" Content="Udlejere"/>
             <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
         </StackPanel>
 
-        <Frame Grid.Column="2"
-       Content="{Binding CurrentView}"
-       NavigationUIVisibility="Hidden"
-       d:Content="{d:DesignInstance Type=views:EconomyView, IsDesignTimeCreatable=True}"/>
+        <ContentControl Grid.Column="2"
+                Content="{Binding CurrentView}"/>
 
     </Grid>
 </Window>
