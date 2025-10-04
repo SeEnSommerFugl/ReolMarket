@@ -20,7 +20,7 @@
         <!-- TextBlock-udgave af InputRight (din globale er en TextBox-style) -->
         <Style x:Key="InputRight" TargetType="TextBlock">
             
-            <Setter Property="TextAlignment" Value="Left"/>
+            <Setter Property="TextAlignment" Value="Right"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="Foreground" Value="#D9E6FF"/>
@@ -146,17 +146,17 @@
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
                     <TextBlock Text="{Binding MonthlyExpenses}"  Style="{StaticResource InputRight}"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
                     <TextBlock Text="{Binding MonthlyDifference}" Style="{StaticResource InputRight}"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udestående:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Udestående:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
                     <TextBlock Text="5000" Style="{StaticResource InputRight}"/>
                     <!-- <TextBlock Text="{Binding MonthlyOutstanding}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>

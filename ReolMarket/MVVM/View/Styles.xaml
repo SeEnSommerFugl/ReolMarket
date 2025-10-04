@@ -99,9 +99,9 @@
         <Setter Property="Background" Value="{StaticResource Brush.Panel}"/>
         <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Brush.Border}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="Height" Value="42"/>
-        <Setter Property="Padding" Value="8,4"/>
+        <Setter Property="BorderThickness"       Value="1"/>
+        <Setter Property="Height"                Value="42"/>
+        <Setter Property="Padding"               Value="8,4"/>
         <Setter Property="CaretBrush" Value="White"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
@@ -113,22 +113,28 @@
         <Setter Property="BorderBrush" Value="{StaticResource Brush.Border}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="Height" Value="42"/>
+        <Setter Property="Height" Value="42"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="HorizontalContentAlignment" Value="Left"/>
     </Style>
 
     <!-- Form alignment helpers -->
     <Style x:Key="TitleLeft" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
-        <Setter Property="HorizontalAlignment" Value="Right"/>
+        <Setter Property="TextAlignment"       Value="Right"/>
         <Setter Property="VerticalAlignment"   Value="Center"/>
         <Setter Property="FontSize"            Value="40"/> 
     </Style>
     <Style x:Key="InputRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontSize"            Value="40"/>
     </Style>
     <Style x:Key="ComboRight" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
+    </Style>
+
+    <Style x:Key="TextBlockRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="40"/>
     </Style>
 
     <!-- =================== CARDS / SECTIONS =================== -->
@@ -268,12 +274,68 @@
         <Button Style="{StaticResource ButtonDanger}" Content="Opsig"/>
     </DataTemplate>
 
-    <!-- Navigation-knapper i topmenu -->
-    <Style x:Key="ButtonNavigation" TargetType="Button" BasedOn="{StaticResource ButtonBase}">
-        <Setter Property="Height" Value="40"/>
-        <Setter Property="Padding" Value="12,6"/>
-        <Setter Property="Margin" Value="0,0,12,0"/>
+    <!-- ============ NAVIGATION (ListBox-baseret) ============ -->
+
+    <!-- Hvad der står på “knappen” -->
+    <DataTemplate x:Key="NavItemTemplate">
+        <TextBlock Text="{Binding Title}"
+               Foreground="White"
+               FontSize="28"
+               FontWeight="SemiBold"
+               HorizontalAlignment="Center"
+               VerticalAlignment="Center"/>
+    </DataTemplate>
+
+    <!-- Hver post opfører sig som en rund “knap” -->
+    <Style x:Key="NavListBoxItem" TargetType="ListBoxItem">
+        <!-- flise-størrelse/margins som dine knapper -->
+        <Setter Property="Height" Value="140"/>
+        <Setter Property="Margin" Value="0,0,0,16"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListBoxItem">
+                    <Border x:Name="Card"
+                        CornerRadius="20"
+                        Background="{StaticResource Brush.Accent}"
+                        BorderBrush="{StaticResource Brush.Accent}"
+                        BorderThickness="1"
+                        SnapsToDevicePixels="True">
+                        <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <!-- Hover som dine knapper -->
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="Card" Property="Background"  Value="{StaticResource Brush.AccentHover}"/>
+                            <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource Brush.AccentHover}"/>
+                        </Trigger>
+                        <!-- Valgt = grøn -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter TargetName="Card" Property="Background"  Value="{StaticResource Amount.Positive.Bg}"/>
+                            <Setter TargetName="Card" Property="BorderBrush" Value="{StaticResource Amount.Positive.Bg}"/>
+                        </Trigger>
+                        <!-- Disabled-look -->
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter TargetName="Card" Property="Opacity" Value="0.55"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
+
+    <!-- Selve ListBox’en (rammeløs, ingen scrollbar i venstre rail) -->
+    <Style x:Key="NavListBox" TargetType="ListBox">
+        <Setter Property="ItemTemplate" Value="{StaticResource NavItemTemplate}"/>
+        <Setter Property="ItemContainerStyle" Value="{StaticResource NavListBoxItem}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Background" Value="{x:Null}"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
+    </Style>
+
 
     <!-- Viser grid når IsEditing = false -->
     <Style x:Key="ShowGridWhenNotEditing" TargetType="Grid">

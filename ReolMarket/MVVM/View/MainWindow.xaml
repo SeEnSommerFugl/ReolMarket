@@ -41,17 +41,23 @@
         </Grid.ColumnDefinitions>
 
 
-        <!-- Venstre navigation -->
-        <StackPanel Grid.Column="0">
-            <TextBlock Text="Reol&#10;Marked" TextWrapping="Wrap"
-                 FontSize="32" FontWeight="Bold" Margin="0,0,0,16"/>
-            <Button Command="{Binding NavigateSaleCommand}"  Style="{StaticResource ButtonNavigation}" Content="Salg"/>
-            <Button Command="{Binding NavigateRentersCommand}" Style="{StaticResource ButtonNavigation}" Content="Udlejere"/>
-            <Button Command="{Binding NavigateEconomyCommand}" Style="{StaticResource ButtonNavigation}" Content="Økonomi"/>
-        </StackPanel>
+       <!-- Venstre navigation (data-drevet) -->
+<StackPanel Grid.Column="0">
+    <TextBlock Text="Reol&#10;Marked"
+               TextWrapping="Wrap"
+               FontSize="32"
+               FontWeight="Bold"
+               Margin="0,0,0,16"/>
 
-        <ContentControl Grid.Column="2"
-                Content="{Binding CurrentView}"/>
+    <ListBox ItemsSource="{Binding Nav.Items}"
+             SelectedItem="{Binding Nav.Selected}"
+             Style="{StaticResource NavListBox}"/>
+</StackPanel>
+
+<!-- Indholdet binder direkte til Navigation -->
+<ContentControl Grid.Column="2"
+                Content="{Binding Nav.CurrentView}"/>
+
 
     </Grid>
 </Window>

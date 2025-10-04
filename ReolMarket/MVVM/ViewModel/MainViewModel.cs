@@ -1,62 +1,41 @@
-﻿using System.Windows.Input;
-using ReolMarket.Core;
+﻿using ReolMarket.Core;
 
 namespace ReolMarket.MVVM.ViewModel
 {
     /// <summary>
     /// The main ViewModel for the application.
-    /// It controls navigation between Booths, Items, and Renters views.
+    /// Uses a data-driven Navigation helper and exposes it to the View.
+    /// Bind in XAML:
+    ///   - List:    ItemsSource = {Binding Nav.Items}
+    ///              SelectedItem = {Binding Nav.Selected}
+    ///   - Content: Content     = {Binding Nav.CurrentView}
     /// </summary>
     public class MainViewModel : BaseViewModel
     {
-        private BaseViewModel? _currentView;
-
-        /// <summary>
-        /// The view that is currently shown in the UI.
-        /// </summary>
-        public BaseViewModel? CurrentView
-        {
-            get => _currentView;
-            set => SetProperty(ref _currentView, value);
-        }
-
-        /// <summary>
-        /// Command to switch to the Booths view.
-        /// </summary>
-        public ICommand NavigateBoothsCommand { get; }
-
-        /// <summary>
-        /// Command to switch to the Renters view.
-        /// </summary>
-        public ICommand NavigateRentersCommand { get; }
-
-        public ICommand NavigateEconomyCommand { get; }
+        public Navigation Nav { get; } = new();
 
         private readonly RentersViewModel _rentersViewModel;
         private readonly EconomyViewModel _economyViewModel;
         private readonly SaleViewModel _saleViewModel;
 
-        public ICommand NavigateSaleCommand { get; }
-
-
-
-        /// <summary>
-        /// Creates the MainViewModel and sets up navigation.
-        /// </summary>
         internal MainViewModel(RentersViewModel renters, EconomyViewModel economy, SaleViewModel sales)
         {
             Title = "ReolMarket";
 
             _rentersViewModel = renters;
             _economyViewModel = economy;
-            _saleViewModel = sales;
+            _saleViewModel    = sales;
 
+            // Registrér sider (én linje pr. side). Tilføj nye her.
+            // 1st: Function - 2nd: Text on button 3 - 3rd: Binding to
+            Nav.AddRange(
+                ("Sale",    "Salg",     _saleViewModel),
+                ("Renters", "Udlejere", _rentersViewModel),
+                ("Economy", "Økonomi",  _economyViewModel)
+            );
 
-            NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
-            NavigateEconomyCommand = new RelayCommand(_ => CurrentView = _economyViewModel);
-            NavigateSaleCommand = new RelayCommand(_ => CurrentView = _saleViewModel);
-
-            CurrentView = _currentView; // Show Booths by default
+            // Vælg standard (prøver "Sale", ellers første item)
+            Nav.Initialize(defaultId: "Sale");
         }
     }
 }
