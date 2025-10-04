@@ -269,9 +269,8 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        // TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem. Minus derefter comission og månedlig leje (se.
-        private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments() 
-        {
+        //TODO Find der hvor CustomerID == Booth.CustomerID, og så find alle sales der har itemID som er i den booth, og så sum totalprice af dem.Minus derefter comission og månedlig leje (se.
+        private ObservableCollection<CustomerOutstanding> CalculateMonthlyOutstandingPayments() {
             var result = (from customer in Customers
                           let customerBooths = Booths.Where(b => b.CustomerID == customer.CustomerID)
                           where customerBooths.Any()
