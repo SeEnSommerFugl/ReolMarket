@@ -19,8 +19,8 @@
 
         <!-- TextBlock-udgave af InputRight (din globale er en TextBox-style) -->
         <Style x:Key="InputRight" TargetType="TextBlock">
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="TextAlignment" Value="Right"/>
+            
+            <Setter Property="TextAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="FontSize" Value="28"/>
             <Setter Property="Foreground" Value="#D9E6FF"/>
@@ -102,7 +102,6 @@
                                             <Setter Property="Foreground" Value="#3DDC84"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding}" Value="-250">
-                                            <Setter Property="Foreground" Value="#FF6B6B"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -126,7 +125,7 @@
         </Border>
 
         <!-- GRID 1: Nøgletal -->
-        <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Card}" Margin="8">
+        <Border Grid.Column="0" Style="{StaticResource Card}" Margin="16,10,0,53">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -180,33 +179,33 @@
                 <TextBlock Text="Reol-tal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="50" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="394"/>
+                    <TextBlock Text="50" Style="{StaticResource InputRight}" Width="331"/>
                     <!-- <TextBlock Text="{Binding MonthlyRentedBooths}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="25" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="394"/>
+                    <TextBlock Text="25" Style="{StaticResource InputRight}" Width="320"/>
                     <!-- <TextBlock Text="{Binding MonthlyAvailableBooths}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="200" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="385"/>
+                    <TextBlock Text="200" Style="{StaticResource InputRight}" Width="311"/>
                     <!-- <TextBlock Text="{Binding MonthlyRentIncome}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
-                    <TextBlock Text="300" Style="{StaticResource InputRight}"/>
+                    <TextBlock Text="300" Style="{StaticResource InputRight}" Width="285"/>
                     <!-- <TextBlock Text="{Binding MonthlyCommission}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
             </Grid>
         </Border>
 
         <!-- GRID 3: Salgs-tal -->
-        <Border Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource Card}" Margin="8">
+        <Border Grid.Row="2" Grid.ColumnSpan="1" Style="{StaticResource Card}" Margin="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>

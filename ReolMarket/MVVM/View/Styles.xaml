@@ -23,12 +23,12 @@
     <!-- =================== TYPOGRAPHY (POS scale) =================== -->
     <Style TargetType="Control">
         <Setter Property="FontFamily" Value="Segoe UI"/>
-        <Setter Property="FontSize"   Value="16"/>
+        <Setter Property="FontSize"   Value="40"/>
         <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
     </Style>
 
     <Style x:Key="H1" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="32"/>
+        <Setter Property="FontSize" Value="40"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="FontWeight" Value="Bold"/>
@@ -36,7 +36,7 @@
     </Style>
 
     <Style x:Key="H2" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="22"/>
+        <Setter Property="FontSize" Value="40"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
@@ -125,6 +125,7 @@
     </Style>
     <Style x:Key="InputRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="FontSize" Value="40"/>
     </Style>
     <Style x:Key="ComboRight" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -183,7 +184,7 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="RowHeight" Value="44"/>
         <Setter Property="ColumnHeaderHeight" Value="42"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="40   "/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
         <Setter Property="AlternatingRowBackground" Value="#1C2431"/>
@@ -232,7 +233,7 @@
     <!-- =================== CHIPS (for detail panels) =================== -->
     <Style x:Key="ChipText" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Amount.Neutral.Fg}"/>
-        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontSize" Value="40"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
     </Style>
 
