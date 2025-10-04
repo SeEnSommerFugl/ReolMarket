@@ -26,18 +26,12 @@ namespace ReolMarket.MVVM.ViewModel
         public ICommand NavigateBoothsCommand { get; }
 
         /// <summary>
-        /// Command to switch to the Items view.
-        /// </summary>
-        public ICommand NavigateItemsCommand { get; }
-
-        /// <summary>
         /// Command to switch to the Renters view.
         /// </summary>
         public ICommand NavigateRentersCommand { get; }
 
         public ICommand NavigateEconomyCommand { get; }
 
-        private readonly ItemsViewModel _itemsViewModel;
         private readonly RentersViewModel _rentersViewModel;
         private readonly EconomyViewModel _economyViewModel;
         private readonly SaleViewModel _saleViewModel;
@@ -49,24 +43,20 @@ namespace ReolMarket.MVVM.ViewModel
         /// <summary>
         /// Creates the MainViewModel and sets up navigation.
         /// </summary>
-        internal MainViewModel(ItemsViewModel items, RentersViewModel renters, EconomyViewModel economy, SaleViewModel sales)
+        internal MainViewModel(RentersViewModel renters, EconomyViewModel economy, SaleViewModel sales)
         {
             Title = "ReolMarket";
 
-            _itemsViewModel = items;
             _rentersViewModel = renters;
             _economyViewModel = economy;
             _saleViewModel = sales;
 
 
             NavigateRentersCommand = new RelayCommand(_ => CurrentView = _rentersViewModel);
-            NavigateItemsCommand = new RelayCommand(_ => CurrentView = _itemsViewModel);
             NavigateEconomyCommand = new RelayCommand(_ => CurrentView = _economyViewModel);
             NavigateSaleCommand = new RelayCommand(_ => CurrentView = _saleViewModel);
 
             CurrentView = _currentView; // Show Booths by default
-
-
         }
     }
 }
