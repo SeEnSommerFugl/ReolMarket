@@ -50,11 +50,11 @@
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <ComboBox ItemsSource="{Binding Months}"
-                                SelectedIndex="{Binding SelectedMonth, Mode=TwoWay}"
+                                SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"
                                 Height="34" Width="120" Margin="0,0,12,0"/>
 
                         <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <ComboBox ItemsSource="{Binding Years}"
+                        <ComboBox ItemsSource="{Binding Years.Items}"
                                 SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
                                 Height="34" Width="100"/>
                         

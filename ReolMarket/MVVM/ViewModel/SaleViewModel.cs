@@ -21,6 +21,7 @@ namespace ReolMarket.MVVM.ViewModel
         private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
         private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> _itemShoppingCartRepo;
         private readonly IBaseRepository<Payment, Guid> _paymentRepo;
+      
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
@@ -112,7 +113,7 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        private int _selectedYear;
+        private int _selectedYear = DateTime.Now.Year;
         public int SelectedYear {
             get => _selectedYear;
             set {
