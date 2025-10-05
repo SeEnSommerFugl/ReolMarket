@@ -158,8 +158,8 @@
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Udestående:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
-                    <TextBlock Text="5000" Style="{StaticResource InputRight}"/>
-                    <!-- <TextBlock Text="{Binding MonthlyOutstanding}" Style="{StaticResource InputRight}"/> -->
+                    <TextBlock Text="" Style="{StaticResource InputRight}"/>
+                     <TextBlock Text="{Binding TotalMonthlyOutstanding}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
             </Grid>
         </Border>
