@@ -118,6 +118,7 @@
     <Style x:Key="TitleLeft" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
         <Setter Property="TextAlignment"       Value="Right"/>
         <Setter Property="VerticalAlignment"   Value="Center"/>
+        <Setter Property="Foreground"          Value="#CFE0FF"/>
         <Setter Property="FontSize"            Value="30"/>
         <Setter Property="Margin"              Value="0,0,12,0"/>
     </Style>
@@ -189,6 +190,7 @@
         <Setter Property="RowHeight" Value="44"/>
         <Setter Property="IsReadOnly" Value="True"/>
         <Setter Property="ColumnHeaderHeight" Value="42"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="40"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
@@ -197,6 +199,8 @@
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+        
+        
         
 
 
@@ -275,7 +279,7 @@
     </Style>
 
     <!-- Kun tekstfarve på beløb: grøn/rød som i EconomyView -->
-    <Style x:Key="MoneyTextColor" TargetType="TextBlock">
+    <Style x:Key="MoneyTextColor" TargetType="TextBlock" BasedOn="{StaticResource TextBlockRight}">
         <!-- Default (neutral) -->
         <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
@@ -354,14 +358,6 @@
     <!-- =================== REUSABLE CELL TEMPLATES =================== -->
     <DataTemplate x:Key="CellTemplate.MoneyDifference">
         <TextBlock Text="{Binding Difference, StringFormat={}{0:N2} kr.}" FontWeight="SemiBold"/>
-    </DataTemplate>
-
-    <DataTemplate x:Key="CellTemplate.PrimaryAction">
-        <Button Style="{StaticResource ButtonPrimary}" Content="Fortsæt"/>
-    </DataTemplate>
-
-    <DataTemplate x:Key="CellTemplate.DangerAction">
-        <Button Style="{StaticResource ButtonDanger}" Content="Opsig"/>
     </DataTemplate>
 
     <!-- ============ NAVIGATION (ListBox-baseret) ============ -->
