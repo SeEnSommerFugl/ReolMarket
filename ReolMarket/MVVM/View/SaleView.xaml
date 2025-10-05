@@ -63,16 +63,20 @@
             </Border>
 
             <!-- Row 2: liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding SaleView}"
-                  Style="{StaticResource DataGridBase}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Dato" Width="160"
+            <Border Grid.Row="2" Style="{StaticResource Card}">
+                <DataGrid ItemsSource="{Binding SaleView}"
+              Style="{StaticResource DataGrid.Table}"
+              Background="Transparent"
+              BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dato" Width="160"
                                 Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
-                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
-                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
-                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+                        <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                        <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
+                        <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
 
             <!-- row 3 - Button --><!--
             <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">

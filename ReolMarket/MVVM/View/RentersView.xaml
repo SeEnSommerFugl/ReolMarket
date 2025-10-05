@@ -61,24 +61,29 @@
 
         <!-- ================= RENTERS GRID ================= -->
         <GroupBox Grid.Row="2" Style="{StaticResource CardSection}" Header="Lejere">
-            <DataGrid ItemsSource="{Binding CustomersView}"
-                SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
-                Style="{StaticResource DataGridBase}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Reol"       Width="80"  Binding="{Binding BoothNumber}"/>
-                    <DataGridTextColumn Header="Lejer"      Width="*"   Binding="{Binding CustomerName}"/>
-                    <DataGridTextColumn Header="Start dato" Width="160"/>
-                    <DataGridTemplateColumn Header="Difference" Width="160"
-                                  CellStyle="{StaticResource DataGridCellMoney}">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Difference, StringFormat={}{0:N2} kr.}" FontWeight="SemiBold"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTextColumn Header="Slut Dato" Width="160"/>
-                </DataGrid.Columns>
-            </DataGrid>
+            <Border Style="{StaticResource Card}">
+                <DataGrid ItemsSource="{Binding CustomersView}"
+              SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+              Style="{StaticResource DataGrid.Table}"
+              Background="Transparent"
+              BorderThickness="0">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Reol"       Width="80"  Binding="{Binding BoothNumber}"/>
+                        <DataGridTextColumn Header="Lejer"      Width="*"   Binding="{Binding CustomerName}"/>
+                        <DataGridTextColumn Header="Start dato" Width="160"/>
+                        <DataGridTemplateColumn Header="Difference" Width="160">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource MoneyTextColor}"
+                       Text="{Binding Difference, StringFormat={}{0:N2} kr.}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Slut Dato" Width="160"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Border>
         </GroupBox>
 
         <!-- ================= DETAILS ================= -->
@@ -89,53 +94,72 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
-            <!-- Profile -->
-            <GroupBox Style="{StaticResource CardSection}" Header="Lejer info">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="180"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+          <!-- Profile -->
+<GroupBox Style="{StaticResource CardSection}" Header="Lejer info">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="180"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                    <TextBlock Grid.Row="0" Grid.Column="0" Text="Navn:"        Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding SelectedCustomer.CustomerName}" Margin="0,0,0,6"/>
+        <DockPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Navn:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding SelectedCustomer.CustomerName}" Style="{StaticResource TextBlockRight}" />
+        </DockPanel>
 
-                    <TextBlock Grid.Row="1" Grid.Column="0" Text="Email:"       Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
-                    <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding SelectedCustomer.Email}" Margin="0,0,0,6"/>
+        <DockPanel Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Email:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+                        <TextBlock Text="{Binding SelectedCustomer.Email}" Style="{StaticResource TextBlockRight}"/>
+        </DockPanel>
 
-                    <TextBlock Grid.Row="2" Grid.Column="0" Text="Telefon:"     Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
-                    <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding SelectedCustomer.PhoneNumber}" Margin="0,0,0,6"/>
+        <DockPanel Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Telefon:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+                        <TextBlock Text="{Binding SelectedCustomer.PhoneNumber}" Style="{StaticResource TextBlockRight}"/>
+        </DockPanel>
 
-                    <TextBlock Grid.Row="3" Grid.Column="0" Text="Adresse:"     Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
-                    <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding SelectedCustomer.Address}" Margin="0,0,0,6"/>
+        <DockPanel Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Adresse:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+                        <TextBlock Text="{Binding SelectedCustomer.Address}" Style="{StaticResource TextBlockRight}"/>
+        </DockPanel>
 
-                    <TextBlock Grid.Row="4" Grid.Column="0" Text="Postnummer:"  Style="{StaticResource TitleLeft}" Margin="0,0,12,6"/>
-                    <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding SelectedCustomer.PostalCode}" Margin="0,0,0,6"/>
+        <DockPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Postnummer:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding SelectedCustomer.PostalCode}" Style="{StaticResource TextBlockRight}"/>
+        </DockPanel>
 
-                    <TextBlock Grid.Row="5" Grid.Column="0" Text="Total difference:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0"/>
-                    <Border Grid.Row="5" Grid.Column="1" Style="{StaticResource ChipNegative}">
-                        <TextBlock Style="{StaticResource ChipText}" Text="-100,60 kr"/>
-                    </Border>
-                </Grid>
-            </GroupBox>
+        <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Total difference:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+            <TextBlock Style="{StaticResource MoneyTextColor}" Text="-100,60 kr"/>
+        </DockPanel>
+    </Grid>
+</GroupBox>
+
 
             <!-- Booths for selected -->
             <GroupBox Grid.Column="2" Style="{StaticResource CardSection}" Header="Den valgte lejers reoler">
-                <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource DataGridBase}">
+                <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource DataGrid.Table}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Reol Nr"   Width="120" Binding="{Binding BoothNumber}"/>
                         <DataGridTextColumn Header="Start Dato" Width="200" Binding="{Binding StartDato}"/>
-                        <DataGridTemplateColumn Header="Difference" Width="180"
-                                    CellStyle="{StaticResource DataGridCellMoney}"
-                                    CellTemplate="{StaticResource CellTemplate.MoneyDifference}"/>
+
+                        <!-- Kun tekstfarve (ingen celle-baggrund) -->
+                        <DataGridTemplateColumn Header="Difference" Width="180">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Style="{StaticResource MoneyTextColor}"
+                                   Text="{Binding Difference, StringFormat={}{0:N2} kr.}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
                         <DataGridTemplateColumn Header="" Width="160"
                                     CellTemplate="{StaticResource CellTemplate.PrimaryAction}"/>
                         <DataGridTextColumn Header="Slut Dato" Width="200"/>
@@ -144,6 +168,7 @@
                     </DataGrid.Columns>
                 </DataGrid>
             </GroupBox>
+
         </Grid>
 
         <!-- ================= ACTIONS ================= -->
