@@ -1,6 +1,14 @@
 # ReolMarket
 Casen til 2. semester
 
+
+# Denne Database blev med succes sat op på en Linux Ubuntu server, som vi alle kunne tilgå.
+Vi benyttede os af Tailscale som VPN, for at undgå at have offentligt-åbne porte.
+
+Vi har taget en backup af databasen, og afleveret sammen med de andre filer - Men da vi ikke ved ALT omkring den data sådan en database kan indeholde (fx IP-addresser m.m), uploader vi ikke databasen i repoen da den er offentlig.
+
+Databasen bliver vedhæftet i afleveringen, og herunder er der en instruktion på hvorledes i kan forbinde til den.
+
 # Import af database i SSMS:
 
 # Import af .bacpac i SQL Server Management Studio (SSMS)
