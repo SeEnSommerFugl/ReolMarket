@@ -103,10 +103,12 @@
                                        HorizontalAlignment="Center"/>
 
                     <!-- Reolnummer -->
-                    <TextBlock Text="Reol" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
-                    <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DockPanel>
+                        <TextBlock Text="Reol" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
+                        <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}"/>
+                    </DockPanel>
+
+                    <TextBlock Text="Reol" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
 
                     <!-- Produktnavn -->
                     <TextBlock Text="Produkt" 
