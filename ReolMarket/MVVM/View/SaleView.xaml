@@ -99,36 +99,40 @@
             <Border Grid.Row="0" Style="{StaticResource Card}">
                 <StackPanel>
                     <!-- Header -->
+                    <DockPanel>
                     <TextBlock Text="Registrer salg" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
+                    </DockPanel>
 
                     <!-- Reolnummer -->
-                    <TextBlock Text="Reol" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
-                    <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}"/>
-
+                    <DockPanel>
+                    <TextBlock Text="Reol" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF"/>
+                    <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}"/>
+                    </DockPanel>
+                    
                     <!-- Produktnavn -->
-                    <TextBlock Text="Produkt" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
-                    <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}"/>
-
+                    <DockPanel>
+                        <TextBlock Text="Produkt" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF"/>
+                        <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}"/>
+                    </DockPanel>
+                    
                     <!-- Mængde/kvantitet -->
-                    <TextBlock  Text="Antal" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
-                    <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}"/>
-
+                    <DockPanel>
+                        <TextBlock  Text="Antal" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF"/>
+                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}"/>
+                    </DockPanel>
+                    
                     <!-- Pris -->
-                    <TextBlock Text="Pris" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
-                    <TextBox Text="{Binding ItemPrice, UpdateSourceTrigger=PropertyChanged}"/>
+                    <DockPanel>
+                        <TextBlock Text="Pris" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF"/>
+                        <TextBox Text="{Binding ItemPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}"/>
+                    </DockPanel>
+                    
+                    <!--Betalingsmetode-->
+                    <DockPanel>
+                        <TextBlock Text="Betalingsmetode" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF"/>
+                    </DockPanel>
 
-                    <TextBlock Text="Betalingsmetode" 
-                                       HorizontalAlignment="Left" 
-                                       Foreground="White"/>
                     <ComboBox ItemsSource="{Binding PaymentMethod}"
                               DisplayMemberPath="PaymentMethod"
                               SelectedItem="{Binding SelectedPayment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
