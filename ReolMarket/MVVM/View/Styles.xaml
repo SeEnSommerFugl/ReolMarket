@@ -199,10 +199,15 @@
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-        
-        
-        
 
+        <!-- Centrér alle kolonneoverskrifter globalt -->
+        <Setter Property="ColumnHeaderStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
 
         <!-- Fælles adfærd: markér hele rækken, ikke cellen -->
         <Setter Property="RowStyle">
@@ -212,7 +217,6 @@
                     <Setter Property="BorderBrush" Value="Transparent"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
-                            <!-- Lys overlay over hele rækken -->
                             <Setter Property="Background" Value="#056097"/>
                             <Setter Property="BorderBrush" Value="#056097"/>
                         </Trigger>
@@ -221,11 +225,14 @@
             </Setter.Value>
         </Setter>
 
+        <!-- Centrér alt celle-indhold -->
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
-                    <Setter Property="Background"       Value="Transparent"/>
-                    <Setter Property="BorderBrush"      Value="Transparent"/>
+                    <Setter Property="Background"  Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    <Setter Property="VerticalContentAlignment"   Value="Center"/>
                     <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
@@ -266,6 +273,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+
 
     <!-- Ensartet kompakt tabel til Renters + Sale Row 2 -->
     <Style x:Key="DataGrid.Table" TargetType="DataGrid" BasedOn="{StaticResource DataGridBase}">
