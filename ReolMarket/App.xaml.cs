@@ -25,7 +25,7 @@ namespace ReolMarket
             IBaseRepository<Payment, Guid> paymentRepo = new PaymentDbRepository();
 
             // ---- ViewModels (pass interfaces in) ----
-            var rentersVM = new RentersViewModel(boothRepo, customerRepo);
+            var rentersVM = new RentersViewModel(boothRepo, customerRepo, saleRepo, itemRepo, itemCartRepo, cartRepo);
             var economyVM = new EconomyViewModel(boothRepo, customerRepo, saleRepo, itemRepo, itemCartRepo, cartRepo);
             var saleVM = new SaleViewModel(boothRepo, saleRepo, itemRepo, cartRepo, itemCartRepo, paymentRepo);
 

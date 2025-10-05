@@ -139,7 +139,7 @@
 
         <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
             <TextBlock Text="Total difference:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
-            <TextBlock Style="{StaticResource MoneyTextColor}" Text="-100,60 kr"/>
+            <TextBlock Text="{Binding SelectedCustomerDifference}" Style="{StaticResource MoneyTextColor}"/>
         </DockPanel>
     </Grid>
 </GroupBox>
