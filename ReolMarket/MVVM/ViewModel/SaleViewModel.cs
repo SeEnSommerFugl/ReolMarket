@@ -103,6 +103,7 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
+        //Month and year selection functionality (not implemented)
         private Month _selectedMonth;
         public Month SelectedMonth {
             get => _selectedMonth;
