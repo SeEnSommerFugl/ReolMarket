@@ -14,151 +14,180 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-<Border Margin="8">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="12"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        
-        <!-- right Column -->
-        <Grid Grid.Column="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!-- Row 1 filter bar -->
-                <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="*"/>     <!-- Row 2 -->
-                <RowDefinition Height="12"/>    <!-- spacing -->
-            </Grid.RowDefinitions>
+    <Border Margin="8">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-            <!-- Row 1: Top filter -->
-            <Border Style="{StaticResource Card}">
-                <DockPanel LastChildFill="True">
-                    <!-- Højre knapper -->
-                    <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-                        <Button Content="Ryd filtre" Command="{Binding ClearFiltersCommand}"
+            <!-- right Column -->
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Row 1 filter bar -->
+                    <RowDefinition Height="12"/>
+                    <!-- spacing -->
+                    <RowDefinition Height="*"/>
+                    <!-- Row 2 -->
+                    <RowDefinition Height="12"/>
+                    <!-- spacing -->
+                </Grid.RowDefinitions>
+
+                <!-- Row 1: Top filter -->
+                <Border Style="{StaticResource Card}">
+                    <DockPanel LastChildFill="True">
+                        <!-- Højre knapper -->
+                        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                            <Button Content="Ryd filtre" Command="{Binding ClearFiltersCommand}"
                                 Style="{StaticResource ButtonBase}" Height="34" Margin="12,0,0,0"/>
-                        <Button Content="Opdater" Command="{Binding RefreshCommand}"
+                            <Button Content="Opdater" Command="{Binding RefreshCommand}"
                                 Style="{StaticResource ButtonPrimary}" Height="34" Margin="12,0,0,0"/>
-                    </StackPanel>
+                        </StackPanel>
 
-                    <!-- Venstre label -->
-                    <TextBlock DockPanel.Dock="Left" Text="Salg" Style="{StaticResource H1}"
+                        <!-- Venstre label -->
+                        <TextBlock DockPanel.Dock="Left" Text="Salg" Style="{StaticResource H1}"
                        VerticalAlignment="Center" Margin="0,0,12,0"/>
 
-                    <!-- Midterfilter -->
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                        <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <ComboBox ItemsSource="{Binding Months}"
+                        <!-- Midterfilter -->
+                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                            <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <ComboBox ItemsSource="{Binding Months}"
                                 SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"
                                 Height="34" Width="120" Margin="0,0,12,0"/>
 
-                        <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                        <ComboBox ItemsSource="{Binding Years.Items}"
+                            <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                            <ComboBox ItemsSource="{Binding Years.Items}"
                                 SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
                                 Height="34" Width="100"/>
-                        
-                    </StackPanel>
-                </DockPanel>
-            </Border>
 
-            <!-- Row 2: liste -->
-            <DataGrid Grid.Row="2" 
+                        </StackPanel>
+                    </DockPanel>
+                </Border>
+
+                <!-- Row 2: liste -->
+                <DataGrid Grid.Row="2" 
                       ItemsSource="{Binding SaleView}"
                       Style="{StaticResource DataGridBase}">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Dato" Width="160"
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dato" Width="160"
                                         Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
-                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
-                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
-                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+                        <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                        <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
+                        <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
 
-       
 
-        <!-- left Column -->
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>  <!-- Registrer salg -->
-                <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="Auto"/>  <!-- Salgs-tal -->
-                <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="2*"/>    <!-- Udestående differencer -->
-                <RowDefinition Height="12"/>    <!-- spacing -->
-                <RowDefinition Height="*"/>     <!-- Reol-tal -->
-            </Grid.RowDefinitions>
 
-            <!-- Registrer salg (RecordSales)-->
-            <Border Grid.Row="0" Style="{StaticResource Card}">
-                <StackPanel>
-                    <!-- Header -->
-                    <DockPanel>
-                    <TextBlock Text="Tilføj til kurv" Style="{StaticResource H2}" 
+            <!-- left Column -->
+            <Grid Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Tilføj til kurv -->
+                    <RowDefinition Height="12"/>
+                    <!-- spacing -->
+                    <RowDefinition Height="auto"/>
+                    <!-- Indkøbskurv -->
+                    <RowDefinition Height="12"/>
+                    <!-- spacing -->
+                </Grid.RowDefinitions>
+
+                <!-- Registrer salg (RecordSales)-->
+                <Border Grid.Row="0" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <!-- Header -->
+                        <DockPanel>
+                            <TextBlock Text="Tilføj til kurv" Style="{StaticResource H2}" 
                                        HorizontalAlignment="Center"/>
-                    </DockPanel>
+                        </DockPanel>
 
-                    <!-- Reolnummer -->
-                    <DockPanel>
-                        <TextBlock Text="Reol" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
-                    <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
-                    </DockPanel>
-                    
-                    <!-- Produktnavn -->
-                    <DockPanel>
-                        <TextBlock Text="Produkt" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
-                        <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
-                    </DockPanel>
-                    
-                    <!-- Mængde/kvantitet -->
-                    <DockPanel>
-                        <TextBlock  Text="Antal" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
-                        <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
-                    </DockPanel>
-                    
-                    <!-- Pris -->
-                    <DockPanel>
-                        <TextBlock Text="Pris" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
-                        <TextBox Text="{Binding ItemPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
-                    </DockPanel>
-                    
-                    <!--Betalingsmetode-->
-                    <DockPanel>
-                        <TextBlock Text="Betalingsmetode" 
+                        <!-- Reolnummer -->
+                        <DockPanel>
+                            <TextBlock Text="Reol" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
+                            <TextBox Text="{Binding BoothNumber, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
+                        </DockPanel>
+
+                        <!-- Produktnavn -->
+                        <DockPanel>
+                            <TextBlock Text="Produkt" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
+                            <TextBox Text="{Binding ItemName, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
+                        </DockPanel>
+
+                        <!-- Mængde/kvantitet -->
+                        <DockPanel>
+                            <TextBlock  Text="Antal" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
+                            <TextBox Text="{Binding Quantity, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
+                        </DockPanel>
+
+                        <!-- Pris -->
+                        <DockPanel>
+                            <TextBlock Text="Pris" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
+                            <TextBox Text="{Binding ItemPrice, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource InputRight}" Width="368"/>
+                        </DockPanel>
+
+                        <!--Betalingsmetode-->
+                        <DockPanel>
+                            <TextBlock Text="Betalingsmetode" 
                                    Style="{StaticResource TitleLeft}" 
                                    Foreground="#CFE0FF" 
                                    Width="270"/>
 
-                        <ComboBox  ItemsSource="{Binding PaymentMethod}"
+                            <ComboBox  ItemsSource="{Binding PaymentMethod}"
                                    Foreground="Black"
                                    DisplayMemberPath="PaymentMethod"
                                    SelectedItem="{Binding SelectedPayment, Mode=TwoWay}" 
                                    Style="{StaticResource ComboRight}"
                                    Width="368"/>
-                    </DockPanel>
+                        </DockPanel>
 
-                    <Button Content="Tilføj" 
+                        <Button Content="Tilføj" 
                             Style="{StaticResource ButtonPrimary}"
                             Command="{Binding RegisterSaleCommand}"
                             Margin="10,10,10,0"/>
 
-                    <DataGrid ItemsSource="{Binding RecordSales}"
+                        <DataGrid ItemsSource="{Binding RecordSales}"
                               HeadersVisibility="None"
                               GridLinesVisibility="None" 
                               Background="Transparent" 
                               BorderBrush="Transparent"
                               Margin="0,8,0,0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Label}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
-                        </DataGrid.Columns>
-                        
-                    </DataGrid>
-                </StackPanel>
-            </Border>
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Label}" Width="*" />
+                                <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Border>
 
-           </Grid>
-         </Grid>
-  </Border>
+                <!--Indkøbskurv(ShoppingCart)-->
+
+                <Border Grid.Row="2" Style="{StaticResource Card}">
+                    <StackPanel>
+                        <TextBlock Text="Indkøbskurv" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+
+                        <DataGrid ItemsSource="{Binding ShoppingCart}"
+                                  Style="{StaticResource DataGridBase}"
+                                  
+                                  Margin="0,0,0,8">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductNameShoppingCart}"/>
+                                <DataGridTextColumn Header="Antal" Width="120" Binding="{Binding QuantityShoppingCart}"/>
+                                <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding PriceShoppingCart}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Button Content="Bræft køb"
+                                Command="{Binding CheckoutCommand}"
+                                Style="{StaticResource ButtonPrimary}"
+                                Height="40"/>
+
+                    </StackPanel>
+                </Border>
+
+            </Grid>
+        </Grid>
+    </Border>
 </UserControl>
