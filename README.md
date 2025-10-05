@@ -9,8 +9,6 @@ Vi har taget en backup af databasen, og afleveret sammen med de andre filer - Me
 
 Databasen bliver vedhæftet i afleveringen, og herunder er der en instruktion på hvorledes i kan forbinde til den.
 
-# Import af database i SSMS:
-
 # Import af .bacpac i SQL Server Management Studio (SSMS)
 
 Denne guide viser, hvordan du kan importere en SQL Server-database fra en `.bacpac`-fil.
