@@ -8,7 +8,7 @@
              d:DesignWidth="1920" d:DesignHeight="1080"
              MaxWidth="1920" MaxHeight="1080"
              Background="Transparent">
-    <!-- //TODO::this is to do comment -->
+
     <UserControl.Resources>
         <!-- Mørk panelbaggrund (justér farven hvis du vil) -->
         <SolidColorBrush x:Key="CardBackground" Color="#162231" Opacity="0.92"/>
@@ -52,72 +52,6 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <!-- GRID 4: Udestående Differencer (DataGrid uden headers) -->
-        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource Card}" Margin="8,8,8,10" Grid.RowSpan="2">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="8"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-
-                <TextBlock Text="Udestående Differencer"
-                           Style="{StaticResource H2}"
-                           Foreground="#EAF2FF" Width="442"/>
-
-                <DataGrid Grid.Row="2"
-                          AutoGenerateColumns="False"
-                          HeadersVisibility="None"
-                          ColumnHeaderHeight="0"
-                          CanUserAddRows="False"
-                          Width="442"
-                          FontSize="40"
-                          Padding="0,0,0,0"
-                          CanUserDeleteRows="False"
-                          SelectionMode="Extended"
-                          SelectionUnit="FullRow"
-                          CanUserResizeRows="False"
-                          CanUserResizeColumns="False"
-                          GridLinesVisibility="None"
-                          Background="Transparent"
-                          RowBackground="Transparent"
-                          BorderThickness="0"
-                          AlternatingRowBackground="{x:Null}"
-                          IsReadOnly="True"
-                          ItemsSource="{Binding MonthlyOutstandingPayments}">
-
-                    <!-- Kolonner: Navn + Beløb -->
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Width="260" Binding="{Binding CustomerName}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}">
-                                    <Setter Property="Foreground" Value="#EAF2FF"/>
-
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-
-                        <!-- Beløb-kolonne: binder direkte til item (string) og farver via triggers -->
-                        <DataGridTextColumn Width="140" Binding="{Binding Outstanding, StringFormat=N2}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource InputRight}">
-                                    <!-- Farvning på placeholder-værdier -->
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Outstanding}" Value="0">
-                                            <Setter Property="Foreground" Value="#3DDC84"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding Outstanding}" Value="0">
-                                            <Setter Property="Foreground" Value="#FF6B6B"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
-        </Border>
-
         <!-- GRID 1: Nøgletal -->
         <Border Grid.Column="0" Style="{StaticResource Card}" Margin="8">
             <Grid>
@@ -149,13 +83,13 @@
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Udestående:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
-                    <TextBlock Text="{Binding TotalMonthlyOutstanding}" Style="{StaticResource InputRight}"/> 
+                    <TextBlock Text="{Binding TotalMonthlyOutstanding}" Style="{StaticResource InputRight}"/>
                 </DockPanel>
             </Grid>
         </Border>
 
         <!-- GRID 2: Reol-tal -->
-        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="0,0,16,10">
+        <Border Grid.Row="1" Style="{StaticResource Card}" Margin="8">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
@@ -215,18 +149,84 @@
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
                     <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344" RenderTransformOrigin="0.5,0.5">
-                        <TextBlock.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform AngleY="0"/>
-                                <RotateTransform/>
-                                <TranslateTransform Y="0"/>
-                            </TransformGroup>
-                        </TextBlock.RenderTransform>
                     </TextBlock>
                     <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/>
                 </DockPanel>
             </Grid>
         </Border>
+
+        <!-- GRID 4: Udestående Differencer (DataGrid uden headers) -->
+        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource Card}" Margin="8,8,8,10" Grid.RowSpan="2">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="8"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Text="Udestående Differencer"
+                   Style="{StaticResource H2}"
+                   Foreground="#EAF2FF" Width="442"/>
+
+                <DataGrid Grid.Row="2"
+                  Style="{StaticResource DataGridBase}"
+                    HeadersVisibility="None"
+                  ColumnHeaderHeight="0"
+                  Width="442"
+                  FontSize="30"
+                  Padding="0"
+                  CanUserResizeRows="False"
+                  CanUserResizeColumns="False"
+                  Background="Transparent"
+                  RowBackground="Transparent"
+                  BorderThickness="0"
+                  AlternatingRowBackground="{x:Null}"
+                  IsReadOnly="True"
+                  SelectionMode="Extended"
+                  ItemsSource="{Binding MonthlyOutstandingPayments}">
+
+                    <!-- Kolonner: Navn + Beløb -->
+                    <DataGrid.Columns>
+                        <!-- Navn -->
+                        <DataGridTextColumn Width="260" Binding="{Binding CustomerName}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
+                                    <Setter Property="Foreground" Value="#EAF2FF"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextAlignment" Value="Right"/>
+                                    <Setter Property="FontSize"
+                                    Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+
+                        <!-- Beløb -->
+                        <DataGridTextColumn Width="140" Binding="{Binding Outstanding, StringFormat=N2}">
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="TextAlignment" Value="Left"/>
+                                    <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
+                                    <Setter Property="FontSize" Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsPositive}" Value="True">
+                                            <Setter Property="Foreground" Value="#3DDC84"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding IsNegative}" Value="True">
+                                            <Setter Property="Foreground" Value="#FF6B6B"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+
+       
+
+       
     </Grid>
 </UserControl>

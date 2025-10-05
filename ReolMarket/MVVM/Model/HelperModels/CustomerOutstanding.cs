@@ -14,5 +14,9 @@ namespace ReolMarket.MVVM.Model.HelperModels
         public decimal Commission { get; set; }
         public decimal Rent { get; set; }
         public decimal Outstanding { get; set; }
+
+        public bool IsNegative => Outstanding < 0m;
+        public bool IsPositive => Outstanding >= 0m;
+
     }
 }

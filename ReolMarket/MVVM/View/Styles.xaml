@@ -10,7 +10,7 @@
     <SolidColorBrush x:Key="Brush.Accent"      Color="#2563EB"/>
     <SolidColorBrush x:Key="Brush.AccentHover" Color="#1D4ED8"/>
     <SolidColorBrush x:Key="Brush.Danger"      Color="#DC2626"/>
-    <SolidColorBrush x:Key="Brush.Fg.Primary" Color="#FF1F2937" />
+    <SolidColorBrush x:Key="Brush.Fg.Primary"  Color="#FF1F2937"/>
 
     <!-- Money tints -->
     <SolidColorBrush x:Key="Amount.Positive.Bg" Color="#14532D"/>
@@ -46,10 +46,6 @@
     <Style x:Key="LabelMuted" TargetType="TextBlock">
         <Setter Property="Foreground" Value="{StaticResource Brush.TextMuted}"/>
     </Style>
-
-
-
-
 
     <!-- =================== BUTTONS =================== -->
     <Style x:Key="ButtonBase" TargetType="Button">
@@ -128,7 +124,7 @@
     <Style x:Key="InputRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize"            Value="30"/>
-        <Setter Property="Margin"            Value="0,0,0,0"/>
+        <Setter Property="Margin"              Value="0,0,0,0"/>
     </Style>
     <Style x:Key="ComboRight" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -137,7 +133,7 @@
     <Style x:Key="TextBlockRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
         <Setter Property="FontSize" Value="30"/>
-        <Setter Property="Margin"            Value="0,0,0,0"/>
+        <Setter Property="Margin"              Value="0,0,0,0"/>
     </Style>
 
     <!-- =================== CARDS / SECTIONS =================== -->
@@ -154,14 +150,14 @@
             <Setter.Value>
                 <ControlTemplate TargetType="GroupBox">
                     <Border Background="{StaticResource Brush.Panel}"
-                  BorderBrush="{StaticResource Brush.Border}"
-                  BorderThickness="1"
-                  CornerRadius="8"
-                  SnapsToDevicePixels="True">
+                            BorderBrush="{StaticResource Brush.Border}"
+                            BorderThickness="1"
+                            CornerRadius="8"
+                            SnapsToDevicePixels="True">
                         <DockPanel Margin="12">
                             <ContentPresenter DockPanel.Dock="Top"
-                                ContentSource="Header"
-                                Margin="0,0,0,8"/>
+                                              ContentSource="Header"
+                                              Margin="0,0,0,8"/>
                             <ContentPresenter/>
                         </DockPanel>
                     </Border>
@@ -180,7 +176,6 @@
         <Setter Property="SnapsToDevicePixels" Value="True"/>
     </Style>
 
-
     <!-- =================== DATAGRID =================== -->
     <Style x:Key="DataGridBase" TargetType="DataGrid">
         <Setter Property="Background" Value="{StaticResource Brush.Panel}"/>
@@ -193,7 +188,7 @@
         <Setter Property="CanUserDeleteRows" Value="False"/>
         <Setter Property="RowHeight" Value="44"/>
         <Setter Property="ColumnHeaderHeight" Value="42"/>
-        <Setter Property="FontSize" Value="40   "/>
+        <Setter Property="FontSize" Value="40"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="SelectionUnit" Value="FullRow"/>
         <Setter Property="AlternatingRowBackground" Value="#1C2431"/>
@@ -201,25 +196,18 @@
         <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
         <Setter Property="EnableRowVirtualization" Value="True"/>
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
-    </Style>
 
-    
-    <!-- 2-kolonne setup med Right Align Title + Left Align Input -->
-    <!-- Række-highlight i stedet for celle-highlight + skalerbar font -->
-    <Style x:Key="DataGridFullRowHighlight"
-       TargetType="DataGrid"
-       BasedOn="{StaticResource DataGridBase}">
-
-        <!-- Hele rækken får highlight, celler holder sig “stille” -->
+        <!-- Fælles adfærd: markér hele rækken, ikke cellen -->
         <Setter Property="RowStyle">
             <Setter.Value>
                 <Style TargetType="DataGridRow">
-                    <Setter Property="Background"   Value="Transparent"/>
-                    <Setter Property="BorderBrush"  Value="Transparent"/>
+                    <Setter Property="Background"  Value="Transparent"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
                     <Style.Triggers>
                         <Trigger Property="IsSelected" Value="True">
                             <!-- Lys overlay over hele rækken -->
-                            <Setter Property="Background" Value="#20FFFFFF"/>
+                            <Setter Property="Background" Value="LightCyan"/>
+                            <Setter Property="BorderBrush" Value="LightCyan"/>
                         </Trigger>
                     </Style.Triggers>
                 </Style>
@@ -229,16 +217,14 @@
         <Setter Property="CellStyle">
             <Setter.Value>
                 <Style TargetType="DataGridCell">
-                    <Setter Property="Background"        Value="Transparent"/>
-                    <Setter Property="BorderBrush"       Value="Transparent"/>
-                    <Setter Property="FocusVisualStyle"  Value="{x:Null}"/>
+                    <Setter Property="Background"       Value="Transparent"/>
+                    <Setter Property="BorderBrush"      Value="Transparent"/>
+                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                     <Style.Triggers>
-                        <!-- Ingen særskilt celle-baggrund ved markering -->
                         <Trigger Property="IsSelected" Value="True">
                             <Setter Property="Background"  Value="Transparent"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
                         </Trigger>
-                        <!-- Fjern keyboard-fokus ramme -->
                         <Trigger Property="IsKeyboardFocusWithin" Value="True">
                             <Setter Property="Background"  Value="Transparent"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
@@ -248,28 +234,6 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <!-- Standard celle-tekst (venstrejusteret) som ikke tager klik-fokus.
-     Fontstørrelse følger DataGrid.FontSize, så det skalerer automatisk. -->
-    <Style x:Key="TitleLeftGrid" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
-        <Setter Property="IsHitTestVisible"   Value="False"/>
-        <Setter Property="VerticalAlignment"   Value="Center"/>
-        <Setter Property="TextAlignment"       Value="Left"/>
-        <Setter Property="Foreground"          Value="{StaticResource Brush.Text}"/>
-        <Setter Property="FontSize"
-            Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-    </Style>
-
-    <!-- Højrejusteret variant (Til højre side -->
-    <Style x:Key="GridCellTextRight" TargetType="TextBlock">
-        <Setter Property="IsHitTestVisible"   Value="False"/>
-        <Setter Property="VerticalAlignment"   Value="Center"/>
-        <Setter Property="TextAlignment"       Value="Right"/>
-        <Setter Property="Foreground"          Value="{StaticResource Brush.Text}"/>
-        <Setter Property="FontSize"
-            Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
-    </Style>
-
 
     <!-- Cell pill template (rounded full-cell background) -->
     <Style x:Key="DataGridCellPill" TargetType="DataGridCell">
@@ -281,12 +245,12 @@
             <Setter.Value>
                 <ControlTemplate TargetType="DataGridCell">
                     <Border x:Name="Pill"
-                  Background="{TemplateBinding Background}"
-                  CornerRadius="16"
-                  Margin="2">
+                            Background="{TemplateBinding Background}"
+                            CornerRadius="16"
+                            Margin="2">
                         <ContentPresenter Margin="10,4"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
@@ -350,11 +314,11 @@
     <!-- Hvad der står på “knappen” -->
     <DataTemplate x:Key="NavItemTemplate">
         <TextBlock Text="{Binding Title}"
-               Foreground="White"
-               FontSize="28"
-               FontWeight="SemiBold"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"/>
+                   Foreground="White"
+                   FontSize="28"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
     </DataTemplate>
 
     <!-- Hver post opfører sig som en rund “knap” -->
@@ -368,13 +332,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="ListBoxItem">
                     <Border x:Name="Card"
-                        CornerRadius="20"
-                        Background="{StaticResource Brush.Accent}"
-                        BorderBrush="{StaticResource Brush.Accent}"
-                        BorderThickness="1"
-                        SnapsToDevicePixels="True">
+                            CornerRadius="20"
+                            Background="{StaticResource Brush.Accent}"
+                            BorderBrush="{StaticResource Brush.Accent}"
+                            BorderThickness="1"
+                            SnapsToDevicePixels="True">
                         <ContentPresenter HorizontalAlignment="Center"
-                                      VerticalAlignment="Center"/>
+                                          VerticalAlignment="Center"/>
                     </Border>
                     <ControlTemplate.Triggers>
                         <!-- Hover som dine knapper -->
@@ -407,7 +371,6 @@
         <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Disabled"/>
     </Style>
 
-
     <!-- Viser grid når IsEditing = false -->
     <Style x:Key="ShowGridWhenNotEditing" TargetType="Grid">
         <Setter Property="Visibility" Value="Visible"/>
@@ -427,6 +390,7 @@
             </DataTrigger>
         </Style.Triggers>
     </Style>
+
     <!-- =================== RADIO BUTTON =================== -->
     <Style x:Key="HighlightRadioButtonStyle" TargetType="RadioButton">
         <Setter Property="Background" Value="LightGray"/>
@@ -434,8 +398,8 @@
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
                     <Border Background="{TemplateBinding Background}"
-                        BorderBrush="DarkGray" BorderThickness="1" CornerRadius="4"
-                        Padding="8" Margin="4">
+                            BorderBrush="DarkGray" BorderThickness="1" CornerRadius="4"
+                            Padding="8" Margin="4">
                         <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Border>
                 </ControlTemplate>
