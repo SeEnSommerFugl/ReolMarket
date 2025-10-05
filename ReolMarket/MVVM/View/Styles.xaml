@@ -122,11 +122,13 @@
     <Style x:Key="TitleLeft" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
         <Setter Property="TextAlignment"       Value="Right"/>
         <Setter Property="VerticalAlignment"   Value="Center"/>
-        <Setter Property="FontSize"            Value="40"/> 
+        <Setter Property="FontSize"            Value="30"/>
+        <Setter Property="Margin"              Value="0,0,12,0"/>
     </Style>
     <Style x:Key="InputRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="FontSize"            Value="40"/>
+        <Setter Property="FontSize"            Value="30"/>
+        <Setter Property="Margin"            Value="0,0,0,0"/>
     </Style>
     <Style x:Key="ComboRight" TargetType="ComboBox" BasedOn="{StaticResource ComboBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -134,7 +136,8 @@
 
     <Style x:Key="TextBlockRight" TargetType="TextBox" BasedOn="{StaticResource TextBoxBase}">
         <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="FontSize" Value="40"/>
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Margin"            Value="0,0,0,0"/>
     </Style>
 
     <!-- =================== CARDS / SECTIONS =================== -->
@@ -290,7 +293,7 @@
     <Style x:Key="NavListBoxItem" TargetType="ListBoxItem">
         <!-- flise-størrelse/margins som dine knapper -->
         <Setter Property="Height" Value="220"/>
-        <Setter Property="Margin" Value="0,0,0,60"/>
+        <Setter Property="Margin" Value="0,0,0,28"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">

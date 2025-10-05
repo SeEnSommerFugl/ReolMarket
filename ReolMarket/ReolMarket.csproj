@@ -33,6 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="MVVM\Design\NewFolder\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 
