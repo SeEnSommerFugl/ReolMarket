@@ -55,8 +55,9 @@
 
                         <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <ComboBox ItemsSource="{Binding Years.Items}"
-                                SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
-                                Height="34" Width="100"/>
+                                  SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+                                  Style="{StaticResource ComboRight}"
+                                  Height="34" Width="100"/>
                         
                     </StackPanel>
                 </DockPanel>
