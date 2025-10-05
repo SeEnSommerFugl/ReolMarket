@@ -289,8 +289,8 @@
     <!-- Hver post opfører sig som en rund “knap” -->
     <Style x:Key="NavListBoxItem" TargetType="ListBoxItem">
         <!-- flise-størrelse/margins som dine knapper -->
-        <Setter Property="Height" Value="140"/>
-        <Setter Property="Margin" Value="0,0,0,16"/>
+        <Setter Property="Height" Value="220"/>
+        <Setter Property="Margin" Value="0,0,0,60"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="Padding" Value="0"/>
         <Setter Property="Template">

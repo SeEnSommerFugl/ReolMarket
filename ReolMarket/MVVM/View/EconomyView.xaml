@@ -5,7 +5,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"
-             d:DesignWidth="1652" d:DesignHeight="1048"
+             d:DesignWidth="1920" d:DesignHeight="1080"
+             MaxWidth="1920" MaxHeight="1080"
              Background="Transparent">
     <!-- //TODO::this is to do comment -->
     <UserControl.Resources>
@@ -13,8 +14,8 @@
         <SolidColorBrush x:Key="CardBackground" Color="#162231" Opacity="0.92"/>
         <SolidColorBrush x:Key="CardBorder" Color="#0E1724" Opacity="0.92"/>
 
-        <!-- TitleToLeft alias til din eksisterende TitleLeft (TextBlock) -->
-        <Style x:Key="TitleToLeft" TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}"/>
+        <!-- TitleLeft alias til din eksisterende TitleLeft (TextBlock) -->
+        <Style x:Key="TitleLeft" TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}"/>
 
         <!-- TextBlock-udgave af InputRight (din globale er en TextBox-style) -->
         <Style x:Key="InputRight" TargetType="TextBlock">
@@ -62,13 +63,16 @@
 
                 <TextBlock Text="Udestående Differencer"
                            Style="{StaticResource H2}"
-                           Foreground="#EAF2FF"/>
+                           Foreground="#EAF2FF" Width="442"/>
 
                 <DataGrid Grid.Row="2"
                           AutoGenerateColumns="False"
                           HeadersVisibility="None"
                           ColumnHeaderHeight="0"
                           CanUserAddRows="False"
+                          Width="442"
+                          FontSize="40"
+                          Padding="0,0,0,0"
                           CanUserDeleteRows="False"
                           CanUserResizeRows="False"
                           CanUserResizeColumns="False"
@@ -85,7 +89,7 @@
                         <!-- Navn-kolonne: fast placeholder-tekst via Style (ingen Binding nødvendig) -->
                         <DataGridTextColumn Width="*" Binding="{Binding CustomerName}">
                             <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="TextBlock" BasedOn="{StaticResource TitleToLeft}">
+                                <Style TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}">
                                     <!--<Setter Property="Text" Value="Alex Thomsen"/>-->
                                     <Setter Property="Foreground" Value="#EAF2FF"/>
                                 </Style>
@@ -140,22 +144,22 @@
                 <TextBlock Text="Nøgletal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Samlet indtægt:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Samlet indtægt:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
                     <TextBlock Text="{Binding MonthlyIncome}" Style="{StaticResource InputRight}"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udgifter:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
+                    <TextBlock Text="Udgifter:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="344"/>
                     <TextBlock Text="{Binding MonthlyExpenses}"  Style="{StaticResource InputRight}"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Difference:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
+                    <TextBlock Text="Difference:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="344"/>
                     <TextBlock Text="{Binding MonthlyDifference}" Style="{StaticResource InputRight}"/>
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udestående:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="281"/>
+                    <TextBlock Text="Udestående:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="344"/>
                     <TextBlock Text="5000" Style="{StaticResource InputRight}"/>
                     <!-- <TextBlock Text="{Binding MonthlyOutstanding}" Style="{StaticResource InputRight}"/> -->
                 </DockPanel>
@@ -177,22 +181,22 @@
                 <TextBlock Text="Reol-tal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Udlejede reoler:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="359"/>
                     <TextBlock Text="{Binding MonthlyRentedBooths}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Ledige reoler:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="359"/>
                     <TextBlock Text="{Binding MonthlyAvailableBooths}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Reol-leje indkomst:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="359"/>
                     <TextBlock Text="{Binding MonthlyRentIncome}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="5" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="359"/>
                      <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
             </Grid>
@@ -212,17 +216,17 @@
                 <TextBlock Text="Salgs-tal" Style="{StaticResource H2}" Foreground="#EAF2FF"/>
 
                 <DockPanel Grid.Row="2" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Solgt for:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Solgt for:" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="344"/>
                     <TextBlock Text="{Binding MonthlySalesTotal}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="3" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Antal af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Antal af salg:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0" Foreground="#CFE0FF" Width="344"/>
                      <TextBlock Text="{Binding MonthlySalesAmount}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
 
                 <DockPanel Grid.Row="4" LastChildFill="True" Margin="0,2">
-                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleToLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
+                    <TextBlock Text="Kommission af salg:" Style="{StaticResource TitleLeft}" Margin="0,0,12,0" Foreground="#CFE0FF"/>
                      <TextBlock Text="{Binding MonthlyComission}" Style="{StaticResource InputRight}"/> 
                 </DockPanel>
             </Grid>

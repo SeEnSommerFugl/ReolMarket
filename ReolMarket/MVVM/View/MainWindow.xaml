@@ -7,9 +7,8 @@
         xmlns:views="clr-namespace:ReolMarket.MVVM.View"
         mc:Ignorable="d"
         Title="MainWindow"
-        WindowState="Maximized"
-        Width="1920" Height="1080"
-        MinWidth="1280" MinHeight="800"
+             d:DesignWidth="1920" d:DesignHeight="1080"
+             MaxWidth="1920" MaxHeight="1080"
         UseLayoutRounding="True" SnapsToDevicePixels="True">
 
 
@@ -45,13 +44,14 @@
 <StackPanel Grid.Column="0">
     <TextBlock Text="Reol&#10;Marked"
                TextWrapping="Wrap"
-               FontSize="32"
-               FontWeight="Bold"
-               Margin="0,0,0,16"/>
+               FontSize="50"
+               TextAlignment="Center"
+               FontWeight="Bold"/>
 
     <ListBox ItemsSource="{Binding Nav.Items}"
              SelectedItem="{Binding Nav.Selected}"
-             Style="{StaticResource NavListBox}"/>
+             Style="{StaticResource NavListBox}"
+             Margin="0,75,0,0"/>
 </StackPanel>
 
 <!-- Indholdet binder direkte til Navigation -->
