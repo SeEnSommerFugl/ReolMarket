@@ -130,26 +130,34 @@
                     
                     <!--Betalingsmetode-->
                     <DockPanel>
-                        <TextBlock Text="Betalingsmetode" Style="{StaticResource TitleLeft}" Foreground="#CFE0FF" Width="270"/>
-                        <ComboBox ItemsSource="{Binding PaymentMethod}"
-                              DisplayMemberPath="PaymentMethod"
-                              SelectedItem="{Binding SelectedPayment, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource ComboRight}" Width="368"/>
+                        <TextBlock Text="Betalingsmetode" 
+                                   Style="{StaticResource TitleLeft}" 
+                                   Foreground="#CFE0FF" 
+                                   Width="270"/>
+
+                        <ComboBox  ItemsSource="{Binding PaymentMethod}"
+                                   DisplayMemberPath="PaymentMethod"
+                                   SelectedItem="{Binding SelectedPayment, Mode=TwoWay}" 
+                                   Style="{StaticResource ComboRight}"
+                                   Width="368"/>
                     </DockPanel>
 
-                    <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
+                    <Button Content="Registrér salg" 
+                            Style="{StaticResource ButtonPrimary}"
                             Command="{Binding RegisterSaleCommand}"
                             Margin="10,10,10,0"/>
 
                     <DataGrid ItemsSource="{Binding RecordSales}"
-                                      HeadersVisibility="None"
-                                      GridLinesVisibility="None" 
-                                      Background="Transparent" 
-                                      BorderBrush="Transparent"
-                                      Margin="0,8,0,0">
+                              HeadersVisibility="None"
+                              GridLinesVisibility="None" 
+                              Background="Transparent" 
+                              BorderBrush="Transparent"
+                              Margin="0,8,0,0">
                         <DataGrid.Columns>
                             <DataGridTextColumn Binding="{Binding Label}" Width="*" />
                             <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
                         </DataGrid.Columns>
+                        
                     </DataGrid>
                 </StackPanel>
             </Border>

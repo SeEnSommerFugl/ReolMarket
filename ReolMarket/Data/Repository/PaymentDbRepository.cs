@@ -3,9 +3,11 @@ using Microsoft.Data.SqlClient;
 using ReolMarket.MVVM.Model;
 
 namespace ReolMarket.Data.Repository
+
+{ 
+internal sealed class PaymentDbRepository : BaseDbRepository<Payment, Guid>
 {
-    internal sealed class PaymentDbRepository : BaseDbRepository<Payment, Guid>
-    {
+ 
         protected override string SqlSelectAll => @"
         SELECT Payment_ID, PaymentMethod
         FROM Payment";

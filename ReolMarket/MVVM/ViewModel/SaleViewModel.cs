@@ -25,7 +25,7 @@ namespace ReolMarket.MVVM.ViewModel
 
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
-        public ObservableCollection<Payment> PaymentMethod => _paymentRepo.Items;
+        public ObservableCollection<Payment> PaymentMethods => _paymentRepo.Items;
         public ICollectionView SaleView { get; set; }
         public Years Years { get; } = new Years();
         public IReadOnlyList<Month> Months { get; } =
@@ -41,6 +41,13 @@ namespace ReolMarket.MVVM.ViewModel
             _shoppingCartRepo = shoppingCartRepo;
             _itemShoppingCartRepo = itemShoppingCartRepo;
             _paymentRepo = paymentRepo;
+
+            if(_paymentRepo.Items.Count == 0)
+                {
+                _paymentRepo.Add(new Payment { PaymentMethod = "Kontant" });
+                _paymentRepo.Add(new Payment { PaymentMethod = "MobilePay" });
+                _paymentRepo.Add(new Payment { PaymentMethod = "Kort" });
+            }
 
             _selectedYear = DateTime.Now.Year;
             _selectedMonth = (Month)DateTime.Now.Month;
@@ -103,7 +110,7 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        //Month and year selection functionality (not implemented)
+        
         private Month _selectedMonth;
         public Month SelectedMonth {
             get => _selectedMonth;
