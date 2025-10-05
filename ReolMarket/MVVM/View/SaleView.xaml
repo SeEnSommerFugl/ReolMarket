@@ -14,7 +14,8 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Grid Margin="16">
+<Border Margin="8">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="12"/>
@@ -46,7 +47,7 @@
                     <TextBlock DockPanel.Dock="Left" Text="Salg" Style="{StaticResource H1}"
                        VerticalAlignment="Center" Margin="0,0,12,0"/>
 
-                    <!-- Midterfilter (wrap hvis smalt) -->
+                    <!-- Midterfilter -->
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                         <TextBlock Text="Måned:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
                         <ComboBox ItemsSource="{Binding Months}"
@@ -63,11 +64,12 @@
             </Border>
 
             <!-- Row 2: liste -->
-            <DataGrid Grid.Row="2" ItemsSource="{Binding SaleView}"
-                  Style="{StaticResource DataGridBase}">
+            <DataGrid Grid.Row="2" 
+                      ItemsSource="{Binding SaleView}"
+                      Style="{StaticResource DataGridBase}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Dato" Width="160"
-                                Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
+                                        Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
                     <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
                     <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
                     <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
@@ -163,67 +165,7 @@
                 </StackPanel>
             </Border>
 
-            <!-- Salgs-tal (SalesFigures) -->
-            <!--<Border Grid.Row="2" Style="{StaticResource Card}">
-                <StackPanel>
-                    <TextBlock Text="Salgstal" Style="{StaticResource H2}" 
-                                       HorizontalAlignment="Center"/>
-                    <DataGrid  ItemsSource="{Binding SalesFigures}"
-                                       HeadersVisibility="None"
-                                       GridLinesVisibility="None" 
-                                       Background="Transparent" 
-                                       BorderBrush="Transparent"
-                                       Margin="0,8,0,0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Label}" Width="*"/>
-                            <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>-->
-
-            <!-- Udestående differencer (OutstandingDifferences) -->
-            <Border Grid.Row="4" Style="{StaticResource Card}">
-                <StackPanel>
-                    <TextBlock  Text="Udestående Differencer" Style="{StaticResource H2}" 
-                                        HorizontalAlignment="Center"/>
-                    <DataGrid   ItemsSource="{Binding OutstandingDifferences}"
-                                        HeadersVisibility="None"
-                                        GridLinesVisibility="None" 
-                                        Background="Transparent" 
-                                        BorderBrush="Transparent"
-                                        Margin="0,8,0,0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn 
-                                        Binding="{Binding RenterName}" 
-                                        Width="*" />
-                            <DataGridTextColumn 
-                                        Binding="{Binding Amount}" 
-                                        Width="140">
-                            </DataGridTextColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>
-
-            <!-- Reol-tal -->
-            <Border Grid.Row="6" Style="{StaticResource Card}">
-                <StackPanel>
-                    <TextBlock  Text="Reol tal" Style="{StaticResource H2}" 
-                                        HorizontalAlignment="Center"/>
-                    <DataGrid   ItemsSource="{Binding BoothFigures}" 
-                                        HeadersVisibility="None"
-                                        GridLinesVisibility="None" 
-                                        Background="Transparent" 
-                                        BorderBrush="Transparent"
-                                        Margin="0,8,0,0">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Binding="{Binding Label}" Width="*" />
-                            <DataGridTextColumn Binding="{Binding Value}" Width="140"/>
-                        </DataGrid.Columns>
-                    </DataGrid>
-                </StackPanel>
-            </Border>
-        </Grid>
-    </Grid>
+           </Grid>
+         </Grid>
+    </Border>
 </UserControl>
