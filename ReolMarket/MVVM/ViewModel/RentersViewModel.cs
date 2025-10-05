@@ -20,6 +20,11 @@ public class RentersViewModel : BaseViewModel
 {
     private readonly IBaseRepository<Booth, Guid> _boothRepo;
     private readonly IBaseRepository<Customer, Guid> _customerRepo;
+    private readonly IBaseRepository<Sale, Guid> _saleRepo;
+    private readonly IBaseRepository<Item, Guid> _itemRepo;
+    private readonly IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> _itemCartRepo;
+    private readonly IBaseRepository<ShoppingCart, Guid> _shoppingCartRepo;
+
 
     private readonly DispatcherTimer _refreshDebounce = new() { Interval = TimeSpan.FromMilliseconds(200) };
 
@@ -38,11 +43,10 @@ public class RentersViewModel : BaseViewModel
     /// Direct access to repository's ObservableCollection - single source of truth.
     /// </summary>
     public ObservableCollection<Booth> Booths => _boothRepo.Items;
-
-    /// <summary>
-    /// Direct access to repository's ObservableCollection.
-    /// </summary>
     public ObservableCollection<Customer> Customers => _customerRepo.Items;
+    public ObservableCollection<Sale> Sales => _saleRepo.Items;
+    public ObservableCollection<Item> Items => _itemRepo.Items;
+
 
     /// <summary>
     /// Filtered view of booths for UI binding.
@@ -61,6 +65,7 @@ public class RentersViewModel : BaseViewModel
         {
             if (SetProperty(ref _selectedCustomer, value))
             {
+                SelectedCustomerDifference = CalculateMonthlyOutstandingPayments();
                 _boothsView.Refresh();
                 //RefreshCommands();
             }
@@ -92,6 +97,16 @@ public class RentersViewModel : BaseViewModel
         }
     }
 
+    private decimal? _selectedCustomerDifference;
+    public decimal? SelectedCustomerDifference
+    {
+        get => _selectedCustomerDifference;
+        set
+        {
+            if (SetProperty(ref _selectedCustomerDifference, value)) ;
+        }
+    }
+
     // Commands
     public ICommand NavigateAdminPopUpCommand { get; }
     public ICommand SaveCustomerCommand { get; }
@@ -99,12 +114,16 @@ public class RentersViewModel : BaseViewModel
     /// <summary>
     /// Creates a new instance and initializes the view model.
     /// </summary>
-    public RentersViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo)
+    public RentersViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Customer, Guid> customerRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemCartRepo, IBaseRepository<ShoppingCart, Guid> shoppingCartRepo)
     {
         Title = "Booths";
         // ⚠️ Consider DI: inject repositories instead of `new` for testability.
         _boothRepo = boothRepo;
         _customerRepo = customerRepo;
+        _saleRepo = saleRepo;
+        _itemRepo = itemRepo;
+        _itemCartRepo = itemCartRepo;
+        _shoppingCartRepo = shoppingCartRepo;
         InitializeSearchTypes();
         SelectedSearchMode = SearchModes.First(); // Default to "Alle"
 
@@ -208,5 +227,71 @@ public class RentersViewModel : BaseViewModel
                 new SearchModeItem { DisplayName = "Kunde telefon", SearchMode = SearchMode.CustomerPhone },
                 new SearchModeItem { DisplayName = "Kunde email", SearchMode = SearchMode.CustomerEmail }
             };
+    }
+
+    //Her er den kedelige og læsevenlige version af CalculateMonthlyOutstandingPayments
+    private decimal? CalculateMonthlyOutstandingPayments()
+    {
+        if (SelectedCustomer == null)
+            return 0m;
+
+        var customer = SelectedCustomer;
+        var customerBooths = Booths.Where(b => b.CustomerID == customer.CustomerID).ToList();
+        if (!customerBooths.Any())
+            return 0m;
+
+        var boothIds = customerBooths.Select(b => b.BoothID).ToHashSet();
+        var customerItems = Items.Where(i => boothIds.Contains(i.BoothID)).Select(i => i.ItemID).ToHashSet();
+
+        var relevantItemCarts = _itemCartRepo.Items
+            .Where(isc => customerItems.Contains(isc.ItemID))
+            .ToList();
+        if (!relevantItemCarts.Any())
+        {
+            // Customer has no sales, so they owe the full rental amount
+            return -CalculateCustomerRentalIncome(customer.CustomerID);
+        }
+
+        var relevantCartIds = relevantItemCarts.Select(isc => isc.ShoppingCartID).Distinct().ToHashSet();
+
+        var relevantSales = Sales.Where(s => relevantCartIds.Contains(s.ShoppingCartID) && s.SaleDate.Month == DateTime.Now.Month && s.SaleDate.Year == DateTime.Now.Year).ToList();
+
+        var totalSales = relevantSales.Sum(s => s.TotalPrice);
+        var commission = Math.Round(totalSales * 0.10m, 2);
+        var rent = CalculateCustomerRentalIncome(customer.CustomerID);
+        var outstanding = totalSales - commission - rent;
+
+        return outstanding;
+    }
+
+    private decimal? CalculateCustomerRentalIncome()
+    {
+        if (SelectedCustomer == null)
+            return 0m;
+
+        return CalculateCustomerRentalIncome(SelectedCustomer.CustomerID);
+    }
+
+    private decimal? CalculateCustomerRentalIncome(Guid customerId)
+    {
+        // Count how many booths this specific customer has
+        var customerBoothCount = Booths.Count(booth =>
+            booth.CustomerID.HasValue && booth.CustomerID.Value == customerId);
+
+        if (customerBoothCount == 0) return 0;
+
+        // Calculate rental income based on number of booths this customer has
+        decimal baseRentPrice = 850m; // Standard monthly rent per booth
+
+        // Apply pricing tiers based on how many booths this customer rents
+        decimal pricePerBooth = customerBoothCount switch
+        {
+            1 => baseRentPrice,
+            2 or 3 => 825m,
+            >= 4 => 800m,
+            _ => baseRentPrice
+        };
+
+        return customerBoothCount * pricePerBooth;
     }
 }

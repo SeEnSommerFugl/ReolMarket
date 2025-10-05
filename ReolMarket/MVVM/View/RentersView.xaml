@@ -136,13 +136,14 @@
                         <TextBlock Text="{Binding SelectedCustomer.PostalCode}" Style="{StaticResource TextBlockRight}"/>
                     </DockPanel>
 
-                    <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
-                        <TextBlock Text="Total difference:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
-                        <TextBlock Style="{StaticResource MoneyTextColor}" Text="-100,60 kr"/>
-                    </DockPanel>
-                </Grid>
-            </GroupBox>
-            
+        <DockPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" LastChildFill="True">
+            <TextBlock Text="Total difference:" Style="{StaticResource TitleLeft}"  DockPanel.Dock="Left"/>
+            <TextBlock Text="{Binding SelectedCustomerDifference}" Style="{StaticResource MoneyTextColor}"/>
+        </DockPanel>
+    </Grid>
+</GroupBox>
+
+
             <!-- Booths for selected -->
             <GroupBox Grid.Column="2" Style="{StaticResource CardSection}" Header="Den valgte lejers reoler">
                 <DataGrid ItemsSource="{Binding BoothsView}" Style="{StaticResource DataGrid.Table}">
