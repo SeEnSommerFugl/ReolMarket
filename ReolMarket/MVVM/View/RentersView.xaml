@@ -65,10 +65,18 @@
         <GroupBox Grid.Row="2" Style="{StaticResource CardSection}" Header="Lejere">
             <Border Style="{StaticResource Card}">
                 <DataGrid ItemsSource="{Binding CustomersView}"
-              SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
-              Style="{StaticResource DataGrid.Table}"
-              Background="Transparent"
-              BorderThickness="0">
+          SelectedItem="{Binding SelectedCustomer, Mode=TwoWay}"
+          Style="{StaticResource DataGrid.Table}"
+          Background="Transparent"
+          BorderThickness="0">
+
+                    <!-- This is the one that works -->
+                    <DataGrid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            <Setter Property="TextAlignment" Value="Center"/>
+                        </Style>
+                    </DataGrid.Resources>
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Lejer"      Width="*"   Binding="{Binding CustomerName}"/>
@@ -77,13 +85,15 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Style="{StaticResource MoneyTextColor}"
-                       Text="{Binding Difference, StringFormat={}{0:N2} kr.}"/>
+                               TextAlignment="Center"
+                               Text="{Binding Difference, StringFormat={}{0:N2} kr.}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <DataGridTextColumn Header="Slut Dato" Width="*"/>
+                        <DataGridTextColumn Header="Slut Dato"  Width="*"/>
                     </DataGrid.Columns>
                 </DataGrid>
+
             </Border>
         </GroupBox>
 

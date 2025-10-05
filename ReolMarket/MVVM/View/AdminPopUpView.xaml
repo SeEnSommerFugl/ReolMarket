@@ -7,6 +7,11 @@
         mc:Ignorable="d"
         Title="AdminPopUpView" Height="720" Width="1280" MinHeight="450" MinWidth="800">
 
+    
+    
+    
+    <!-- Da dette view blev ekstremt kompliceret, og tiden rendte ud - Har vi ikke haft den nødvendige tid, til at få alting til at passe design&layout mæssigt.-->
+    
     <Window.Background>
         <ImageBrush ImageSource="/Core/Images/Background.png" Stretch="UniformToFill"/>
     </Window.Background>
@@ -140,24 +145,24 @@
                         <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
 
                         <DataGrid Grid.Row="1"
-          ItemsSource="{Binding BoothView}"
-          Style="{StaticResource DataGrid.Table}"
-          Background="Transparent"
-          BorderThickness="0"
-          x:Name="LejerReolerGrid">
+                                     ItemsSource="{Binding BoothView}"
+                                     Style="{StaticResource DataGrid.Table}"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     x:Name="LejerReolerGrid">
 
                             <DataGrid.Columns>
                                 <DataGridTemplateColumn Header="Select" Width="75" CanUserSort="False" CanUserReorder="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox x:Name="BoothCheckBox"
-                              Checked="BoothCheckBox_Checked"
-                              Unchecked="BoothCheckBox_Unchecked"
-                              Tag="{Binding BoothID}"
-                              Loaded="BoothCheckBox_Loaded"
-                              Unloaded="BoothCheckBox_Unloaded"
-                              HorizontalAlignment="Center"
-                              VerticalAlignment="Center"/>
+                                          Checked="BoothCheckBox_Checked"
+                                          Unchecked="BoothCheckBox_Unchecked"
+                                          Tag="{Binding BoothID}"
+                                          Loaded="BoothCheckBox_Loaded"
+                                          Unloaded="BoothCheckBox_Unloaded"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

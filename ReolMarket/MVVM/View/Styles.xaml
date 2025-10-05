@@ -178,76 +178,86 @@
     </Style>
 
     <!-- =================== DATAGRID =================== -->
-    <Style x:Key="DataGridBase" TargetType="DataGrid">
-        <Setter Property="Background" Value="{StaticResource Brush.Panel}"/>
-        <Setter Property="BorderBrush" Value="{StaticResource Brush.Border}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="GridLinesVisibility" Value="None"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="CanUserAddRows"    Value="False"/>
-        <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="RowHeight" Value="44"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="ColumnHeaderHeight" Value="42"/>
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-        <Setter Property="FontSize" Value="40"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="SelectionUnit" Value="FullRow"/>
-        <Setter Property="AlternatingRowBackground" Value="#1C2431"/>
-        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
-        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
-        <Setter Property="EnableRowVirtualization" Value="True"/>
-        <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
+<Style x:Key="DataGridBase" TargetType="DataGrid">
+    <!-- Resources skal stå først i en Style -->
+    <Style.Resources>
+        <!-- Center alle TextBlocks inde i DataGrid-celler som default -->
+        <Style TargetType="TextBlock">
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </Style.Resources>
 
-        <!-- Centrér alle kolonneoverskrifter globalt -->
-        <Setter Property="ColumnHeaderStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridColumnHeader">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                </Style>
-            </Setter.Value>
-        </Setter>
+    <Setter Property="Background" Value="{StaticResource Brush.Panel}"/>
+    <Setter Property="BorderBrush" Value="{StaticResource Brush.Border}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="HeadersVisibility" Value="Column"/>
+    <Setter Property="GridLinesVisibility" Value="None"/>
+    <Setter Property="AutoGenerateColumns" Value="False"/>
+    <Setter Property="CanUserAddRows"    Value="False"/>
+    <Setter Property="CanUserDeleteRows" Value="False"/>
+    <Setter Property="RowHeight" Value="44"/>
+    <Setter Property="IsReadOnly" Value="True"/>
+    <Setter Property="ColumnHeaderHeight" Value="42"/>
+    <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Setter Property="FontSize" Value="40"/>
+    <Setter Property="SelectionMode" Value="Single"/>
+    <Setter Property="SelectionUnit" Value="FullRow"/>
+    <Setter Property="AlternatingRowBackground" Value="#1C2431"/>
+    <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+    <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+    <Setter Property="EnableRowVirtualization" Value="True"/>
+    <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
 
-        <!-- Fælles adfærd: markér hele rækken, ikke cellen -->
-        <Setter Property="RowStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridRow">
-                    <Setter Property="Background"  Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background" Value="#056097"/>
-                            <Setter Property="BorderBrush" Value="#056097"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>
+    <!-- centrér alle kolonneoverskrifter globalt -->
+    <Setter Property="ColumnHeaderStyle">
+        <Setter.Value>
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            </Style>
+        </Setter.Value>
+    </Setter>
 
-        <!-- Centrér alt celle-indhold -->
-        <Setter Property="CellStyle">
-            <Setter.Value>
-                <Style TargetType="DataGridCell">
-                    <Setter Property="Background"  Value="Transparent"/>
-                    <Setter Property="BorderBrush" Value="Transparent"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="VerticalContentAlignment"   Value="Center"/>
-                    <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="Background"  Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                        </Trigger>
-                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
-                            <Setter Property="Background"  Value="Transparent"/>
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
+    <!-- markér hele rækken -->
+    <Setter Property="RowStyle">
+        <Setter.Value>
+            <Style TargetType="DataGridRow">
+                <Setter Property="Background"  Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background" Value="#056097"/>
+                        <Setter Property="BorderBrush" Value="#056097"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Setter.Value>
+    </Setter>
+
+    <!-- centrér alt celle-indhold -->
+    <Setter Property="CellStyle">
+        <Setter.Value>
+            <Style TargetType="DataGridCell">
+                <Setter Property="Background"  Value="Transparent"/>
+                <Setter Property="BorderBrush" Value="Transparent"/>
+                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                <Setter Property="VerticalContentAlignment"   Value="Center"/>
+                <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                <Style.Triggers>
+                    <Trigger Property="IsSelected" Value="True">
+                        <Setter Property="Background"  Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                    </Trigger>
+                    <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                        <Setter Property="Background"  Value="Transparent"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Setter.Value>
+    </Setter>
+</Style>
+
 
     <!-- Smarte DataGrid headers: mørk baggrund, semibold, afrundede kanter -->
     <Style x:Key="DataGridHeader.Smart" TargetType="DataGridColumnHeader">
@@ -286,6 +296,7 @@
         <Setter Property="ColumnHeaderStyle" Value="{StaticResource DataGridHeader.Smart}"/>
         <!-- Valgfrit: scroll hvis listen bliver lang -->
         <Setter Property="MaxHeight" Value="520"/>
+        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
     </Style>
 
     <!-- Kun tekstfarve på beløb: grøn/rød som i EconomyView -->
