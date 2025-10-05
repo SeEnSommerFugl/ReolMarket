@@ -3,6 +3,7 @@ using ReolMarket.Data;
 using ReolMarket.MVVM.Model;
 using ReolMarket.MVVM.Model.HelperModels;
 using ReolMarket.MVVM.View;
+using System.Windows.Data;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows.Input;
@@ -24,10 +25,29 @@ namespace ReolMarket.MVVM.ViewModel
         public ObservableCollection<Sale> Sales => _saleRepo.Items;
         public ObservableCollection<Booth> Booths => _boothRepo.Items;
         public ObservableCollection<Payment> PaymentMethod => _paymentRepo.Items;
-        public ICollectionView SaleView { get; }
+        public ICollectionView SaleView { get; set; }
         public Years Years { get; } = new Years();
         public IReadOnlyList<Month> Months { get; } =
             Enum.GetValues(typeof(Month)).Cast<Month>().ToList();
+
+
+        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo,
+            IBaseRepository<ShoppingCart, Guid> shoppingCartRepo, IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemShoppingCartRepo, IBaseRepository<Payment, Guid> paymentRepo)
+        {
+            _boothRepo = boothRepo;
+            _saleRepo = saleRepo;
+            _itemRepo = itemRepo;
+            _shoppingCartRepo = shoppingCartRepo;
+            _itemShoppingCartRepo = itemShoppingCartRepo;
+            _paymentRepo = paymentRepo;
+
+            _selectedYear = DateTime.Now.Year;
+            _selectedMonth = (Month)DateTime.Now.Month;
+
+            RegisterSaleCommand = new RelayCommand(_ => RegisterSale(), _ => CanRegisterSale());
+            SaleView = CollectionViewSource.GetDefaultView(Sales);
+        }
+
 
         private string? _itemName;
         public string? ItemName
@@ -104,21 +124,7 @@ namespace ReolMarket.MVVM.ViewModel
 
         public ICommand RegisterSaleCommand { get; }
 
-        public SaleViewModel(IBaseRepository<Booth, Guid> boothRepo, IBaseRepository<Sale, Guid> saleRepo, IBaseRepository<Item, Guid> itemRepo, 
-            IBaseRepository<ShoppingCart, Guid> shoppingCartRepo, IBaseRepository<ItemShoppingCart, ItemShoppingCart.ItemShoppingCartKey> itemShoppingCartRepo, IBaseRepository<Payment, Guid> paymentRepo)
-        {
-            _boothRepo = boothRepo;
-            _saleRepo = saleRepo;
-            _itemRepo = itemRepo;
-            _shoppingCartRepo = shoppingCartRepo;
-            _itemShoppingCartRepo = itemShoppingCartRepo;
-            _paymentRepo = paymentRepo;
-
-            _selectedYear = DateTime.Now.Year;
-            _selectedMonth = (Month)DateTime.Now.Month;
-
-            RegisterSaleCommand = new RelayCommand(_ => RegisterSale(), _ => CanRegisterSale());
-        }
+        
 
         private void RegisterSale()
         {
