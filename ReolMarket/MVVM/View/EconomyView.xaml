@@ -204,8 +204,7 @@
                         <DataGridTextColumn Width="140" Binding="{Binding Outstanding, StringFormat=N2}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock">
-                                    <Setter Property="VerticalAlignment" Value="Center"/>
-                                    <Setter Property="TextAlignment" Value="Left"/>
+                                    <Setter Property="Margin" Value="10,0,0,0"/>
                                     <Setter Property="Foreground" Value="{StaticResource Brush.Text}"/>
                                     <Setter Property="FontSize" Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
                                     <Style.Triggers>

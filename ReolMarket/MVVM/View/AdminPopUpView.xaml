@@ -7,6 +7,10 @@
         mc:Ignorable="d"
         Title="AdminPopUpView" Height="720" Width="1280" MinHeight="450" MinWidth="800">
 
+    <Window.Background>
+        <ImageBrush ImageSource="/Core/Images/Background.png" Stretch="UniformToFill"/>
+    </Window.Background>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -14,11 +18,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+    
 
-    <Grid>
+    <Grid Margin="24">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="75"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="24"/>
@@ -26,12 +31,14 @@
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                <Button Command="{Binding NewRenterCommand}" Style="{StaticResource ButtonBase}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-                <Button Command="{Binding EditRenterCommand}" Style="{StaticResource ButtonBase}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-            </StackPanel>
-        </Grid>
+            <Grid Grid.Row="0">
+        <Border Style="{StaticResource Card}">
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Command="{Binding NewRenterCommand}" Style="{StaticResource ButtonBase}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                    <Button Command="{Binding EditRenterCommand}" Style="{StaticResource ButtonBase}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Border>
+            </Grid>
 
         <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
@@ -40,6 +47,7 @@
                 <ColumnDefinition Width="2*"/>
             </Grid.ColumnDefinitions>
 
+
             <Grid Grid.Column="0">
 
 
@@ -47,65 +55,67 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
+                <Border Style="{StaticResource ShowGridWhenNotEditing}">
+                    <Grid Grid.Row="0" >
 
-                <Grid Grid.Row="0" Style="{StaticResource ShowGridWhenNotEditing}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                        <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
 
-                    <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
-                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
-
-                    <TextBox Text="{Binding CustomerName}" Grid.Row="0" Grid.Column="1"/>
-                    <TextBox Text="{Binding Email}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox Text="{Binding PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox Text="{Binding Address}" Grid.Row="3" Grid.Column="1"/>
-                    <TextBox Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1"/>
+                        <TextBox Text="{Binding CustomerName}" Grid.Row="0" Grid.Column="1"/>
+                        <TextBox Text="{Binding Email}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Text="{Binding PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Text="{Binding Address}" Grid.Row="3" Grid.Column="1"/>
+                        <TextBox Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1"/>
 
 
-                </Grid>
+                    </Grid>
+                </Border>
+                <Border Style="{StaticResource ShowGridWhenEditing}">
+                    <Grid Grid.Row="0" >
 
-                <Grid Grid.Row="0" Style="{StaticResource ShowGridWhenEditing}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
 
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
+                        <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
 
-                    <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
-                    <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
-                    <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
-                    <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
-                    <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
+                        <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CustomerName" Style="{StaticResource ComboRight}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
+                        <TextBox Text="{Binding SelectedCustomer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
+                        <TextBox Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
+                        <TextBox Text="{Binding SelectedCustomer.Address, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1"/>
+                        <TextBox Text="{Binding SelectedCustomer.PostalCode, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1"/>
 
-                    <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CustomerName" Grid.Row="0" Grid.Column="1" />
-                    <TextBox Text="{Binding SelectedCustomer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.Address, UpdateSourceTrigger=PropertyChanged}" Grid.Row="3" Grid.Column="1"/>
-                    <TextBox Text="{Binding SelectedCustomer.PostalCode, UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1"/>
-
-                </Grid>
+                    </Grid>
+                </Border>
             </Grid>
 
             <Grid Grid.Column="2">
@@ -186,7 +196,9 @@
 
             
         <Grid Grid.Row="4">
-            <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonIcon}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+            <Border Style="{StaticResource Card}">
+                <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonIcon}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
+            </Border>   
         </Grid>
         
     </Grid>

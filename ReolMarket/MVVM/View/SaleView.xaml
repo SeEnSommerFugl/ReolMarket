@@ -57,14 +57,15 @@
                                 SelectedItem="{Binding SelectedMonth, Mode=TwoWay}"
                                 Height="34" Width="120" Margin="0,0,12,0"/>
 
-                            <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
-                            <ComboBox ItemsSource="{Binding Years.Items}"
-                                SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
-                                Height="34" Width="100"/>
-
-                        </StackPanel>
-                    </DockPanel>
-                </Border>
+                        <TextBlock Text="År:" Style="{StaticResource LabelMuted}" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                        <ComboBox ItemsSource="{Binding Years.Items}"
+                                  SelectedItem="{Binding SelectedYear, Mode=TwoWay}"
+                                  Style="{StaticResource ComboRight}"
+                                  Height="34" Width="100"/>
+                        
+                    </StackPanel>
+                </DockPanel>
+            </Border>
 
                 <!-- Row 2: liste -->
                 <DataGrid Grid.Row="2" 
@@ -73,12 +74,32 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Dato" Width="160"
                                         Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
+                    <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
+                    <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
+                    <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Border Grid.Row="2" Style="{StaticResource Card}"dd>
+                <DataGrid ItemsSource="{Binding SaleView}"
+              Style="{StaticResource DataGrid.Table}"
+              Background="Transparent"
+              BorderThickness="0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Dato" Width="160"
+                                Binding="{Binding Timestamp, StringFormat={}{0:dd/MM/yyyy - HH:mm}}"/>
                         <DataGridTextColumn Header="Reol" Width="80" Binding="{Binding BoothNumber}"/>
                         <DataGridTextColumn Header="Produkt" Width="*" Binding="{Binding ProductName}"/>
                         <DataGridTextColumn Header="Pris" Width="120" Binding="{Binding Price}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </Grid>
+            </Border>
+
+            <!-- row 3 - Button --><!--
+            <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Registrér salg" Style="{StaticResource ButtonPrimary}"
+                  Command="{Binding RegisterSaleCommand}"/>
+            </StackPanel>-->
+        </Grid>
 
 
 
