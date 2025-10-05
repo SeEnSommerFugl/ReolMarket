@@ -74,28 +74,31 @@
                           FontSize="40"
                           Padding="0,0,0,0"
                           CanUserDeleteRows="False"
+                          SelectionMode="Extended"
+                          SelectionUnit="FullRow"
                           CanUserResizeRows="False"
                           CanUserResizeColumns="False"
                           GridLinesVisibility="None"
                           Background="Transparent"
-                          BorderThickness="0"
                           RowBackground="Transparent"
+                          BorderThickness="0"
                           AlternatingRowBackground="{x:Null}"
                           IsReadOnly="True"
                           ItemsSource="{Binding MonthlyOutstandingPayments}">
 
                     <!-- Kolonner: Navn + Beløb -->
                     <DataGrid.Columns>
-                        <DataGridTextColumn Width="200" Binding="{Binding CustomerName}">
+                        <DataGridTextColumn Width="260" Binding="{Binding CustomerName}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource TitleLeft}">
                                     <Setter Property="Foreground" Value="#EAF2FF"/>
+
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
 
                         <!-- Beløb-kolonne: binder direkte til item (string) og farver via triggers -->
-                        <DataGridTextColumn Width="200" Binding="{Binding Outstanding, StringFormat=N2}">
+                        <DataGridTextColumn Width="140" Binding="{Binding Outstanding, StringFormat=N2}">
                             <DataGridTextColumn.ElementStyle>
                                 <Style TargetType="TextBlock" BasedOn="{StaticResource InputRight}">
                                     <!-- Farvning på placeholder-værdier -->
@@ -111,18 +114,6 @@
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
                     </DataGrid.Columns>
-
-
-                    <!-- Placeholder-rækker -->
-                    <!--<DataGrid.ItemsSource>
-                        <x:Array Type="{x:Type sys:String}">
-                            <sys:String>+500</sys:String>
-                            <sys:String>+500</sys:String>
-                            <sys:String>-250</sys:String>
-                            <sys:String>-250</sys:String>
-                            <sys:String>+500</sys:String>
-                        </x:Array>
-                    </DataGrid.ItemsSource>-->
                 </DataGrid>
             </Grid>
         </Border>
