@@ -136,6 +136,7 @@
                                    Width="270"/>
 
                         <ComboBox  ItemsSource="{Binding PaymentMethod}"
+                                   Foreground="Black"
                                    DisplayMemberPath="PaymentMethod"
                                    SelectedItem="{Binding SelectedPayment, Mode=TwoWay}" 
                                    Style="{StaticResource ComboRight}"
