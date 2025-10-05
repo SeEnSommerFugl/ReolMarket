@@ -203,6 +203,74 @@
         <Setter Property="ScrollViewer.CanContentScroll" Value="True"/>
     </Style>
 
+    
+    <!-- 2-kolonne setup med Right Align Title + Left Align Input -->
+    <!-- Række-highlight i stedet for celle-highlight + skalerbar font -->
+    <Style x:Key="DataGridFullRowHighlight"
+       TargetType="DataGrid"
+       BasedOn="{StaticResource DataGridBase}">
+
+        <!-- Hele rækken får highlight, celler holder sig “stille” -->
+        <Setter Property="RowStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Background"   Value="Transparent"/>
+                    <Setter Property="BorderBrush"  Value="Transparent"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <!-- Lys overlay over hele rækken -->
+                            <Setter Property="Background" Value="#20FFFFFF"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+
+        <Setter Property="CellStyle">
+            <Setter.Value>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Background"        Value="Transparent"/>
+                    <Setter Property="BorderBrush"       Value="Transparent"/>
+                    <Setter Property="FocusVisualStyle"  Value="{x:Null}"/>
+                    <Style.Triggers>
+                        <!-- Ingen særskilt celle-baggrund ved markering -->
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background"  Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                        <!-- Fjern keyboard-fokus ramme -->
+                        <Trigger Property="IsKeyboardFocusWithin" Value="True">
+                            <Setter Property="Background"  Value="Transparent"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Standard celle-tekst (venstrejusteret) som ikke tager klik-fokus.
+     Fontstørrelse følger DataGrid.FontSize, så det skalerer automatisk. -->
+    <Style x:Key="TitleLeftGrid" TargetType="TextBlock" BasedOn="{StaticResource LabelMuted}">
+        <Setter Property="IsHitTestVisible"   Value="False"/>
+        <Setter Property="VerticalAlignment"   Value="Center"/>
+        <Setter Property="TextAlignment"       Value="Left"/>
+        <Setter Property="Foreground"          Value="{StaticResource Brush.Text}"/>
+        <Setter Property="FontSize"
+            Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+    </Style>
+
+    <!-- Højrejusteret variant (Til højre side -->
+    <Style x:Key="GridCellTextRight" TargetType="TextBlock">
+        <Setter Property="IsHitTestVisible"   Value="False"/>
+        <Setter Property="VerticalAlignment"   Value="Center"/>
+        <Setter Property="TextAlignment"       Value="Right"/>
+        <Setter Property="Foreground"          Value="{StaticResource Brush.Text}"/>
+        <Setter Property="FontSize"
+            Value="{Binding FontSize, RelativeSource={RelativeSource AncestorType=DataGrid}}"/>
+    </Style>
+
+
     <!-- Cell pill template (rounded full-cell background) -->
     <Style x:Key="DataGridCellPill" TargetType="DataGridCell">
         <Setter Property="Padding" Value="0"/>
