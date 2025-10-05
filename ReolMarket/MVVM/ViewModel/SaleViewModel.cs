@@ -42,6 +42,7 @@ namespace ReolMarket.MVVM.ViewModel
             _itemShoppingCartRepo = itemShoppingCartRepo;
             _paymentRepo = paymentRepo;
 
+          
             _selectedYear = DateTime.Now.Year;
             _selectedMonth = (Month)DateTime.Now.Month;
 
@@ -103,7 +104,7 @@ namespace ReolMarket.MVVM.ViewModel
             }
         }
 
-        //Month and year selection functionality (not implemented)
+        
         private Month _selectedMonth;
         public Month SelectedMonth {
             get => _selectedMonth;
