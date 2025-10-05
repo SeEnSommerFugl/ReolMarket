@@ -337,5 +337,22 @@ namespace ReolMarket.MVVM.ViewModel
 
         //    return results;
         //}
+
+        private decimal _totalMonthlyOutstanding;
+        public decimal TotalMonthlyOutstanding 
+            {
+            get => _totalMonthlyOutstanding = CalculateTotalMonthlyOutstanding();
+            set 
+            {
+                if(SetProperty(ref _totalMonthlyOutstanding, value)) 
+                {
+                    OnPropertyChanged(nameof(TotalMonthlyOutstanding));
+                }
+            }
+        }
+
+        private decimal CalculateTotalMonthlyOutstanding() {
+            return MonthlyOutstandingPayments.Sum(c => c.Outstanding);
+        }
     }
 }
