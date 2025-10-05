@@ -18,12 +18,12 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
+
 
     <Grid Margin="24">
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="75"/>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="24"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="24"/>
@@ -31,20 +31,31 @@
             <RowDefinition Height="12"/>
         </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
-        <Border Style="{StaticResource Card}">
-                <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                    <Button Command="{Binding NewRenterCommand}" Style="{StaticResource ButtonBase}" Content="NY LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-                    <Button Command="{Binding EditRenterCommand}" Style="{StaticResource ButtonBase}" Content="REDIGER LEJER" Width="150" Height="48" HorizontalAlignment="Center"/>
-                </StackPanel>
-        </Border>
-            </Grid>
+        <Grid Grid.Row="0">
+            <Border Style="{StaticResource Card}">
+                <Border Style="{StaticResource Card}">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                        <Button Command="{Binding NewRenterCommand}"
+                Style="{StaticResource ButtonBase}"
+                Content="NY LEJER"
+                Width="150" Height="48" FontSize="14"/>
+
+                        <Button Command="{Binding EditRenterCommand}"
+                Style="{StaticResource ButtonBase}"
+                Content="REDIGER LEJER"
+                Width="150" Height="48" FontSize="14"/>
+                    </StackPanel>
+                </Border>
+
+            </Border>
+        </Grid>
 
         <Grid Grid.Row="2" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="24"/>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
 
@@ -71,17 +82,17 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
-                        <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
-                        <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock Text="Navn:" Style="{StaticResource TitleLeft}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Email:" Style="{StaticResource TitleLeft}" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Telefon:" Style="{StaticResource TitleLeft}" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="Adresse:" Style="{StaticResource TitleLeft}" Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="Postnummer:" Style="{StaticResource TitleLeft}" Grid.Row="4" Grid.Column="0"/>
 
-                        <TextBox Text="{Binding CustomerName}" Grid.Row="0" Grid.Column="1"/>
-                        <TextBox Text="{Binding Email}" Grid.Row="1" Grid.Column="1"/>
-                        <TextBox Text="{Binding PhoneNumber}" Grid.Row="2" Grid.Column="1"/>
-                        <TextBox Text="{Binding Address}" Grid.Row="3" Grid.Column="1"/>
-                        <TextBox Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1"/>
+                        <TextBox Text="{Binding CustomerName}" Grid.Column="1" Style="{StaticResource InputRight}"  Width="189"/>
+                        <TextBox Text="{Binding Email}" Grid.Row="1" Grid.Column="1" Style="{StaticResource InputRight}"  Width="189"/>
+                        <TextBox Text="{Binding PhoneNumber}" Grid.Row="2" Grid.Column="1" Style="{StaticResource InputRight}"  Width="189"/>
+                        <TextBox Text="{Binding Address}" Grid.Row="3" Grid.Column="1" Style="{StaticResource InputRight}"  Width="189"/>
+                        <TextBox Text="{Binding PostalCode}" Grid.Row="4" Grid.Column="1" Style="{StaticResource InputRight}"  Width="189"/>
 
 
                     </Grid>
@@ -102,11 +113,11 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
 
-                        <TextBlock Text="Navn:" Style="{StaticResource LabelMuted}" Grid.Row="0" Grid.Column="0"/>
-                        <TextBlock Text="Email:" Style="{StaticResource LabelMuted}" Grid.Row="1" Grid.Column="0"/>
-                        <TextBlock Text="Telefon:" Style="{StaticResource LabelMuted}" Grid.Row="2" Grid.Column="0"/>
-                        <TextBlock Text="Adresse:" Style="{StaticResource LabelMuted}" Grid.Row="3" Grid.Column="0"/>
-                        <TextBlock Text="Postnummer:" Style="{StaticResource LabelMuted}" Grid.Row="4" Grid.Column="0"/>
+                        <TextBlock Text="Navn:" Style="{StaticResource TitleLeft}" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Email:" Style="{StaticResource TitleLeft}" Grid.Row="1" Grid.Column="0"/>
+                        <TextBlock Text="Telefon:" Style="{StaticResource TitleLeft}" Grid.Row="2" Grid.Column="0"/>
+                        <TextBlock Text="Adresse:" Style="{StaticResource TitleLeft}" Grid.Row="3" Grid.Column="0"/>
+                        <TextBlock Text="Postnummer:" Style="{StaticResource TitleLeft}" Grid.Row="4" Grid.Column="0"/>
 
                         <ComboBox ItemsSource="{Binding RenterComboBox}" SelectedItem="{Binding SelectedCustomer, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="CustomerName" Style="{StaticResource ComboRight}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" />
                         <TextBox Text="{Binding SelectedCustomer.Email, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1"/>
@@ -128,56 +139,68 @@
 
                         <TextBlock Grid.Row="0" Text="Den valgte lejers reoler" Style="{StaticResource H2}" Margin="0,0,0,8"/>
 
-                        <DataGrid Grid.Row="1" 
-                      ItemsSource="{Binding BoothView}" 
-                      Style="{StaticResource DataGridBase}" 
-                      x:Name="LejerReolerGrid"
-                      VirtualizingPanel.IsVirtualizing="False"
-                      ScrollViewer.VerticalScrollBarVisibility="Auto"
-                      ScrollViewer.CanContentScroll="True"
-                      AutoGenerateColumns="False"
-                      CanUserAddRows="False"
-                      CanUserDeleteRows="False"
-                      GridLinesVisibility="Horizontal"
-                      HeadersVisibility="Column">
+                        <DataGrid Grid.Row="1"
+          ItemsSource="{Binding BoothView}"
+          Style="{StaticResource DataGrid.Table}"
+          Background="Transparent"
+          BorderThickness="0"
+          x:Name="LejerReolerGrid">
+
                             <DataGrid.Columns>
-                                <DataGridTemplateColumn Header="Select" Width="60" CanUserSort="False" CanUserReorder="False">
+                                <DataGridTemplateColumn Header="Select" Width="75" CanUserSort="False" CanUserReorder="False">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <CheckBox x:Name="BoothCheckBox"
-                                          Checked="BoothCheckBox_Checked" 
-                                          Unchecked="BoothCheckBox_Unchecked"
-                                          Tag="{Binding BoothID}"
-                                          Loaded="BoothCheckBox_Loaded"
-                                          Unloaded="BoothCheckBox_Unloaded"
-                                          HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                              Checked="BoothCheckBox_Checked"
+                              Unchecked="BoothCheckBox_Unchecked"
+                              Tag="{Binding BoothID}"
+                              Loaded="BoothCheckBox_Loaded"
+                              Unloaded="BoothCheckBox_Unloaded"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Reol Nr" 
-                                        Width="100" 
-                                        Binding="{Binding BoothNumber}"
-                                        IsReadOnly="True"/>
-                                <DataGridTextColumn Header="Start Dato" Width="160" Binding="{Binding StartDate}"/>
-                                <DataGridTemplateColumn Header="Difference" Width="140">
+
+                                <DataGridTextColumn Header="Reol Nr" Width="75" Binding="{Binding BoothNumber}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Start Dato" Width="75" Binding="{Binding StartDate}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <!-- Difference: kun tekstfarve (grøn/rød) -->
+                                <DataGridTemplateColumn Header="Difference" Width="75">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Border Style="{StaticResource ChipPositive}">
-                                                <TextBlock Text="+500,60 kr"/>
-                                            </Border>
+                                            <TextBlock Style="{StaticResource MoneyTextColor}"
+                               TextAlignment="Center"
+                               Text="{Binding Difference, StringFormat={}{0:N2} kr.}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>
-                                <DataGridTemplateColumn Header="" Width="120">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Button Style="{StaticResource ButtonPrimary}" Content="Fortsæt" Padding="8,4"/>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                                <DataGridTextColumn Header="Slut Dato" Width="160" Binding="{Binding EndDate}"/>
-                                <DataGridTemplateColumn Header="" Width="120">
+
+                                <DataGridTextColumn Header="Slut Dato" Width="175" Binding="{Binding EndDate}">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="TextAlignment" Value="Center"/>
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+
+                                <DataGridTemplateColumn Header="" Width="75">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <Button Style="{StaticResource ButtonDanger}" Content="Opsig" Padding="8,4"/>
@@ -186,6 +209,7 @@
                                 </DataGridTemplateColumn>
                             </DataGrid.Columns>
                         </DataGrid>
+
                     </Grid>
                 </Border>
             </Grid>
@@ -194,12 +218,12 @@
 
         </Grid>
 
-            
+
         <Grid Grid.Row="4">
             <Border Style="{StaticResource Card}">
                 <Button Command="{Binding SaveCommand}" Style="{StaticResource ButtonIcon}" Content="TILFØJ" Width="150" Height="48" HorizontalAlignment="Center"/>
-            </Border>   
+            </Border>
         </Grid>
-        
+
     </Grid>
 </Window>
