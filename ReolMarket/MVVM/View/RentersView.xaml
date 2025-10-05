@@ -46,11 +46,13 @@
                   Style="{StaticResource ComboRight}"
                   ItemsSource="{Binding SearchModes}"
                   SelectedItem="{Binding SelectedSearchMode}"
-                  DisplayMemberPath="DisplayName"/>
+                  DisplayMemberPath="DisplayName"
+                  Height="34" Width="120"/>
 
                 <TextBox Grid.Column="2"
                  Style="{StaticResource InputRight}"
-                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"/>
+                 Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                 Height="34" Width="120"/>
 
                 <Button Grid.Column="4"
                 Style="{StaticResource ButtonPrimary}"

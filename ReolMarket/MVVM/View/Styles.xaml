@@ -427,7 +427,7 @@
     </Style>
 
     <!-- Viser grid når IsEditing = false -->
-    <Style x:Key="ShowGridWhenNotEditing" TargetType="Grid">
+    <Style x:Key="ShowGridWhenNotEditing" BasedOn="{StaticResource Card}" TargetType="Border">
         <Setter Property="Visibility" Value="Visible"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsEditing}" Value="True">
@@ -437,7 +437,7 @@
     </Style>
 
     <!-- Viser grid når IsEditing = true -->
-    <Style x:Key="ShowGridWhenEditing" TargetType="Grid">
+    <Style x:Key="ShowGridWhenEditing" TargetType="Border" BasedOn="{StaticResource Card}">
         <Setter Property="Visibility" Value="Collapsed"/>
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsEditing}" Value="True">
